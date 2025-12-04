@@ -1,0 +1,10 @@
+# WordPress
+/wp-content/uploads/
+/wp-content/cache/
+wp-config.php
+.htaccess
+*.log
+# General
+node_modules/
+.env
+.DS_Store
