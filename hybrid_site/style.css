@@ -5,9 +5,11 @@
 
 :root {
     /* Color Palette - Uplifting & Trustworthy */
-    --primary: #0066CC; /* Tech Blue - Trust */
+    --primary: #0066CC;
+    /* Tech Blue - Trust */
     --primary-dark: #004C99;
-    --accent: #FFD700; /* Sunshine Gold - Positivity */
+    --accent: #FFD700;
+    /* Sunshine Gold - Positivity */
     --accent-hover: #FFC400;
     --text-dark: #1A1A1A;
     --text-light: #555555;
@@ -17,11 +19,11 @@
     --glass-border: rgba(255, 255, 255, 0.3);
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    
+
     /* Spacing & Layout */
     --container-width: 1200px;
     --header-height: 80px;
-    
+
     /* Transitions */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -47,15 +49,14 @@ a {
     transition: var(--transition);
 }
 
-ul { list-style: none; }
+ul {
+    list-style: none;
+}
 
-img { max-width: 100%; display: block; }
-
-/* 
-   =============================================
-   COMPONENTS
-   =============================================
-*/
+img {
+    max-width: 100%;
+    display: block;
+}
 
 /* Buttons */
 .btn {
@@ -95,6 +96,51 @@ img { max-width: 100%; display: block; }
     color: var(--white);
 }
 
+/* --- COMPONENT: Starfield Button (The Wow Factor) --- */
+@keyframes starfield-shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.btn-starfield {
+    /* Deep Cosmic Gradient */
+    background: linear-gradient(270deg, #0f0c29, #302b63, #24243e, #6a11cb, #2575fc);
+    background-size: 300% 300%;
+    animation: starfield-shimmer 6s ease infinite;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(106, 17, 203, 0.5);
+    /* Purple Glow */
+    border-radius: 50px;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Basic button props */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-starfield:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 25px rgba(37, 117, 252, 0.8);
+    /* Blue Glow intense */
+    color: #ffffff !important;
+}
+
 /* Section Titles */
 .section-title {
     text-align: center;
@@ -119,11 +165,7 @@ img { max-width: 100%; display: block; }
     color: var(--text-dark);
 }
 
-/* 
-   =============================================
-   LAYOUT: Header / Navigation
-   =============================================
-*/
+/* Header / Navigation */
 .site-header {
     position: fixed;
     top: 0;
@@ -144,9 +186,13 @@ img { max-width: 100%; display: block; }
     width: 90%;
     max-width: var(--container-width);
     margin: 0 auto;
+}
+
+header .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 100%;
 }
 
 .logo {
@@ -156,11 +202,14 @@ img { max-width: 100%; display: block; }
     letter-spacing: -0.5px;
 }
 
-.logo span { color: var(--text-dark); }
+.logo span {
+    color: var(--text-dark);
+}
 
 .nav-links {
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 .nav-links a {
@@ -181,8 +230,17 @@ img { max-width: 100%; display: block; }
     transition: var(--transition);
 }
 
-.nav-links a:hover { color: var(--primary); }
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a.btn:hover::after {
+    display: none;
+}
 
 .mobile-menu-btn {
     display: none;
@@ -191,19 +249,21 @@ img { max-width: 100%; display: block; }
     cursor: pointer;
 }
 
-/* 
-   =============================================
-   SECTIONS: Hero
-   =============================================
-*/
+/* Hero */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
     background: radial-gradient(circle at top right, rgba(0, 102, 204, 0.05), transparent 40%),
-                radial-gradient(circle at bottom left, rgba(255, 215, 0, 0.05), transparent 40%);
+        radial-gradient(circle at bottom left, rgba(255, 215, 0, 0.05), transparent 40%);
     padding-top: var(--header-height);
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .hero-content {
@@ -241,29 +301,20 @@ img { max-width: 100%; display: block; }
 }
 
 .hero-visual {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
     width: 45%;
-    height: 70%;
-    background: #e0e0e0;
-    border-radius: 30px 0 0 30px;
-    overflow: hidden;
-    box-shadow: -20px 20px 60px rgba(0,0,0,0.1);
+    height: 400px;
+    position: relative;
 }
 
 .hero-visual img {
+    border-radius: 30px;
+    box-shadow: -20px 20px 60px rgba(0, 0, 0, 0.1);
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* 
-   =============================================
-   SECTIONS: Mission / About
-   =============================================
-*/
+/* Mission / About */
 .mission {
     padding: 6rem 0;
     background: var(--white);
@@ -282,20 +333,7 @@ img { max-width: 100%; display: block; }
     margin-bottom: 1.5rem;
 }
 
-.blockquote {
-    border-left: 4px solid var(--accent);
-    padding-left: 1.5rem;
-    font-style: italic;
-    color: var(--text-dark);
-    font-size: 1.2rem;
-    margin: 2rem 0;
-}
-
-/* 
-   =============================================
-   SECTIONS: Impact
-   =============================================
-*/
+/* Impact */
 .impact {
     padding: 5rem 0;
     background: var(--primary);
@@ -321,21 +359,26 @@ img { max-width: 100%; display: block; }
     opacity: 0.9;
 }
 
-/* 
-   =============================================
-   SECTIONS: Footer
-   =============================================
-*/
+/* Footer */
 footer {
     padding: 4rem 0 2rem;
     background: #111;
     color: #fff;
 }
 
+footer .container {
+    display: block;
+}
+
 .footer-top {
     display: flex;
     justify-content: space-between;
     margin-bottom: 3rem;
+    gap: 4rem;
+}
+
+footer .logo span {
+    color: #ffffff;
 }
 
 .footer-col h4 {
@@ -366,19 +409,165 @@ footer {
     font-size: 0.9rem;
 }
 
-/* 
-   =============================================
-   RESPONSIVE DESIGN
-   =============================================
-*/
+/* --- ADDED: Phase 4 Custom Templates CSS to ensure Global Visibility --- */
+
+/* Hero Cards */
+.pledge-hero-card,
+.donate-hero-card,
+.chapters-hero-card,
+.resources-hero-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px -10px rgba(0, 102, 204, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    /* Ensure block spacing */
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pledge-hero-card::before,
+.donate-hero-card::before,
+.chapters-hero-card::before,
+.resources-hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #0066CC, #FFD700);
+}
+
+.pledge-hero-card h1,
+.donate-hero-card h1,
+.chapters-hero-card h1,
+.resources-hero-card h1 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: #1A1A1A;
+    margin-bottom: 1rem;
+}
+
+.pledge-hero-card p,
+.donate-hero-card p,
+.chapters-hero-card p,
+.resources-hero-card p {
+    font-size: 1.25rem;
+    color: #555;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.highlight {
+    color: #0066CC;
+    font-weight: 700;
+}
+
+/* Placeholder Grid Styles */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    text-align: center;
+    /* Better for placeholders */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.feature-card h3 {
+    color: #0066CC;
+    margin-bottom: 1rem;
+}
+
+/* Gravity Forms (Global) */
+.gform_wrapper {
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.gform_wrapper input,
+.gform_wrapper textarea,
+.gform_wrapper select {
+    padding: 15px !important;
+    border-radius: 8px !important;
+    border: 2px solid #eee !important;
+    background-color: #fcfcfc !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease;
+}
+
+.gform_wrapper input:focus,
+.gform_wrapper textarea:focus {
+    border-color: #0066CC !important;
+    box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1) !important;
+    outline: none;
+}
+
+.gform_wrapper .gform_footer input[type=submit] {
+    background: linear-gradient(135deg, #0066CC 0%, #004C99 100%) !important;
+    color: white !important;
+    padding: 15px 40px !important;
+    border-radius: 50px !important;
+    border: none !important;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 700 !important;
+}
+
+/* Responsive */
 @media (max-width: 992px) {
-    .container { width: 92%; }
-    .hero h1 { font-size: 3rem; }
-    .hero-visual { display: none; } /* Hide visual on tablet/mobile for simpler layout */
-    .hero-content { max-width: 100%; text-align: center; margin: 0 auto; }
-    .hero p { margin: 0 auto 2rem; }
+    .container {
+        width: 92%;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .hero .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero p {
+        margin: 0 auto 2rem;
+    }
+
     .nav-links {
-        display: none; /* Mobile menu needed */
+        display: none;
         position: absolute;
         top: var(--header-height);
         left: 0;
@@ -388,8 +577,26 @@ footer {
         padding: 2rem;
         box-shadow: var(--shadow-lg);
     }
-    .nav-links.active { display: flex; }
-    .mobile-menu-btn { display: block; }
-    .mission-grid { grid-template-columns: 1fr; }
-    .impact-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .mission-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .footer-top {
+        flex-direction: column;
+        gap: 2rem;
+    }
 }

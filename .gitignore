@@ -8,3 +8,7 @@ wp-config.php
 node_modules/
 .env
 .DS_Store
+
+secrets.json
+
+const key -API.txt

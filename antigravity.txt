@@ -1,0 +1,15 @@
+antigravity
+
+  *   SSH keys provide a more secure way to connect to GitHub without re-entering your username and password repeatedly.
+    ```powershell
+    ssh-keygen -t ed25519 -C "john@masoner.us"
+    ```
+    *   When prompted, press `Enter` to accept the default file location (`C:\Users\john\.ssh\id_ed25519`).
+    *   Optionally, enter a strong passphrase (and confirm it) for added security. If you don't want a passphrase, just press `Enter` twice.
+    *   **Add your SSH key to the ssh-agent:**
+        ```powershell
+        Get-Service ssh-agent | Set-Service -StartupType Automatic # Ensure ssh-agent starts automatically
+        Start-Service ssh-agent # Start the service if not running
+        ssh-add C:\Users\john\.ssh\id_ed25519
+        Write-Host "SSH key generated and added to ssh-agent."
+        ```
