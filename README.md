@@ -38,6 +38,11 @@ We use a mapped Web Disk drive (`Z:`) to deploy files to the live server.
   * **Usage**: Run this to update the WordPress Child Theme (PHP templates, `style.css`).
   * **Crucial**: This script injects the static header/footer HTML into the WordPress theme to ensure they are identical.
 
+* `deploy_resources.ps1`:
+  * **Usage**: Run this to deploy downloadable resources (PDFs, guides) to the live server.
+  * Copies files to the `/resources/` directory on the server.
+  * Deploys the Resources page template to the WordPress theme.
+
 ## 🛠️ Development Workflow
 
 1. **Edit Visuals**:

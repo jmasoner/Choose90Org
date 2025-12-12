@@ -128,4 +128,15 @@ $FooterContent = @"
 "@
 $FooterContent | Set-Content (Join-Path $ThemePath "footer.php")
 
-Write-Host "Success! Child Theme Styles Consolidated."
+# 4. Deploy page-resources.php template
+Write-Host "Updating page-resources.php template..."
+$ResourcesTemplateSource = Join-Path $PSScriptRoot "page-resources.php"
+if (Test-Path $ResourcesTemplateSource) {
+    Copy-Item -Path $ResourcesTemplateSource -Destination (Join-Path $ThemePath "page-resources.php") -Force
+    Write-Host "Resources template deployed." -ForegroundColor Green
+}
+else {
+    Write-Warning "page-resources.php not found in project root. Skipping."
+}
+
+Write-Host "Success! Child Theme Styles Consolidated & Templates Updated."

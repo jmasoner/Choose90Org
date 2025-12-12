@@ -1,0 +1,110 @@
+/* ============================================
+   Choose90 Animated Logo - Standalone CSS
+   ============================================
+   Single source of truth for logo animations
+   Use across all pages (WordPress + Static HTML)
+   ============================================ */
+
+.logo-animated {
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.logo-animated:hover {
+    transform: scale(1.05);
+}
+
+.logo-animated svg {
+    width: 180px;
+    height: auto;
+    display: block;
+}
+
+/* Animation assignments */
+.logo-animated svg .figure-blue {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.logo-animated svg .figure-yellow {
+    animation: slideInRight 0.8s ease-out;
+}
+
+.logo-animated svg .figure-gray {
+    animation: fadeInScale 1s ease-out 0.4s backwards;
+}
+
+.logo-animated svg .arc-connector {
+    animation: fadeInScale 1s ease-out 0.6s backwards;
+}
+
+.logo-animated svg .logo-text {
+    animation: fadeInUp 1s ease-out 0.8s backwards;
+}
+
+/* Keyframe definitions */
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-150px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(150px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInScale {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logo-animated svg {
+        width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-animated svg {
+        width: 120px;
+    }
+}

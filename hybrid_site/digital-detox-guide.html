@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Detox Guide: 7-Day Media Reset | Choose90</title>
+    <meta name="description"
+        content="A 7-day plan to reset your media consumption, reclaim your attention, and choose to be 90% positive. Free interactive guide from Choose90.org">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Link to main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Animated Logo Styles -->
+    <style>
+        /* Choose90 Animated Logo Styles */
+        .logo-animated {
+            display: inline-flex;
+            align-items: center;
+            height: 50px;
+            width: auto;
+            text-decoration: none;
+        }
+
+        .logo-animated svg {
+            height: 50px;
+            width: auto;
+            display: block;
+        }
+
+        .figure-blue {
+            animation: slideInLeft 1.2s ease-out forwards;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        .figure-yellow {
+            animation: slideInRight 1.2s ease-out forwards;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        .figure-gray {
+            animation: fadeInScale 0.8s ease-out 1.2s forwards;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        .logo-text {
+            animation: fadeInUp 0.8s ease-out 2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                transform: translateX(-150px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            0% {
+                transform: translateX(150px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-animated:hover .figure-blue,
+        .logo-animated:hover .figure-yellow {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-animated {
+                height: 40px;
+            }
+
+            .logo-animated svg {
+                height: 40px;
+            }
+        }
+    </style>
+
+    <style>
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Hero Section */
+        .detox-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 0 4rem;
+            margin-top: var(--header-height);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detox-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-100px);
+            }
+        }
+
+        .detox-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .detox-hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .detox-hero .tagline {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-cta .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Day Progress Tracker */
+        .day-tracker {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: -3rem auto 3rem;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .day-tracker h3 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .day-badge {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .day-badge:hover {
+            background: #e8e8ff;
+            transform: translateY(-2px);
+        }
+
+        .day-badge.completed {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .day-badge.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .day-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .day-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+
+        /* Content Sections */
+        .detox-content {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .intro-section {
+            background: linear-gradient(to bottom, #f9fafb 0%, white 100%);
+            padding: 4rem 0;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .intro-section h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        /* Day Sections */
+        .day-section {
+            margin-bottom: 4rem;
+            padding: 2.5rem;
+            background: linear-gradient(to right, #f9fafb 0%, white 100%);
+            border-radius: 16px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .day-section:hover {
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+            transform: translateX(4px);
+        }
+
+        .day-section h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .day-section .goal {
+            color: #764ba2;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .day-section h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .day-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .day-section ul li {
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .day-section ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Checkboxes */
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            background: #f0f4ff;
+        }
+
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .task-checkbox.checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .task-checkbox.checked::after {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Quote Boxes */
+        .quote-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #667eea;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .quote-box::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -1rem;
+            left: 1rem;
+            color: #667eea;
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+
+        .mission-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 3px solid #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .commitment-statement {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            margin: 3rem 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .commitment-statement h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        /* Final Thoughts */
+        .final-thoughts {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-thoughts::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+        }
+
+        .final-thoughts h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-thoughts p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 1rem auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: #f9fafb;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .resources-section h2 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .resource-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .resource-card {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        }
+
+        .resource-card h3 {
+            color: #667eea;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .resource-card a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .resource-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .detox-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .detox-hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .day-section {
+                padding: 1.5rem;
+            }
+
+            .days-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0.25rem;
+            }
+
+            .day-label {
+                font-size: 0.6rem;
+            }
+
+            .day-number {
+                font-size: 1.2rem;
+            }
+
+            .download-cta {
+                flex-direction: column;
+            }
+
+            .download-cta .btn {
+                width: 100%;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="logo">Choose<span>90</span>.</a>
+            <div class="mobile-menu-btn">☰</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/resources/" class="active">Resources</a></li>
+                    <li><a href="/pledge/" class="btn btn-outline"
+                            style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
+                    <li><a href="/donate/" class="btn btn-starfield"
+                            style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="detox-hero">
+        <div class="container">
+            <h1>Digital Detox Guide</h1>
+            <p class="subtitle">7-Day Media Reset Plan</p>
+            <p class="tagline">Reclaim your attention. Reset your habits. Choose to be 90% positive.</p>
+
+            <div class="download-cta">
+                <a href="/resources/Choose90-Digital-Detox-Guide.pdf" class="btn btn-primary" download>📥 Download PDF
+                    Guide</a>
+                <a href="#day1" class="btn btn-glass">📖 Read Interactive Guide</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Day Progress Tracker -->
+    <div class="container">
+        <div class="day-tracker fade-in">
+            <h3>📅 Track Your 7-Day Journey</h3>
+            <div class="days-grid" id="dayTracker">
+                <div class="day-badge" data-day="1">
+                    <div class="day-number">1</div>
+                    <div class="day-label">Awareness</div>
+                </div>
+                <div class="day-badge" data-day="2">
+                    <div class="day-number">2</div>
+                    <div class="day-label">Boundaries</div>
+                </div>
+                <div class="day-badge" data-day="3">
+                    <div class="day-number">3</div>
+                    <div class="day-label">Replace</div>
+                </div>
+                <div class="day-badge" data-day="4">
+                    <div class="day-number">4</div>
+                    <div class="day-label">Connect</div>
+                </div>
+                <div class="day-badge" data-day="5">
+                    <div class="day-number">5</div>
+                    <div class="day-label">Filter</div>
+                </div>
+                <div class="day-badge" data-day="6">
+                    <div class="day-number">6</div>
+                    <div class="day-label">Rest</div>
+                </div>
+                <div class="day-badge" data-day="7">
+                    <div class="day-number">7</div>
+                    <div class="day-label">Commit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <section class="intro-section">
+        <div class="container fade-in">
+            <h2>Before You Begin: The Most Important Step</h2>
+
+            <h3 style="color: #764ba2; font-size: 1.8rem; margin: 2rem 0 1rem;">Tell the World. Invite Humanity.</h3>
+
+            <p>Before you audit your screen time. Before you delete a single app. Before you take your first step toward
+                a healthier media diet—<strong>there is one thing that matters most:</strong></p>
+
+            <div class="quote-box">
+                <strong>Tell the people you love that you're choosing 90.</strong>
+            </div>
+
+            <p>This isn't just about you. It never was. <strong>This is about all of us.</strong> Every single human
+                being. Because here's the truth that the algorithms don't want you to know:</p>
+
+            <div class="quote-box">
+                <strong>There is good in ALL of us.</strong> Every person. No exceptions.
+            </div>
+
+            <p>But <strong>90%+ of what we're fed—the news, the clickbait, the outrage cycles—is negative, divisive, and
+                    designed to make us forget that truth.</strong></p>
+
+            <h3 style="color: #667eea; font-size: 1.5rem; margin: 2rem 0 1rem;">The Real Problem Isn't People. It's What
+                We're Consuming.</h3>
+
+            <p>The media landscape is poisoned. Not by accident, but by design.</p>
+
+            <ul style="margin: 1.5rem 0;">
+                <li><strong>90%+ of news is negative</strong> because fear and outrage sell.</li>
+                <li><strong>90%+ of clickbait is false or twisted</strong> because truth doesn't generate clicks.</li>
+                <li><strong>90%+ of social media algorithms</strong> push division because engagement equals profit.
+                </li>
+            </ul>
+
+            <div class="mission-box">
+                <h3 style="color: #667eea; font-size: 1.5rem; margin-bottom: 1rem;">This Is Where Choose90 Begins</h3>
+                <p><strong>Choose90 is a personal commitment:</strong></p>
+                <div class="quote-box" style="margin: 1rem 0;">
+                    "I will make 90% of my posts, comments, and shares positive and uplifting."
+                </div>
+                <p>Not because you're naive. Not because you're ignoring problems. But because <strong>you refuse to let
+                        the algorithms use you as a weapon of negativity.</strong></p>
+                <p style="margin-top: 1rem;"><strong>The 10% is for being human.</strong> Bad days happen. Frustration
+                    is real. <strong>That's okay. You're allowed to be real.</strong></p>
+                <p>But when 90% of what you put into the world is positive, hopeful, and life-giving? <strong>You become
+                        the antidote to the poison.</strong></p>
+            </div>
+
+            <h3 style="color: #764ba2; font-size: 1.5rem; margin: 2rem 0 1rem;">Your First Mission: Declare It. Share
+                It. Invite Others.</h3>
+
+            <p>Before Day 1, <strong>take 15 minutes to do this:</strong></p>
+
+            <h4 style="color: #333; margin-top: 1.5rem;">1. Post Your Commitment Publicly</h4>
+            <p>Share on social media, text a group chat, or send an email. Here's a template:</p>
+
+            <div class="quote-box">
+                "I'm joining the Choose90 movement. I'm committing to make 90% of my posts, comments, and shares
+                positive and uplifting—because I believe there is good in ALL of us, and it's time we started acting
+                like it. I'm tired of the 90%+ negative media cycle. I'm choosing to be part of the solution.
+                <strong>And I'm inviting you to join me.</strong> Learn more: Choose90.org"
+            </div>
+
+            <h4 style="color: #333; margin-top: 1.5rem;">2. Have the Conversation</h4>
+            <p>Call someone you care about. Don't text—<strong>call.</strong> Or better yet, sit down face-to-face.</p>
+
+            <h4 style="color: #333; margin-top: 1.5rem;">3. Create Accountability</h4>
+            <p>Ask 2-3 people to join you on this 7-day journey. Check in daily. <strong>Do this together.</strong></p>
+        </div>
+    </section>
+
+    <!-- Main Content: 7 Days -->
+    <section class="detox-content">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 3rem;" class="fade-in">
+                <h2 style="color: #667eea; font-size: 2.5rem; font-family: 'Outfit', sans-serif;">The 7-Day Plan</h2>
+                <p style="font-size: 1.1rem; color: #555;">This isn't about perfection. This is about intentional
+                    consumption and becoming the 90% positive force the world needs.</p>
+            </div>
+
+            <!-- Day 1 -->
+            <div class="day-section fade-in" id="day1" data-day="1">
+                <h2>Day 1: Awareness – Take Inventory</h2>
+                <p class="goal">Goal: Understand what you're consuming and how it's affecting you.</p>
+
+                <h3>Morning Action (10 minutes):</h3>
+                <p><strong>Audit your media diet:</strong></p>
+                <ul>
+                    <li>Check your phone's Screen Time (iOS) or Digital Wellbeing (Android)</li>
+                    <li>Write down: Total hours, Top 3 apps, Top 3 websites</li>
+                    <li>Ask: How much was negative vs. positive?</li>
+                    <li>How did I feel after consuming it?</li>
+                </ul>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>Notice your triggers.</strong> When do you reach for your phone? Track the negativity ratio.
+                    You'll likely find it's <strong>90%+ negative. That's the algorithm.</strong></p>
+
+                <h3>Evening Reflection (5 minutes):</h3>
+                <ul>
+                    <li>What surprised me about my media consumption today?</li>
+                    <li>How much negativity am I consuming without realizing it?</li>
+                    <li>What do I want to feel MORE of? LESS of?</li>
+                </ul>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="day-section fade-in" data-day="2">
+                <h2>Day 2: Boundaries – Declutter Your Digital Space</h2>
+                <p class="goal">Goal: Remove the 90%+ negative sources and create intentional barriers.</p>
+
+                <h3>Morning Action (20 minutes):</h3>
+                <ul>
+                    <li><strong>Delete or hide toxic apps:</strong> Remove apps that feed you negativity</li>
+                    <li><strong>Unfollow/Mute aggressively:</strong> Unfollow accounts that spark negativity,
+                        comparison, outrage</li>
+                    <li><strong>Turn off non-essential notifications:</strong> Keep ONLY calls, texts, calendar</li>
+                </ul>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>Create phone-free zones:</strong> Dining table, bedroom, bathroom. Use a physical alarm
+                    clock.</p>
+
+                <h3>Evening Reflection:</h3>
+                <p>How does my phone feel different? What was hardest to delete or unfollow?</p>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="day-section fade-in" data-day="3">
+                <h2>Day 3: Replacement – Fill the Void with Intention</h2>
+                <p class="goal">Goal: Replace mindless scrolling with meaningful activities.</p>
+
+                <h3>Morning Action (5 minutes):</h3>
+                <p>Create an <strong>"Instead of Scrolling, I Will..."</strong> list:</p>
+                <ul>
+                    <li>Read 10 pages of a book</li>
+                    <li>Take a 5-minute walk</li>
+                    <li>Text a friend something encouraging</li>
+                    <li>Sketch, journal, pray, or meditate</li>
+                    <li>Do 10 push-ups or stretches</li>
+                </ul>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>The 5-Minute Rule:</strong> When you feel the urge to scroll, do ONE thing from your list for
+                    5 minutes. Most cravings pass.</p>
+                <p><strong>Batch your media time:</strong> Check social media ONLY during designated windows (12 PM, 6
+                    PM).</p>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="day-section fade-in" data-day="4">
+                <h2>Day 4: Connection – Prioritize Real Relationships</h2>
+                <p class="goal">Goal: Shift from passive consumption to active connection.</p>
+
+                <h3>Morning Action (10 minutes):</h3>
+                <p><strong>Reach out to 3 people:</strong></p>
+                <ul>
+                    <li>Call a friend. Don't text—actually talk.</li>
+                    <li>Write a handwritten note or meaningful email</li>
+                    <li>Plan an in-person coffee, walk, or meal</li>
+                </ul>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>Be fully present:</strong> Put your phone face-down during meals and conversations.</p>
+                <p><strong>Practice Choose90 in communication:</strong> Make 90% of what you say positive and
+                    encouraging.</p>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="day-section fade-in" data-day="5">
+                <h2>Day 5: Consumption & Contribution – The 90/10 Filter</h2>
+                <p class="goal">Goal: Be intentional about what you consume AND what you contribute.</p>
+
+                <h3>Morning Action (15 minutes):</h3>
+                <p><strong>Part 1: Audit your media sources</strong></p>
+                <p>What podcasts, YouTube channels, newsletters do you consume? Do they uplift or drag you down?</p>
+
+                <p><strong>Part 2: Audit your own output</strong></p>
+                <p>Scroll through your last 20 posts/comments. Count: Positive vs. Negative. What's your ratio?</p>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>Apply Choose90 to consumption:</strong> Aim for 90% uplifting content.</p>
+                <p><strong>Apply Choose90 to YOUR output:</strong> Before posting, ask: Is this positive and uplifting?
+                </p>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="day-section fade-in" data-day="6">
+                <h2>Day 6: Rest – Establish Tech-Free Rituals</h2>
+                <p class="goal">Goal: Build daily rhythms that protect your mental and emotional space.</p>
+
+                <h3>Morning Action (5 minutes):</h3>
+                <p><strong>Create a morning ritual WITHOUT your phone:</strong> Wait at least 30 minutes after waking
+                    before checking your phone. Start with prayer, journaling, stretching, or a short walk.</p>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>Establish a "digital sunset":</strong> Set a time (8 PM) when you stop consuming media. Use
+                    evening for reading, family time, hobbies, rest.</p>
+
+                <div class="quote-box">
+                    <strong>Pro Tip:</strong> Charge your phone OUTSIDE your bedroom. This transforms sleep quality and
+                    morning peace.
+                </div>
+            </div>
+
+            <!-- Day 7 -->
+            <div class="day-section fade-in" data-day="7">
+                <h2>Day 7: Commitment – Lock in Your Reset</h2>
+                <p class="goal">Goal: Turn this 7-day detox into sustainable, life-changing habits.</p>
+
+                <h3>Morning Action (15 minutes):</h3>
+                <p><strong>Review your week:</strong> Revisit Day 1 reflections. What's changed? What habits do you want
+                    to keep?</p>
+
+                <h3>Throughout the Day:</h3>
+                <p><strong>Write your Choose90 Media Manifesto.</strong> Your personal commitment statement.</p>
+
+                <div class="quote-box">
+                    "I commit to making 90% of my posts positive and uplifting—because I believe there is good in all of
+                    us. I will protect my attention from the 90%+ negative media cycle. I will give myself grace for the
+                    10%. I will not be a weapon of the algorithm. I will be a force for hope. I choose 90."
+                </div>
+
+                <h3>Evening Reflection:</h3>
+                <ul>
+                    <li>What are 3 non-negotiable boundaries I'm setting?</li>
+                    <li>How will I stay accountable?</li>
+                    <li>What's one thing I'll do differently tomorrow?</li>
+                </ul>
+            </div>
+
+            <!-- Maintenance Plan -->
+            <div class="commitment-statement fade-in">
+                <h3>Bonus: Maintenance Plan – Staying Reset</h3>
+                <p><strong>Daily Habits:</strong></p>
+                <p>✅ Morning: 30-minute phone delay<br>
+                    ✅ Throughout the day: Apply 90/10 filter<br>
+                    ✅ Evening: Digital sunset 1 hour before bed</p>
+
+                <p style="margin-top: 1.5rem;"><strong>Weekly Check-In:</strong> Review screen time. Am I aligned with
+                    Choose90?</p>
+                <p><strong>Monthly Detox Day:</strong> 24 hours minimal screen time. Reconnect with nature, people,
+                    yourself.</p>
+                <p><strong>Community:</strong> Join Choose90 forum or local chapter. Do this together. Forever.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Thoughts -->
+    <section class="final-thoughts">
+        <div class="container">
+            <h2>Final Thoughts</h2>
+            <p>This guide isn't about becoming a digital hermit. <strong>It's about choosing intentionality over
+                    autopilot.</strong></p>
+            <p>There is good in ALL of us—but we've been fed 90%+ negativity for so long that we've forgotten.</p>
+            <p><strong>You're not giving up technology. You're taking back control.</strong></p>
+            <p style="font-size: 1.4rem; margin-top: 2rem; color: #ffd700;"><strong>Choose 90. Reset your media. Reclaim
+                    your life.</strong></p>
+        </div>
+    </section>
+
+    <!-- Resources -->
+    <section class="resources-section">
+        <div class="container">
+            <h2>Resources & Support</h2>
+            <div class="resource-links">
+                <div class="resource-card">
+                    <h3>📥 Download Guide</h3>
+                    <p><a href="/resources/Choose90-Digital-Detox-Guide.pdf" download>Get the PDF version</a></p>
+                </div>
+                <div class="resource-card">
+                    <h3>🤝 Join Community</h3>
+                    <p><a href="/chapters/">Find your local chapter</a></p>
+                </div>
+                <div class="resource-card">
+                    <h3>📢 Share Journey</h3>
+                    <p>#Choose90Reset<br>#Choose90Movement</p>
+                </div>
+                <div class="resource-card">
+                    <h3>💬 Get Support</h3>
+                    <p><a href="/pledge/">Take the Pledge</a></p>
+                </div>
+            </div>
+
+            <p style="margin-top: 3rem; color: #666;">Version 1.0 | Choose90.org | © 2025</p>
+            <p style="color: #667eea; font-weight: 600;">There is good in all of us. Let's choose to show it.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col" style="flex: 2;">
+                    <a href="index.html" class="logo"
+                        style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                    <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
+                        focusing on the good.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="/chapters/">Chapters</a></li>
+                        <li><a href="/resources/">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Action</h4>
+                    <ul>
+                        <li><a href="/pledge/">Take the Pledge</a></li>
+                        <li><a href="/donate/">Donate</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="privacy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Day Tracker - Load from localStorage
+        const dayBadges = document.querySelectorAll('.day-badge');
+        const completedDays = JSON.parse(localStorage.getItem('choose90-completed-days') || '[]');
+
+        completedDays.forEach(day => {
+            const badge = document.querySelector(`.day-badge[data-day="${day}"]`);
+            if (badge) badge.classList.add('completed');
+        });
+
+        dayBadges.forEach(badge => {
+            badge.addEventListener('click', () => {
+                const day = badge.dataset.day;
+                badge.classList.toggle('completed');
+
+                // Update localStorage
+                let completed = JSON.parse(localStorage.getItem('choose90-completed-days') || '[]');
+                if (badge.classList.contains('completed')) {
+                    if (!completed.includes(day)) completed.push(day);
+                } else {
+                    completed = completed.filter(d => d !== day);
+                }
+                localStorage.setItem('choose90-completed-days', JSON.stringify(completed));
+
+                // Scroll to day section
+                const daySection = document.querySelector(`.day-section[data-day="${day}"]`);
+                if (daySection) {
+                    daySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Highlight active day section
+        const daySections = document.querySelectorAll('.day-section');
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const day = entry.target.dataset.day;
+                    dayBadges.forEach(b => b.classList.remove('active'));
+                    const activeBadge = document.querySelector(`.day-badge[data-day="${day}"]`);
+                    if (activeBadge) activeBadge.classList.add('active');
+                }
+            });
+        }, { threshold: 0.5 });
+
+        daySections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+    </script>
+</body>
+
+</html>

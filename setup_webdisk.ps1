@@ -18,7 +18,8 @@ if ($service) {
         Start-Service -Name "WebClient"
     }
     Write-Host "WebClient Service is Ready."
-} else {
+}
+else {
     Write-Error "WebClient service not found on this machine."
     exit 1
 }

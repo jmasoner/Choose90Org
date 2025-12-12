@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Detox Guide: 7-Day Media Reset | Choose90</title>
+    <meta name="description" content="A 7-day plan to reset your media consumption, reclaim your attention, and choose to be 90% positive. Free guide from Choose90.org">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Link to your main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Additional styles specific to the detox guide page */
+        .detox-hero {
+            background: linear-gradient(135deg, #0066CC 0%, #004C99 100%);
+            color: white;
+            padding: 6rem 0 4rem;
+            margin-top: var(--header-height);
+            text-align: center;
+        }
+        
+        .detox-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            background: none;
+            -webkit-text-fill-color: white;
+        }
+        
+        .detox-hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #E8B93E;
+        }
+        
+        .detox-hero .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .download-cta {
+            margin: 2rem 0;
+        }
+        
+        .download-cta .btn {
+            margin: 0 0.5rem;
+        }
+        
+        .detox-content {
+            background: white;
+            padding: 4rem 0;
+        }
+        
+        .day-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            border-left: 5px solid #0066CC;
+        }
+        
+        .day-section h2 {
+            color: #0066CC;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .day-section .goal {
+            color: #E8B93E;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .day-section h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .day-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .day-section ul li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+        
+        .day-section ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0066CC;
+            font-weight: bold;
+        }
+        
+        .quote-box {
+            background: rgba(0, 102, 204, 0.1);
+            border-left: 4px solid #0066CC;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #0066CC;
+            font-size: 1.1rem;
+        }
+        
+        .intro-section {
+            background: white;
+            padding: 4rem 0;
+            border-bottom: 2px solid #E8B93E;
+        }
+        
+        .intro-section h2 {
+            color: #0066CC;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .intro-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        
+        .intro-section strong {
+            color: #0066CC;
+        }
+        
+        .mission-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid #0066CC;
+        }
+        
+        .commitment-statement {
+            background: #0066CC;
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .commitment-statement h3 {
+            color: #E8B93E;
+            margin-bottom: 1rem;
+        }
+        
+        .final-thoughts {
+            background: linear-gradient(135deg, #0066CC 0%, #004C99 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .final-thoughts h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .final-thoughts p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 1rem auto;
+        }
+        
+        .resources-section {
+            background: #f9fafb;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .resources-section h2 {
+            color: #0066CC;
+            margin-bottom: 2rem;
+        }
+        
+        .resource-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .resource-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .resource-card h3 {
+            color: #0066CC;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .detox-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .detox-hero .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .day-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation (use your existing header) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="logo">Choose<span>90</span>.</a>
+            <div class="mobile-menu-btn">☰</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/resources/" class="active">Resources</a></li>
+                    <li><a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
+                    <li><a href="/donate/" class="btn btn-starfield" style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="detox-hero">
+        <div class="container">
+            <h1>Digital Detox Guide</h1>
+            <p class="subtitle">7-Day Media Reset Plan</p>
+            <p class="tagline">Reclaim your attention. Reset your habits. Choose to be 90% positive.</p>
+            
+            <div class="download-cta">
+                <a href="/path-to-pdf/Choose90-Digital-Detox-Guide.pdf" class="btn btn-primary" download>📥 Download PDF Guide</a>
+                <a href="#day1" class="btn btn-outline" style="background: rgba(255,255,255,0.2); color: white; border-color: white;">📖 Read Online</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction: Before You Begin -->
+    <section class="intro-section">
+        <div class="container">
+            <h2>Before You Begin: The Most Important Step</h2>
+            
+            <h3 style="color: #E8B93E; font-size: 1.8rem; margin: 2rem 0 1rem;">Tell the World. Invite Humanity.</h3>
+            
+            <p>Before you audit your screen time. Before you delete a single app. Before you take your first step toward a healthier media diet—<strong>there is one thing that matters most:</strong></p>
+            
+            <div class="quote-box">
+                <strong>Tell the people you love that you're choosing 90.</strong>
+            </div>
+            
+            <p>This isn't just about you. It never was. <strong>This is about all of us.</strong> Every single human being. Because here's the truth that the algorithms don't want you to know:</p>
+            
+            <div class="quote-box">
+                <strong>There is good in ALL of us.</strong> Every person. No exceptions.
+            </div>
+            
+            <p>But <strong>90%+ of what we're fed—the news, the clickbait, the outrage cycles—is negative, divisive, and designed to make us forget that truth.</strong></p>
+            
+            <h3 style="color: #0066CC; font-size: 1.5rem; margin: 2rem 0 1rem;">The Real Problem Isn't People. It's What We're Consuming.</h3>
+            
+            <p>The media landscape is poisoned. Not by accident, but by design.</p>
+            
+            <ul style="margin: 1.5rem 0;">
+                <li><strong>90%+ of news is negative</strong> because fear and outrage sell.</li>
+                <li><strong>90%+ of clickbait is false or twisted</strong> because truth doesn't generate clicks.</li>
+                <li><strong>90%+ of social media algorithms</strong> push division because engagement equals profit.</li>
+            </ul>
+            
+            <div class="mission-box">
+                <h3 style="color: #0066CC; font-size: 1.5rem; margin-bottom: 1rem;">This Is Where Choose90 Begins</h3>
+                <p><strong>Choose90 is a personal commitment:</strong></p>
+                <div class="quote-box" style="margin: 1rem 0;">
+                    "I will make 90% of my posts, comments, and shares positive and uplifting."
+                </div>
+                <p>Not because you're naive. Not because you're ignoring problems. But because <strong>you refuse to let the algorithms use you as a weapon of negativity.</strong></p>
+                <p style="margin-top: 1rem;"><strong>The 10% is for being human.</strong> Bad days happen. Frustration is real. <strong>That's okay. You're allowed to be real.</strong></p>
+                <p>But when 90% of what you put into the world is positive, hopeful, and life-giving? <strong>You become the antidote to the poison.</strong></p>
+            </div>
+            
+            <h3 style="color: #E8B93E; font-size: 1.5rem; margin: 2rem 0 1rem;">Your First Mission: Declare It. Share It. Invite Others.</h3>
+            
+            <p>Before Day 1, <strong>take 15 minutes to do this:</strong></p>
+            
+            <h4 style="color: #333; margin-top: 1.5rem;">1. Post Your Commitment Publicly</h4>
+            <p>Share on social media, text a group chat, or send an email. Here's a template:</p>
+            
+            <div class="quote-box">
+                "I'm joining the Choose90 movement. I'm committing to make 90% of my posts, comments, and shares positive and uplifting—because I believe there is good in ALL of us, and it's time we started acting like it. I'm tired of the 90%+ negative media cycle. I'm choosing to be part of the solution. <strong>And I'm inviting you to join me.</strong> Learn more: Choose90.org"
+            </div>
+            
+            <h4 style="color: #333; margin-top: 1.5rem;">2. Have the Conversation</h4>
+            <p>Call someone you care about. Don't text—<strong>call.</strong> Or better yet, sit down face-to-face.</p>
+            
+            <h4 style="color: #333; margin-top: 1.5rem;">3. Create Accountability</h4>
+            <p>Ask 2-3 people to join you on this 7-day journey. Check in daily. <strong>Do this together.</strong></p>
+        </div>
+    </section>
+
+    <!-- Main Content: 7 Days -->
+    <section class="detox-content">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="color: #0066CC; font-size: 2.5rem;">The 7-Day Plan</h2>
+                <p style="font-size: 1.1rem; color: #555;">This isn't about perfection. This is about intentional consumption and becoming the 90% positive force the world needs.</p>
+            </div>
+
+            <!-- Day 1 -->
+            <div class="day-section" id="day1">
+                <h2>Day 1: Awareness – Take Inventory</h2>
+                <p class="goal">Goal: Understand what you're consuming and how it's affecting you.</p>
+                
+                <h3>Morning Action (10 minutes):</h3>
+                <p><strong>Audit your media diet:</strong></p>
+                <ul>
+                    <li>Check your phone's Screen Time (iOS) or Digital Wellbeing (Android)</li>
+                    <li>Write down: Total hours, Top 3 apps, Top 3 websites</li>
+                    <li>Ask: How much was negative vs. positive?</li>
+                    <li>How did I feel after consuming it?</li>
+                </ul>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>Notice your triggers.</strong> When do you reach for your phone? Track the negativity ratio. You'll likely find it's <strong>90%+ negative. That's the algorithm.</strong></p>
+                
+                <h3>Evening Reflection (5 minutes):</h3>
+                <ul>
+                    <li>What surprised me about my media consumption today?</li>
+                    <li>How much negativity am I consuming without realizing it?</li>
+                    <li>What do I want to feel MORE of? LESS of?</li>
+                </ul>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="day-section">
+                <h2>Day 2: Boundaries – Declutter Your Digital Space</h2>
+                <p class="goal">Goal: Remove the 90%+ negative sources and create intentional barriers.</p>
+                
+                <h3>Morning Action (20 minutes):</h3>
+                <ul>
+                    <li><strong>Delete or hide toxic apps:</strong> Remove apps that feed you negativity</li>
+                    <li><strong>Unfollow/Mute aggressively:</strong> Unfollow accounts that spark negativity, comparison, outrage</li>
+                    <li><strong>Turn off non-essential notifications:</strong> Keep ONLY calls, texts, calendar</li>
+                </ul>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>Create phone-free zones:</strong> Dining table, bedroom, bathroom. Use a physical alarm clock.</p>
+                
+                <h3>Evening Reflection:</h3>
+                <p>How does my phone feel different? What was hardest to delete or unfollow?</p>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="day-section">
+                <h2>Day 3: Replacement – Fill the Void with Intention</h2>
+                <p class="goal">Goal: Replace mindless scrolling with meaningful activities.</p>
+                
+                <h3>Morning Action (5 minutes):</h3>
+                <p>Create an <strong>"Instead of Scrolling, I Will..."</strong> list:</p>
+                <ul>
+                    <li>Read 10 pages of a book</li>
+                    <li>Take a 5-minute walk</li>
+                    <li>Text a friend something encouraging</li>
+                    <li>Sketch, journal, pray, or meditate</li>
+                    <li>Do 10 push-ups or stretches</li>
+                </ul>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>The 5-Minute Rule:</strong> When you feel the urge to scroll, do ONE thing from your list for 5 minutes. Most cravings pass.</p>
+                <p><strong>Batch your media time:</strong> Check social media ONLY during designated windows (12 PM, 6 PM).</p>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="day-section">
+                <h2>Day 4: Connection – Prioritize Real Relationships</h2>
+                <p class="goal">Goal: Shift from passive consumption to active connection.</p>
+                
+                <h3>Morning Action (10 minutes):</h3>
+                <p><strong>Reach out to 3 people:</strong></p>
+                <ul>
+                    <li>Call a friend. Don't text—actually talk.</li>
+                    <li>Write a handwritten note or meaningful email</li>
+                    <li>Plan an in-person coffee, walk, or meal</li>
+                </ul>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>Be fully present:</strong> Put your phone face-down during meals and conversations.</p>
+                <p><strong>Practice Choose90 in communication:</strong> Make 90% of what you say positive and encouraging.</p>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="day-section">
+                <h2>Day 5: Consumption & Contribution – The 90/10 Filter</h2>
+                <p class="goal">Goal: Be intentional about what you consume AND what you contribute.</p>
+                
+                <h3>Morning Action (15 minutes):</h3>
+                <p><strong>Part 1: Audit your media sources</strong></p>
+                <p>What podcasts, YouTube channels, newsletters do you consume? Do they uplift or drag you down?</p>
+                
+                <p><strong>Part 2: Audit your own output</strong></p>
+                <p>Scroll through your last 20 posts/comments. Count: Positive vs. Negative. What's your ratio?</p>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>Apply Choose90 to consumption:</strong> Aim for 90% uplifting content.</p>
+                <p><strong>Apply Choose90 to YOUR output:</strong> Before posting, ask: Is this positive and uplifting?</p>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="day-section">
+                <h2>Day 6: Rest – Establish Tech-Free Rituals</h2>
+                <p class="goal">Goal: Build daily rhythms that protect your mental and emotional space.</p>
+                
+                <h3>Morning Action (5 minutes):</h3>
+                <p><strong>Create a morning ritual WITHOUT your phone:</strong> Wait at least 30 minutes after waking before checking your phone. Start with prayer, journaling, stretching, or a short walk.</p>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>Establish a "digital sunset":</strong> Set a time (8 PM) when you stop consuming media. Use evening for reading, family time, hobbies, rest.</p>
+                
+                <div class="quote-box">
+                    <strong>Pro Tip:</strong> Charge your phone OUTSIDE your bedroom. This transforms sleep quality and morning peace.
+                </div>
+            </div>
+
+            <!-- Day 7 -->
+            <div class="day-section">
+                <h2>Day 7: Commitment – Lock in Your Reset</h2>
+                <p class="goal">Goal: Turn this 7-day detox into sustainable, life-changing habits.</p>
+                
+                <h3>Morning Action (15 minutes):</h3>
+                <p><strong>Review your week:</strong> Revisit Day 1 reflections. What's changed? What habits do you want to keep?</p>
+                
+                <h3>Throughout the Day:</h3>
+                <p><strong>Write your Choose90 Media Manifesto.</strong> Your personal commitment statement.</p>
+                
+                <div class="quote-box">
+                    "I commit to making 90% of my posts positive and uplifting—because I believe there is good in all of us. I will protect my attention from the 90%+ negative media cycle. I will give myself grace for the 10%. I will not be a weapon of the algorithm. I will be a force for hope. I choose 90."
+                </div>
+                
+                <h3>Evening Reflection:</h3>
+                <ul>
+                    <li>What are 3 non-negotiable boundaries I'm setting?</li>
+                    <li>How will I stay accountable?</li>
+                    <li>What's one thing I'll do differently tomorrow?</li>
+                </ul>
+            </div>
+
+            <!-- Maintenance Plan -->
+            <div class="commitment-statement">
+                <h3>Bonus: Maintenance Plan – Staying Reset</h3>
+                <p><strong>Daily Habits:</strong></p>
+                <p>✅ Morning: 30-minute phone delay<br>
+                ✅ Throughout the day: Apply 90/10 filter<br>
+                ✅ Evening: Digital sunset 1 hour before bed</p>
+                
+                <p style="margin-top: 1.5rem;"><strong>Weekly Check-In:</strong> Review screen time. Am I aligned with Choose90?</p>
+                <p><strong>Monthly Detox Day:</strong> 24 hours minimal screen time. Reconnect with nature, people, yourself.</p>
+                <p><strong>Community:</strong> Join Choose90 forum or local chapter. Do this together. Forever.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Thoughts -->
+    <section class="final-thoughts">
+        <div class="container">
+            <h2>Final Thoughts</h2>
+            <p>This guide isn't about becoming a digital hermit. <strong>It's about choosing intentionality over autopilot.</strong></p>
+            <p>There is good in ALL of us—but we've been fed 90%+ negativity for so long that we've forgotten.</p>
+            <p><strong>You're not giving up technology. You're taking back control.</strong></p>
+            <p style="font-size: 1.4rem; margin-top: 2rem; color: #E8B93E;"><strong>Choose 90. Reset your media. Reclaim your life.</strong></p>
+        </div>
+    </section>
+
+    <!-- Resources -->
+    <section class="resources-section">
+        <div class="container">
+            <h2>Resources & Support</h2>
+            <div class="resource-links">
+                <div class="resource-card">
+                    <h3>📥 Download Guide</h3>
+                    <p><a href="/path-to-pdf/Choose90-Digital-Detox-Guide.pdf" download>Get the PDF version</a></p>
+                </div>
+                <div class="resource-card">
+                    <h3>🤝 Join Community</h3>
+                    <p><a href="/chapters/">Find your local chapter</a></p>
+                </div>
+                <div class="resource-card">
+                    <h3>📢 Share Journey</h3>
+                    <p>#Choose90Reset<br>#Choose90Movement</p>
+                </div>
+                <div class="resource-card">
+                    <h3>💬 Get Support</h3>
+                    <p><a href="/cdn-cgi/l/email-protection#196a6c6969766b6d597a7176766a7c202937766b7e"><span class="__cf_email__" data-cfemail="5a292f2a2a35282e1a39323535293f636a7435283d">[email&#160;protected]</span></a></p>
+                </div>
+            </div>
+            
+            <p style="margin-top: 3rem; color: #666;">Version 1.0 | Choose90.org | © 2025</p>
+            <p style="color: #0066CC; font-weight: 600;">There is good in all of us. Let's choose to show it.</p>
+        </div>
+    </section>
+
+    <!-- Footer (use your existing footer) -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col" style="flex: 2;">
+                    <a href="#" class="logo" style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                    <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by focusing on the good.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="/chapters/">Chapters</a></li>
+                        <li><a href="/resources/">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Action</h4>
+                    <ul>
+                        <li><a href="/pledge/">Take the Pledge</a></li>
+                        <li><a href="/donate/">Donate</a></li>
+                        <li><a href="support.html">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="privacy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
+</body>
+</html>
