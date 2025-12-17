@@ -36,7 +36,7 @@ $StyleContent | Set-Content (Join-Path $ThemePath "style.css")
 
 # 2. Update functions.php (Unchanged)
 Write-Host "Updating functions.php..."
-$FunctionsContent = @"
+$FunctionsContent = @'
 <?php
 function choose90_enqueue_styles() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
@@ -45,8 +45,93 @@ function choose90_enqueue_styles() {
     wp_enqueue_style( 'choose90-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap', array(), null );
 }
 add_action( 'wp_enqueue_scripts', 'choose90_enqueue_styles' );
+
+// --- REGISTER CHAPTERS CPT ---
+function choose90_register_chapters() {
+    $labels = array(
+        'name'               => 'Chapters',
+        'singular_name'      => 'Chapter',
+        'add_new'            => 'Add New Chapter',
+        'add_new_item'       => 'Add New Chapter',
+        'edit_item'          => 'Edit Chapter',
+        'new_item'           => 'New Chapter',
+        'all_items'          => 'All Chapters',
+        'view_item'          => 'View Chapter',
+        'search_items'       => 'Search Chapters',
+        'not_found'          => 'No chapters found',
+        'not_found_in_trash' => 'No chapters found in Trash',
+        'menu_name'          => 'Chapters'
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array( 'slug' => 'chapter' ),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 5,
+        'menu_icon'          => 'dashicons-groups',
+        'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields' )
+    );
+
+    register_post_type( 'chapter', $args );
+    
+    // FLUSH RULES for Permalinks (Fixes 404s)
+    flush_rewrite_rules();
+}
+add_action( 'init', 'choose90_register_chapters' );
+
+// --- REGISTER REGION TAXONOMY ---
+function choose90_register_region_taxonomy() {
+    $labels = array(
+        'name'              => 'Regions',
+        'singular_name'     => 'Region',
+        'search_items'      => 'Search Regions',
+        'all_items'         => 'All Regions',
+        'parent_item'       => 'Parent Region',
+        'parent_item_colon' => 'Parent Region:',
+        'edit_item'         => 'Edit Region',
+        'update_item'       => 'Update Region',
+        'add_new_item'      => 'Add New Region',
+        'new_item_name'     => 'New Region Name',
+        'menu_name'         => 'Region',
+    );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'region' ),
+    );
+
+    register_taxonomy( 'chapter_region', array( 'chapter' ), $args );
+}
+add_action( 'init', 'choose90_register_region_taxonomy' );
+// --- ENSURE HOST KIT PAGE EXISTS ---
+function choose90_ensure_pages_exist() {
+    // Check if Host Starter Kit page exists
+    if (!get_page_by_path('host-starter-kit')) {
+        $page_id = wp_insert_post(array(
+            'post_title'    => 'Host Starter Kit',
+            'post_name'     => 'host-starter-kit',
+            'post_status'   => 'publish',
+            'post_type'     => 'page',
+        ));
+        if ($page_id && !is_wp_error($page_id)) {
+            update_post_meta($page_id, '_wp_page_template', 'page-host-starter-kit.php');
+        }
+    }
+}
+add_action('init', 'choose90_ensure_pages_exist');
 ?>
-"@
+'@
 $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")
 
 # 3. Header/Footer/Templates (Unchanged - Keeping content)
@@ -137,6 +222,36 @@ if (Test-Path $ResourcesTemplateSource) {
 }
 else {
     Write-Warning "page-resources.php not found in project root. Skipping."
+}
+
+# 5. Deploy Chapters Templates
+Write-Host "Updating Chapters templates..."
+$ChaptersTemplateSource = Join-Path $PSScriptRoot "hybrid_site\page-chapters.php"
+$SingleChapterTemplateSource = Join-Path $PSScriptRoot "hybrid_site\single-chapter.php"
+
+if (Test-Path $ChaptersTemplateSource) {
+    Copy-Item -Path $ChaptersTemplateSource -Destination (Join-Path $ThemePath "page-chapters.php") -Force
+    Write-Host "page-chapters.php deployed to theme." -ForegroundColor Green
+}
+else {
+    Write-Warning "page-chapters.php not found in hybrid_site. Skipping."
+}
+
+if (Test-Path $SingleChapterTemplateSource) {
+    Copy-Item -Path $SingleChapterTemplateSource -Destination (Join-Path $ThemePath "single-chapter.php") -Force
+    Write-Host "single-chapter.php deployed to theme." -ForegroundColor Green
+}
+else {
+    Write-Warning "single-chapter.php not found in hybrid_site. Skipping."
+}
+
+$HostKitTemplateSource = Join-Path $PSScriptRoot "hybrid_site\page-host-starter-kit.php"
+if (Test-Path $HostKitTemplateSource) {
+    Copy-Item -Path $HostKitTemplateSource -Destination (Join-Path $ThemePath "page-host-starter-kit.php") -Force
+    Write-Host "page-host-starter-kit.php deployed to theme." -ForegroundColor Green
+}
+else {
+    Write-Warning "page-host-starter-kit.php not found in hybrid_site. Skipping."
 }
 
 Write-Host "Success! Child Theme Styles Consolidated & Templates Updated."

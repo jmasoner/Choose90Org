@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support | Choose90</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Link to main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Animated Logo Styles -->
+    <style>
+        /* Choose90 Animated Logo Styles */
+        .logo-animated {
+            display: inline-flex;
+            align-items: center;
+            height: 50px;
+            width: auto;
+            text-decoration: none;
+        }
+
+        .logo-animated svg {
+            height: 50px;
+            width: auto;
+            display: block;
+        }
+
+        .figure-blue {
+            animation: slideInLeft 1.2s ease-out forwards;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        .figure-yellow {
+            animation: slideInRight 1.2s ease-out forwards;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        .figure-gray {
+            animation: fadeInScale 0.8s ease-out 1.2s forwards;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        .logo-text {
+            animation: fadeInUp 0.8s ease-out 2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                transform: translateX(-150px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            0% {
+                transform: translateX(150px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-animated:hover .figure-blue,
+        .logo-animated:hover .figure-yellow {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-animated {
+                height: 40px;
+            }
+
+            .logo-animated svg {
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container">
+            <!-- ANIMATED LOGO INTEGRATION -->
+            <a href="index.html" class="logo-animated">
+                <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" aria-labelledby="logoTitle" role="img">
+                    <title id="logoTitle">Choose90 Logo</title>
+                    <circle class="figure-blue" cx="30" cy="40" r="18" fill="#0066CC" />
+                    <circle class="figure-yellow" cx="80" cy="40" r="18" fill="#E8B93E" />
+                    <circle class="figure-gray" cx="55" cy="25" r="14" fill="#6B7280" />
+                    <text class="logo-text" x="110" y="50" font-family="'Outfit', sans-serif" font-size="32"
+                        font-weight="700" fill="#0066CC">CHOOSE</text>
+                    <text class="logo-text" x="235" y="50" font-family="'Outfit', sans-serif" font-size="32"
+                        font-weight="700" fill="#E8B93E">90</text>
+                </svg>
+            </a>
+
+            <div class="mobile-menu-btn">☰</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="/pledge/" class="btn btn-outline"
+                            style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
+                    <li><a href="/donate/" class="btn btn-starfield"
+                            style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Support Content -->
+    <div class="container" style="padding: 150px 0 100px; text-align: center; max-width: 800px;">
+        <h1 style="font-family: 'Outfit', sans-serif; font-size: 3rem; color: #0066CC; margin-bottom: 20px;">Contact
+            Support</h1>
+        <p style="font-size: 1.25rem; color: #555; margin-bottom: 50px;">
+            Whether you are looking to start a chapter, have questions about the pledge, or just want to say hello, we
+            are here to help.
+        </p>
+
+        <div style="background: #f9f9f9; padding: 40px; border-radius: 15px; border: 1px solid #eee;">
+            <p style="font-size: 1.5rem; margin-bottom: 20px;">📧 Email Us</p>
+            <p style="font-size: 1.1rem; color: #555;">For all inquiries, please email:</p>
+            <a href="mailto:john@choose90.org"
+                style="font-size: 1.5rem; color: #0066CC; font-weight: bold; text-decoration: none;">john@choose90.org</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col" style="flex: 2;">
+                    <a href="index.html" class="logo"
+                        style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                    <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
+                        focusing on the good.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="/chapters/">Chapters</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Action</h4>
+                    <ul>
+                        <li><a href="/pledge/">Take the Pledge</a></li>
+                        <li><a href="/donate/">Donate</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="privacy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
