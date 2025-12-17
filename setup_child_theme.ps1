@@ -128,6 +128,19 @@ function choose90_ensure_pages_exist() {
             update_post_meta($page_id, '_wp_page_template', 'page-host-starter-kit.php');
         }
     }
+
+    // Check if Resources page exists
+    if (!get_page_by_path('resources')) {
+        $res_page_id = wp_insert_post(array(
+            'post_title'    => 'Resources',
+            'post_name'     => 'resources',
+            'post_status'   => 'publish',
+            'post_type'     => 'page',
+        ));
+        if ($res_page_id && !is_wp_error($res_page_id)) {
+            update_post_meta($res_page_id, '_wp_page_template', 'page-resources.php');
+        }
+    }
 }
 add_action('init', 'choose90_ensure_pages_exist');
 ?>

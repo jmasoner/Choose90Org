@@ -154,6 +154,17 @@ get_header();
 
             <h4>4. Close & Next Steps (5-10 mins)</h4>
             <p>Thank everyone! Announce the next meeting date. End on a high note with a group high-five.</p>
+
+            <div class="agenda-download"
+                style="margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 30px;">
+                <h3 style="color: #0066CC; margin-bottom: 10px;">Need a Guide?</h3>
+                <p style="margin-bottom: 20px; color: #666;">Download our ready-to-use agenda with script prompts and
+                    timing.</p>
+                <a href="/assets/docs/choose90-meeting-agenda.html" target="_blank" class="btn btn-primary"
+                    style="display: inline-block; padding: 12px 25px; background: #0066CC; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    📄 Get the 60-Minute Agenda
+                </a>
+            </div>
         </div>
 
         <!-- Host Registration Form Section -->
