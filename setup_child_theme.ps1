@@ -143,6 +143,30 @@ function choose90_ensure_pages_exist() {
     }
 }
 add_action('init', 'choose90_ensure_pages_exist');
+
+// Include Choose90 custom functions
+// Note: Adjust paths based on your server structure
+// Option 1: If wp-functions files are in a parallel directory
+if (file_exists(get_stylesheet_directory() . '/../hybrid_site/wp-functions-pledge.php')) {
+    require_once get_stylesheet_directory() . '/../hybrid_site/wp-functions-pledge.php';
+}
+if (file_exists(get_stylesheet_directory() . '/../hybrid_site/wp-functions-personalization.php')) {
+    require_once get_stylesheet_directory() . '/../hybrid_site/wp-functions-personalization.php';
+}
+if (file_exists(get_stylesheet_directory() . '/../hybrid_site/wp-functions-chapters.php')) {
+    require_once get_stylesheet_directory() . '/../hybrid_site/wp-functions-chapters.php';
+}
+
+// Option 2: If copied to theme directory
+if (file_exists(get_stylesheet_directory() . '/wp-functions-pledge.php')) {
+    require_once get_stylesheet_directory() . '/wp-functions-pledge.php';
+}
+if (file_exists(get_stylesheet_directory() . '/wp-functions-personalization.php')) {
+    require_once get_stylesheet_directory() . '/wp-functions-personalization.php';
+}
+if (file_exists(get_stylesheet_directory() . '/wp-functions-chapters.php')) {
+    require_once get_stylesheet_directory() . '/wp-functions-chapters.php';
+}
 ?>
 '@
 $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")
@@ -265,6 +289,23 @@ if (Test-Path $HostKitTemplateSource) {
 }
 else {
     Write-Warning "page-host-starter-kit.php not found in hybrid_site. Skipping."
+}
+
+# 6. Deploy WordPress Functions Files (Optional - copy to theme if needed)
+Write-Host "Checking for WordPress functions files..."
+$WpFunctionsFiles = @(
+    "hybrid_site\wp-functions-pledge.php",
+    "hybrid_site\wp-functions-personalization.php",
+    "hybrid_site\wp-functions-chapters.php"
+)
+
+foreach ($file in $WpFunctionsFiles) {
+    $source = Join-Path $PSScriptRoot $file
+    if (Test-Path $source) {
+        $dest = Join-Path $ThemePath (Split-Path -Leaf $file)
+        Copy-Item -Path $source -Destination $dest -Force
+        Write-Host "Deployed $(Split-Path -Leaf $file) to theme." -ForegroundColor Green
+    }
 }
 
 Write-Host "Success! Child Theme Styles Consolidated & Templates Updated."

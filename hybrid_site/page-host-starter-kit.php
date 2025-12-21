@@ -24,8 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
             $submission_error = 'Please fill in all required fields.';
         } else {
             // 3. Create "Pending" Chapter Post
+            // Parse location for city/state if possible
+            $city = '';
+            $state = '';
+            if (preg_match('/(.+?)\s*,\s*([A-Z]{2}|[A-Za-z\s]+)$/', $host_location, $matches)) {
+                $city = trim($matches[1]);
+                $state = trim($matches[2]);
+                // Remove "Choose90" prefix if present
+                $city = preg_replace('/^Choose90\s*/i', '', $city);
+            } else {
+                // Try to extract from host_location
+                $city = preg_replace('/^Choose90\s*/i', '', $host_location);
+            }
+            
             $new_chapter_id = wp_insert_post(array(
-                'post_title' => wp_strip_all_tags($host_location), // e.g. "Austin, TX"
+                'post_title' => wp_strip_all_tags($host_location), // e.g. "Choose90 Austin" or "Austin, TX"
                 'post_type' => 'chapter',
                 'post_status' => 'draft', // Saved as Draft (Pending Review)
                 'post_content' => "Host Name: $host_name\nEmail: $host_email\nTarget Start Date: $host_date\n\n(This chapter is pending review. Publish to make it live.)",
@@ -33,8 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
 
             if ($new_chapter_id && !is_wp_error($new_chapter_id)) {
 
-                // Save meta fields if you created them, or just use content for now.
-                // update_post_meta($new_chapter_id, '_chapter_host_email', $host_email);
+                // Save meta fields
+                if ($city) {
+                    update_post_meta($new_chapter_id, '_chapter_city', sanitize_text_field($city));
+                }
+                if ($state) {
+                    update_post_meta($new_chapter_id, '_chapter_state', sanitize_text_field($state));
+                }
+                update_post_meta($new_chapter_id, '_chapter_leader_name', sanitize_text_field($host_name));
+                update_post_meta($new_chapter_id, '_chapter_leader_email', sanitize_email($host_email));
+                update_post_meta($new_chapter_id, '_chapter_status', 'pending'); // Set status to pending
 
                 $submission_success = true;
 

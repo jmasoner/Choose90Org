@@ -82,8 +82,88 @@ get_header();
     <!-- CHAPTER DIRECTORY (Grid) -->
     <div id="chapter-directory" class="container" style="padding: 50px 0; border-top: 1px solid #eee;">
 
-        <h2 class="section-title" style="text-align: center; margin-bottom: 40px; color: #333;">Active Community
+        <h2 class="section-title" style="text-align: center; margin-bottom: 30px; color: #333;">Active Community
             Chapters</h2>
+
+        <!-- Search and Filter Section -->
+        <div style="max-width: 800px; margin: 0 auto 40px; padding: 25px; background: #f9fafb; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; align-items: end;">
+                <!-- Search Box -->
+                <div>
+                    <label for="chapter-search" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">🔍 Search Chapters</label>
+                    <input type="text" id="chapter-search" placeholder="Search by city, name, or location..." 
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px;"
+                           onkeyup="filterChapters()">
+                </div>
+                
+                <!-- State Filter -->
+                <div>
+                    <label for="chapter-state-filter" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">📍 Filter by State</label>
+                    <select id="chapter-state-filter" onchange="filterChapters()"
+                            style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; cursor: pointer;">
+                        <option value="">All States</option>
+                        <?php
+                        // Get all unique states from published chapters
+                        $all_chapters = get_posts(array(
+                            'post_type' => 'chapter',
+                            'post_status' => 'publish',
+                            'posts_per_page' => -1,
+                            'meta_query' => array(
+                                array(
+                                    'key' => '_chapter_status',
+                                    'value' => 'active',
+                                    'compare' => '='
+                                )
+                            )
+                        ));
+                        
+                        $states = array();
+                        foreach ($all_chapters as $chapter) {
+                            $state = get_post_meta($chapter->ID, '_chapter_state', true);
+                            if ($state && !in_array($state, $states)) {
+                                $states[] = $state;
+                            }
+                        }
+                        sort($states);
+                        
+                        $us_states = array(
+                            'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas',
+                            'CA' => 'California', 'CO' => 'Colorado', 'CT' => 'Connecticut', 'DE' => 'Delaware',
+                            'FL' => 'Florida', 'GA' => 'Georgia', 'HI' => 'Hawaii', 'ID' => 'Idaho',
+                            'IL' => 'Illinois', 'IN' => 'Indiana', 'IA' => 'Iowa', 'KS' => 'Kansas',
+                            'KY' => 'Kentucky', 'LA' => 'Louisiana', 'ME' => 'Maine', 'MD' => 'Maryland',
+                            'MA' => 'Massachusetts', 'MI' => 'Michigan', 'MN' => 'Minnesota', 'MS' => 'Mississippi',
+                            'MO' => 'Missouri', 'MT' => 'Montana', 'NE' => 'Nebraska', 'NV' => 'Nevada',
+                            'NH' => 'New Hampshire', 'NJ' => 'New Jersey', 'NM' => 'New Mexico', 'NY' => 'New York',
+                            'NC' => 'North Carolina', 'ND' => 'North Dakota', 'OH' => 'Ohio', 'OK' => 'Oklahoma',
+                            'OR' => 'Oregon', 'PA' => 'Pennsylvania', 'RI' => 'Rhode Island', 'SC' => 'South Carolina',
+                            'SD' => 'South Dakota', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah',
+                            'VT' => 'Vermont', 'VA' => 'Virginia', 'WA' => 'Washington', 'WV' => 'West Virginia',
+                            'WI' => 'Wisconsin', 'WY' => 'Wyoming', 'DC' => 'District of Columbia'
+                        );
+                        
+                        foreach ($states as $state_code) {
+                            $state_name = isset($us_states[$state_code]) ? $us_states[$state_code] : $state_code;
+                            echo '<option value="' . esc_attr($state_code) . '">' . esc_html($state_name) . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Results Count -->
+            <div id="filter-results" style="margin-top: 15px; text-align: center; color: #666; font-size: 14px;">
+                <!-- Will be updated by JavaScript -->
+            </div>
+            
+            <!-- Clear Filters -->
+            <div style="text-align: center; margin-top: 15px;">
+                <button onclick="clearFilters()" 
+                        style="background: none; border: none; color: #0066CC; cursor: pointer; text-decoration: underline; font-size: 14px;">
+                    Clear Filters
+                </button>
+            </div>
+        </div>
 
         <?php
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -91,23 +171,62 @@ get_header();
             'post_type' => 'chapter',
             'posts_per_page' => 12,
             'paged' => $paged,
-            'post_status' => 'publish'
+            'post_status' => 'publish',
+            'meta_query' => array(
+                array(
+                    'key' => '_chapter_status',
+                    'value' => 'active',
+                    'compare' => '='
+                )
+            )
         );
         $chapters_query = new WP_Query($args);
 
         if ($chapters_query->have_posts()): ?>
 
-            <div class="chapters-grid"
+            <div id="chapters-grid" class="chapters-grid"
                 style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
                 <?php while ($chapters_query->have_posts()):
-                    $chapters_query->the_post(); ?>
+                    $chapters_query->the_post();
+                    $chapter_state = get_post_meta(get_the_ID(), '_chapter_state', true);
+                    $chapter_city = get_post_meta(get_the_ID(), '_chapter_city', true);
+                    $chapter_title = get_the_title();
+                    ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class('chapter-card'); ?>
-                        style="border: 1px solid #eee; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); background: white;">
+                        data-state="<?php echo esc_attr($chapter_state); ?>"
+                        data-city="<?php echo esc_attr(strtolower($chapter_city)); ?>"
+                        data-title="<?php echo esc_attr(strtolower($chapter_title)); ?>"
+                        style="border: 1px solid #eee; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); background: white; transition: transform 0.2s, box-shadow 0.2s;"
+                        onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.1)';"
+                        onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.05)';">
 
-                        <h2 class="entry-title" style="font-size: 1.5rem; margin-bottom: 15px;">
+                        <h2 class="entry-title" style="font-size: 1.5rem; margin-bottom: 10px; color: #0066CC;">
                             <a href="<?php the_permalink(); ?>"
-                                style="text-decoration: none; color: #333;"><?php the_title(); ?></a>
+                                style="text-decoration: none; color: #0066CC; font-weight: 700;"><?php the_title(); ?></a>
                         </h2>
+
+                        <?php
+                        // Get location info
+                        $city = get_post_meta(get_the_ID(), '_chapter_city', true);
+                        $state = get_post_meta(get_the_ID(), '_chapter_state', true);
+                        $meeting_pattern = get_post_meta(get_the_ID(), '_chapter_meeting_pattern', true);
+                        $location_name = get_post_meta(get_the_ID(), '_chapter_location_name', true);
+                        $member_count = get_post_meta(get_the_ID(), '_chapter_member_count', true);
+                        
+                        // Display location
+                        if ($city || $state) {
+                            echo '<p style="margin-bottom: 10px; color: #666; font-size: 0.9rem;">';
+                            echo '📍 ';
+                            if ($city && $state) {
+                                echo esc_html($city) . ', ' . esc_html($state);
+                            } elseif ($city) {
+                                echo esc_html($city);
+                            } elseif ($state) {
+                                echo esc_html($state);
+                            }
+                            echo '</p>';
+                        }
+                        ?>
 
                         <?php if (has_post_thumbnail()): ?>
                             <div class="chapter-image" style="margin-bottom: 15px;">
@@ -117,13 +236,39 @@ get_header();
                             </div>
                         <?php endif; ?>
 
-                        <div class="entry-content" style="font-size: 0.95rem; color: #666; margin-bottom: 20px;">
+                        <div class="entry-content" style="font-size: 0.95rem; color: #666; margin-bottom: 15px; line-height: 1.6;">
                             <?php the_excerpt(); ?>
                         </div>
 
+                        <?php
+                        // Display meeting info if available
+                        if ($meeting_pattern || $location_name) {
+                            echo '<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-radius: 5px; font-size: 0.85rem;">';
+                            if ($meeting_pattern) {
+                                echo '<strong style="color: #004A99;">📅</strong> ' . esc_html($meeting_pattern);
+                                if ($location_name) {
+                                    echo '<br>';
+                                }
+                            }
+                            if ($location_name) {
+                                echo '<strong style="color: #004A99;">📍</strong> ' . esc_html($location_name);
+                            }
+                            echo '</div>';
+                        }
+                        
+                        // Display member count if available
+                        if ($member_count && $member_count > 0) {
+                            echo '<p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">';
+                            echo '👥 ' . esc_html($member_count) . ' active members';
+                            echo '</p>';
+                        }
+                        ?>
+
                         <a href="<?php the_permalink(); ?>" class="btn btn-outline"
-                            style="display: inline-block; padding: 8px 20px; border: 1px solid #0066CC; color: #0066CC; border-radius: 5px; text-decoration: none;">
-                            View Chapter
+                            style="display: inline-block; padding: 10px 24px; border: 2px solid #0066CC; color: #0066CC; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.2s;"
+                            onmouseover="this.style.background='#0066CC'; this.style.color='white';"
+                            onmouseout="this.style.background='transparent'; this.style.color='#0066CC';">
+                            View Chapter →
                         </a>
                     </article>
                 <?php endwhile; ?>
@@ -143,5 +288,59 @@ get_header();
 
     </div>
 </div>
+
+<script>
+function filterChapters() {
+    const searchTerm = document.getElementById('chapter-search').value.toLowerCase();
+    const stateFilter = document.getElementById('chapter-state-filter').value;
+    const cards = document.querySelectorAll('.chapter-card');
+    let visibleCount = 0;
+    
+    cards.forEach(function(card) {
+        const cardState = card.getAttribute('data-state') || '';
+        const cardCity = card.getAttribute('data-city') || '';
+        const cardTitle = card.getAttribute('data-title') || '';
+        const cardText = card.textContent.toLowerCase();
+        
+        // Check state filter
+        const stateMatch = !stateFilter || cardState === stateFilter;
+        
+        // Check search term
+        const searchMatch = !searchTerm || 
+            cardTitle.includes(searchTerm) ||
+            cardCity.includes(searchTerm) ||
+            cardText.includes(searchTerm);
+        
+        // Show/hide card
+        if (stateMatch && searchMatch) {
+            card.style.display = 'block';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Update results count
+    const resultsDiv = document.getElementById('filter-results');
+    if (resultsDiv) {
+        if (visibleCount === cards.length) {
+            resultsDiv.innerHTML = 'Showing all ' + cards.length + ' chapters';
+        } else {
+            resultsDiv.innerHTML = 'Showing ' + visibleCount + ' of ' + cards.length + ' chapters';
+        }
+    }
+}
+
+function clearFilters() {
+    document.getElementById('chapter-search').value = '';
+    document.getElementById('chapter-state-filter').value = '';
+    filterChapters();
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    filterChapters();
+});
+</script>
 
 <?php get_footer(); ?>
