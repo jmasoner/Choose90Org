@@ -12,3 +12,6 @@ node_modules/
 secrets.json
 
 const key -API.txt
+
+# WebDisk setup scripts (may contain sensitive paths)
+setup_webdisk*.ps1
