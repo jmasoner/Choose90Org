@@ -9,9 +9,22 @@
  */
 
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *'); // Adjust for production
+// Production CORS - restrict to choose90.org domain
+$allowed_origins = ['https://choose90.org', 'https://www.choose90.org'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowed_origins)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+} else {
+    // For same-origin requests, don't set CORS header
+    if ($origin) {
+        http_response_code(403);
+        echo json_encode(['error' => 'Origin not allowed']);
+        exit;
+    }
+}
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Max-Age: 3600');
 
 // Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -35,18 +48,60 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
+// Simple rate limiting (in-memory, resets on server restart)
+// For production, consider using Redis or database-based rate limiting
+session_start();
+$rate_limit_key = 'api_requests_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+$rate_limit_file = sys_get_temp_dir() . '/choose90_rate_limit_' . md5($rate_limit_key) . '.txt';
+
+$current_time = time();
+$rate_limit_window = 3600; // 1 hour
+$max_requests = 20; // Max 20 requests per hour per IP
+
+if (file_exists($rate_limit_file)) {
+    $rate_data = json_decode(file_get_contents($rate_limit_file), true);
+    if ($rate_data && ($current_time - $rate_data['first_request']) < $rate_limit_window) {
+        if ($rate_data['count'] >= $max_requests) {
+            http_response_code(429);
+            echo json_encode(['error' => 'Rate limit exceeded. Please try again later.']);
+            exit;
+        }
+        $rate_data['count']++;
+    } else {
+        $rate_data = ['first_request' => $current_time, 'count' => 1];
+    }
+} else {
+    $rate_data = ['first_request' => $current_time, 'count' => 1];
+}
+
+file_put_contents($rate_limit_file, json_encode($rate_data));
+
 // Get request data
 $input = json_decode(file_get_contents('php://input'), true);
-$brand = $input['brand'] ?? '';
-$model = $input['model'] ?? '';
-$software_version = $input['software_version'] ?? '';
-$step = $input['step'] ?? '';
-$task = $input['task'] ?? '';
+$brand = trim($input['brand'] ?? '');
+$model = trim($input['model'] ?? '');
+$software_version = trim($input['software_version'] ?? '');
+$step = trim($input['step'] ?? '');
+$task = trim($input['task'] ?? '');
 
 // Validate input
 if (empty($brand) || empty($model) || empty($step) || empty($task)) {
     http_response_code(400);
     echo json_encode(['error' => 'Missing required fields: brand, model, step, task']);
+    exit;
+}
+
+// Sanitize input (prevent injection)
+$brand = htmlspecialchars($brand, ENT_QUOTES, 'UTF-8');
+$model = htmlspecialchars($model, ENT_QUOTES, 'UTF-8');
+$software_version = htmlspecialchars($software_version, ENT_QUOTES, 'UTF-8');
+$step = htmlspecialchars($step, ENT_QUOTES, 'UTF-8');
+$task = htmlspecialchars($task, ENT_QUOTES, 'UTF-8');
+
+// Length limits
+if (strlen($brand) > 50 || strlen($model) > 100 || strlen($software_version) > 50 || strlen($task) > 500) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Input too long']);
     exit;
 }
 
