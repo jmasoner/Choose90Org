@@ -1,0 +1,299 @@
+<!-- Choose90 Donation Form Component -->
+<div class="donation-form-container">
+    <div class="donation-header">
+        <h2>💙 Support Choose90</h2>
+        <p>Choose90 is free for everyone, always. But it costs real money to keep running.</p>
+    </div>
+
+    <form id="choose90-donation-form" class="donation-form">
+        <!-- Recurring Donations (Pre-selected, Highlighted) -->
+        <div class="donation-option recurring-option highlighted">
+            <div class="option-header">
+                <label class="option-label">
+                    <input type="radio" name="donation_type" value="recurring" checked class="donation-type-radio">
+                    <span class="option-title">
+                        <strong>RECURRING</strong>
+                        <span class="recommended-badge">Recommended</span>
+                    </span>
+                </label>
+            </div>
+            <div class="option-content">
+                <div class="amount-options">
+                    <label class="amount-option">
+                        <input type="radio" name="recurring_amount" value="5" checked>
+                        <span class="amount">$5<span class="period">/month</span></span>
+                        <span class="amount-label">Coffee Supporter</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="recurring_amount" value="10">
+                        <span class="amount">$10<span class="period">/month</span></span>
+                        <span class="amount-label">Community Builder</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="recurring_amount" value="25">
+                        <span class="amount">$25<span class="period">/month</span></span>
+                        <span class="amount-label">Movement Maker</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="recurring_amount" value="50">
+                        <span class="amount">$50<span class="period">/month</span></span>
+                        <span class="amount-label">Champion</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- One-Time Donations -->
+        <div class="donation-option one-time-option">
+            <div class="option-header">
+                <label class="option-label">
+                    <input type="radio" name="donation_type" value="one-time" class="donation-type-radio">
+                    <span class="option-title"><strong>ONE-TIME</strong></span>
+                </label>
+            </div>
+            <div class="option-content">
+                <div class="amount-options">
+                    <label class="amount-option">
+                        <input type="radio" name="one-time_amount" value="5">
+                        <span class="amount">$5</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="one-time_amount" value="10">
+                        <span class="amount">$10</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="one-time_amount" value="25">
+                        <span class="amount">$25</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="one-time_amount" value="50">
+                        <span class="amount">$50</span>
+                    </label>
+                    <label class="amount-option">
+                        <input type="radio" name="one-time_amount" value="100">
+                        <span class="amount">$100</span>
+                    </label>
+                    <label class="amount-option custom-amount">
+                        <input type="radio" name="one-time_amount" value="custom" id="custom-amount-radio">
+                        <span class="amount">Custom</span>
+                        <input type="number" id="custom-amount-input" placeholder="Min $5" min="5" step="1" style="display: none;">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="donation-submit-btn">
+            Donate Securely
+        </button>
+
+        <!-- Trust Message -->
+        <p class="donation-trust">
+            100% of donations go to Choose90 operations. Tax-deductible.
+        </p>
+    </form>
+</div>
+
+<style>
+.donation-form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.donation-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.donation-header h2 {
+    color: #0066CC;
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.donation-header p {
+    color: #666;
+    font-size: 16px;
+}
+
+.donation-option {
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: #f9fafb;
+    transition: all 0.3s ease;
+}
+
+.donation-option.highlighted {
+    border-color: #0066CC;
+    background: #f0f8ff;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+}
+
+.donation-option:has(input[type="radio"]:checked) {
+    border-color: #0066CC;
+    background: #f0f8ff;
+}
+
+.option-header {
+    margin-bottom: 20px;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.option-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0066CC;
+}
+
+.recommended-badge {
+    background: #E8B93E;
+    color: #333;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.amount-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+}
+
+.amount-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.amount-option:hover {
+    border-color: #0066CC;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+.amount-option:has(input:checked) {
+    border-color: #0066CC;
+    background: #f0f8ff;
+}
+
+.amount-option input[type="radio"] {
+    margin-bottom: 10px;
+}
+
+.amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0066CC;
+    margin-bottom: 5px;
+}
+
+.period {
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+}
+
+.amount-label {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.custom-amount {
+    grid-column: 1 / -1;
+}
+
+.custom-amount input[type="number"] {
+    margin-top: 10px;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    width: 150px;
+    text-align: center;
+}
+
+.custom-amount:has(#custom-amount-radio:checked) input[type="number"] {
+    display: block !important;
+}
+
+.donation-submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.donation-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+}
+
+.donation-trust {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+</style>
+
+<script>
+// Handle custom amount input
+document.addEventListener('DOMContentLoaded', function() {
+    const customRadio = document.getElementById('custom-amount-radio');
+    const customInput = document.getElementById('custom-amount-input');
+    
+    if (customRadio && customInput) {
+        customRadio.addEventListener('change', function() {
+            if (this.checked) {
+                customInput.style.display = 'block';
+                customInput.focus();
+            }
+        });
+        
+        customInput.addEventListener('input', function() {
+            if (parseFloat(this.value) >= 5) {
+                customRadio.value = this.value;
+            }
+        });
+    }
+    
+    // Handle form submission
+    const form = document.getElementById('choose90-donation-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // This would integrate with WooCommerce/Stripe
+            console.log('Donation form submitted');
+        });
+    }
+});
+</script>
+

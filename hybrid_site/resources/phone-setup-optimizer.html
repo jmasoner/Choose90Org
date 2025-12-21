@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Setup Optimizer - Choose90.org</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f9fafb;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #0066CC;
+        }
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .logo .choose { color: #0066CC; }
+        .logo .ninety { color: #E8B93E; }
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            color: #0066CC;
+            margin-bottom: 15px;
+        }
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            color: #0066CC;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            color: #004A99;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        p { margin-bottom: 15px; color: #555; }
+        .intro {
+            background: #f0f8ff;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            border-left: 5px solid #0066CC;
+        }
+        .step-box {
+            background: #fff9e6;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #E8B93E;
+        }
+        .step-box h4 {
+            color: #004A99;
+            margin-bottom: 10px;
+        }
+        .platform-section {
+            background: #f0f8ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        ul { margin-left: 30px; margin-bottom: 20px; }
+        li { margin-bottom: 10px; color: #555; }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        /* AI Integration Styles */
+        .ai-instructions-btn {
+            background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ai-instructions-btn:hover {
+            background: linear-gradient(135deg, #004A99 0%, #003366 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+        .ai-instructions {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .ai-instructions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4caf50;
+        }
+        .ai-instructions-header h5 {
+            color: #2e7d32;
+            font-size: 18px;
+            margin: 0;
+        }
+        .ai-instructions-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .ai-instructions-close:hover {
+            background: #fff;
+            color: #d32f2f;
+        }
+        .ai-instructions-content {
+            color: #333;
+            line-height: 1.8;
+        }
+        .ai-instructions-content p {
+            margin-bottom: 12px;
+        }
+        .ai-instructions-footer {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #c8e6c9;
+            color: #666;
+            font-size: 12px;
+        }
+        .ai-loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+        .ai-loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0066CC;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ai-error {
+            background: #ffebee;
+            border: 2px solid #d32f2f;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #c62828;
+        }
+        .ai-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+        .ai-modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        .ai-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .ai-modal-header h3 {
+            margin: 0;
+            color: #0066CC;
+        }
+        .ai-modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .ai-modal-close:hover {
+            background: #f5f5f5;
+            color: #d32f2f;
+        }
+        .ai-modal-body {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066CC;
+        }
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 12px;
+        }
+        .btn-primary {
+            background: #0066CC;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background: #004A99;
+        }
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 2px solid #ddd;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 40px 20px; }
+            .ai-instructions-btn,
+            .ai-instructions,
+            .ai-modal-overlay { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span class="choose">Choose</span><span class="ninety">90</span>
+            </div>
+            <h1>Phone Setup Optimizer</h1>
+            <p style="font-size: 18px; color: #666;">Transform your phone from a distraction machine to a tool for good</p>
+        </div>
+
+        <div class="intro">
+            <h3>Your Phone Doesn't Have to Control You</h3>
+            <p>Your phone is designed to capture your attention. But you can redesign it to serve you instead. This guide will help you set up your phone to support your Choose90 journey: less mindless scrolling, more intentional connection.</p>
+            <p><strong>Goal:</strong> Make your phone harder to use mindlessly, easier to use intentionally.</p>
+        </div>
+
+        <div class="platform-section">
+            <h2>📱 iPhone Setup Guide</h2>
+            
+            <div class="step-box">
+                <h4>Step 1: Enable Screen Time & Set Limits</h4>
+                <ol>
+                    <li>Go to <strong>Settings → Screen Time</strong></li>
+                    <li>Tap <strong>"Turn On Screen Time"</strong></li>
+                    <li>Set up <strong>App Limits</strong> for social media apps (30-60 min/day)</li>
+                    <li>Set <strong>Downtime</strong> (e.g., 9pm-7am) when only essential apps work</li>
+                    <li>Enable <strong>"Share Across Devices"</strong> to track all your Apple devices</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 2: Remove Distracting Apps from Home Screen</h4>
+                <ol>
+                    <li>Long-press any app icon</li>
+                    <li>Tap <strong>"Remove App"</strong> → <strong>"Remove from Home Screen"</strong></li>
+                    <li>Move social media apps to a folder on the last page, or delete them entirely</li>
+                    <li>Keep only essential apps on your main home screen</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 3: Turn Off Notifications (Selectively)</h4>
+                <ol>
+                    <li>Go to <strong>Settings → Notifications</strong></li>
+                    <li>For each app, choose:
+                        <ul>
+                            <li><strong>Social Media:</strong> Turn OFF all notifications (or only allow direct messages)</li>
+                            <li><strong>News Apps:</strong> Turn OFF breaking news alerts</li>
+                            <li><strong>Email:</strong> Set to "Deliver Quietly" (appears in Notification Center, not lock screen)</li>
+                            <li><strong>Keep ON:</strong> Calls, texts from important contacts, calendar reminders</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 4: Use Focus Modes</h4>
+                <ol>
+                    <li>Go to <strong>Settings → Focus</strong></li>
+                    <li>Create a <strong>"Work"</strong> focus that only allows work apps</li>
+                    <li>Create a <strong>"Family Time"</strong> focus that blocks all social media</li>
+                    <li>Create a <strong>"Sleep"</strong> focus that only allows calls from favorites</li>
+                    <li>Set these to activate automatically based on time or location</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 5: Change Your Home Screen Layout</h4>
+                <ol>
+                    <li>Create a <strong>minimalist home screen</strong> with only:
+                        <ul>
+                            <li>Phone, Messages, Camera</li>
+                            <li>Calendar, Notes, Maps</li>
+                            <li>One or two most-used apps</li>
+                        </ul>
+                    </li>
+                    <li>Move everything else to <strong>App Library</strong> (swipe left past last page)</li>
+                    <li>Use <strong>Search</strong> (swipe down) to find apps when needed</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 6: Enable Grayscale Mode (Optional but Powerful)</h4>
+                <ol>
+                    <li>Go to <strong>Settings → Accessibility → Display & Text Size</strong></li>
+                    <li>Turn on <strong>"Color Filters"</strong> → Select <strong>"Grayscale"</strong></li>
+                    <li>Add to <strong>Control Center</strong> for quick toggle:
+                        <ul>
+                            <li>Settings → Control Center → Add "Color Filters"</li>
+                        </ul>
+                    </li>
+                    <li><strong>Why:</strong> Grayscale makes apps less appealing, reducing mindless scrolling by 20-30%</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="platform-section">
+            <h2>🤖 Android Setup Guide</h2>
+            
+            <div class="step-box">
+                <h4>Step 1: Enable Digital Wellbeing</h4>
+                <ol>
+                    <li>Open <strong>Settings → Digital Wellbeing & Parental Controls</strong></li>
+                    <li>Set <strong>App Timers</strong> for social media (30-60 min/day)</li>
+                    <li>Enable <strong>Bedtime Mode</strong> (e.g., 9pm-7am) to grayscale screen and silence notifications</li>
+                    <li>Set <strong>Focus Mode</strong> to pause distracting apps during work hours</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 2: Organize Your Home Screen</h4>
+                <ol>
+                    <li>Long-press any app icon</li>
+                    <li>Drag to <strong>"Remove"</strong> or move to <strong>App Drawer</strong></li>
+                    <li>Keep only essential apps on home screen:
+                        <ul>
+                            <li>Phone, Messages, Camera</li>
+                            <li>Calendar, Notes, Maps</li>
+                            <li>One or two most-used apps</li>
+                        </ul>
+                    </li>
+                    <li>Hide or uninstall apps you don't need</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 3: Manage Notifications</h4>
+                <ol>
+                    <li>Go to <strong>Settings → Apps & Notifications</strong></li>
+                    <li>For each app:
+                        <ul>
+                            <li><strong>Social Media:</strong> Turn OFF all notifications</li>
+                            <li><strong>News Apps:</strong> Turn OFF breaking news alerts</li>
+                            <li><strong>Email:</strong> Set to "Silent" notifications</li>
+                            <li><strong>Keep ON:</strong> Calls, texts, calendar</li>
+                        </ul>
+                    </li>
+                    <li>Use <strong>"Do Not Disturb"</strong> mode during focus times</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 4: Use Focus Mode</h4>
+                <ol>
+                    <li>Open <strong>Digital Wellbeing → Focus Mode</strong></li>
+                    <li>Select apps to pause (social media, games, news)</li>
+                    <li>Set schedule or activate manually</li>
+                    <li>Create different modes for Work, Family Time, Sleep</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 5: Enable Grayscale Mode</h4>
+                <ol>
+                    <li>Go to <strong>Settings → Developer Options</strong> (enable if needed: Settings → About Phone → tap Build Number 7 times)</li>
+                    <li>Find <strong>"Simulate color space"</strong> → Select <strong>"Monochromacy"</strong></li>
+                    <li><strong>OR</strong> use Bedtime Mode in Digital Wellbeing (automatically grayscales at night)</li>
+                    <li>Add Quick Settings toggle for easy access</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="platform-section">
+            <h2>🔧 Recommended App Settings</h2>
+            
+            <h3>Instagram</h3>
+            <ul>
+                <li>Turn OFF all push notifications</li>
+                <li>Set daily time limit (30-60 min)</li>
+                <li>Use "Take a Break" reminder (every 30 min)</li>
+                <li>Unfollow accounts that make you feel bad</li>
+                <li>Follow accounts that inspire and uplift</li>
+            </ul>
+
+            <h3>Facebook</h3>
+            <ul>
+                <li>Turn OFF all notifications except direct messages</li>
+                <li>Unfollow negative pages/groups</li>
+                <li>Join positive groups (local community, hobbies, Choose90 chapters)</li>
+                <li>Set time limit (30 min/day)</li>
+            </ul>
+
+            <h3>Twitter/X</h3>
+            <ul>
+                <li>Turn OFF all notifications</li>
+                <li>Mute keywords related to divisive topics</li>
+                <li>Follow accounts that share good news and positivity</li>
+                <li>Set time limit (20-30 min/day)</li>
+            </ul>
+
+            <h3>News Apps</h3>
+            <ul>
+                <li>Turn OFF breaking news alerts</li>
+                <li>Set specific times to check news (e.g., morning and evening, 10 min each)</li>
+                <li>Subscribe to positive news sources (Good News Network, Reasons to be Cheerful)</li>
+                <li>Uninstall apps that only show negative news</li>
+            </ul>
+        </div>
+
+        <div class="platform-section">
+            <h2>✅ Recommended Apps to Add</h2>
+            <ul>
+                <li><strong>Forest</strong> - Plant trees when you stay focused (gamifies staying off phone)</li>
+                <li><strong>One Sec</strong> - Adds friction before opening distracting apps</li>
+                <li><strong>Libby</strong> - Free library ebooks and audiobooks</li>
+                <li><strong>Headspace/Calm</strong> - Meditation and mindfulness</li>
+                <li><strong>Good News Network</strong> - Only positive news</li>
+                <li><strong>Gratitude Journal Apps</strong> - Daily reflection</li>
+            </ul>
+        </div>
+
+        <div class="step-box" style="background: #e8f5e9; border-left-color: #4caf50;">
+            <h4>💡 Pro Tips</h4>
+            <ul>
+                <li><strong>Charge your phone outside your bedroom.</strong> Use an old-school alarm clock.</li>
+                <li><strong>Put your phone in another room</strong> during meals and family time.</li>
+                <li><strong>Use "Do Not Disturb"</strong> during work and focus time.</li>
+                <li><strong>Delete apps you don't use.</strong> Less clutter = less temptation.</li>
+                <li><strong>Review your Screen Time weekly.</strong> Awareness is the first step to change.</li>
+                <li><strong>Start small.</strong> Don't try to change everything at once. Pick one change and stick with it for a week.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f0f0; color: #666; font-size: 14px;">
+            <p>&copy; 2025 Choose90.org | Free to download and share</p>
+            <p style="margin-top: 10px;">Transform your phone. Transform your life.</p>
+        </div>
+    </div>
+
+    <!-- AI Integration Script -->
+    <script src="../js/phone-setup-ai.js"></script>
+</body>
+</html>
+

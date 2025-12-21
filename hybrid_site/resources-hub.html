@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Resources - Choose90.org</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .logo-section {
+            margin-bottom: 30px;
+        }
+
+        .logo-text {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .choose {
+            color: white;
+        }
+
+        .ninety {
+            color: #E8B93E;
+            font-weight: 900;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .intro h2 {
+            font-size: 36px;
+            color: #0066CC;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .intro p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 6px solid #0066CC;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #0066CC 0%, #E8B93E 100%);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(0, 102, 204, 0.2);
+        }
+
+        .resource-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .resource-card h3 {
+            font-size: 26px;
+            color: #0066CC;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .resource-card p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .resource-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #f0f8ff;
+            color: #0066CC;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .meta-badge.priority {
+            background: #fffaeb;
+            color: #E8B93E;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #004A99 0%, #003366 100%);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+        }
+
+        .download-btn.secondary {
+            background: linear-gradient(135deg, #E8B93E 0%, #D4A536 100%);
+        }
+
+        .download-btn.secondary:hover {
+            background: linear-gradient(135deg, #D4A536 0%, #C09530 100%);
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 80px 0 60px;
+        }
+
+        .section-divider h2 {
+            font-size: 38px;
+            color: #0066CC;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-divider p {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 18px 40px;
+            font-size: 18px;
+            background: #E8B93E;
+            color: #333;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-large:hover {
+            background: #FFD966;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(232, 185, 62, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            background: white;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .intro h2, .section-divider h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo-text">
+                <span class="choose">Choose</span><span class="ninety">90</span>
+            </div>
+        </div>
+        <h1>Member Resources</h1>
+        <p>Everything you need to reclaim your time, build community, and live intentionally</p>
+    </div>
+
+    <div class="container">
+        <div class="intro">
+            <h2>Start Your Journey Today</h2>
+            <p>These practical, actionable resources are designed to support you every step of the way. From daily accountability to long-term habit change, we've got you covered.</p>
+        </div>
+
+        <!-- TIER 1: Essential Resources -->
+        <div class="section-divider">
+            <h2>🔥 Essential Resources</h2>
+            <p>Start here - these will make the biggest immediate impact</p>
+        </div>
+
+        <div class="resource-grid">
+            <div class="resource-card">
+                <div class="resource-icon">👥</div>
+                <h3>Family Challenge Kit</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">HIGH IMPACT</span>
+                    <span class="meta-badge">Web Guide</span>
+                </div>
+                <p>Everything you need to bring your family or group on the Choose90 journey. Includes pledge posters, tech-free zone signs, activity cards, and tracking charts.</p>
+                <a href="resources/family-challenge-kit.html" class="download-btn">View Guide →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">💬</div>
+                <h3>Conversation Starter Kit</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">COMMUNITY BUILDER</span>
+                    <span class="meta-badge">Web Guide</span>
+                </div>
+                <p>50 non-divisive questions for deeper connections. Learn to listen actively, navigate difficult topics with grace, and leave every conversation feeling uplifted.</p>
+                <a href="resources/conversation-starter-kit.html" class="download-btn">View Guide →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">📱</div>
+                <h3>Phone Setup Optimizer</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge">Quick Win</span>
+                    <span class="meta-badge">Step-by-Step</span>
+                </div>
+                <p>Transform your phone from a distraction machine to a tool. Complete guide for iPhone and Android with screenshots, app recommendations, and "copy my settings" profiles.</p>
+                <a href="resources/phone-setup-optimizer.html" class="download-btn">View Guide →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">💪</div>
+                <h3>Small Acts of Impact Toolkit</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">DAILY ACTION</span>
+                    <span class="meta-badge">Web Toolkit</span>
+                </div>
+                <p>Prove that tiny actions create ripple effects. The grocery store smile experiment, encouraging notes, thanking service workers, and the power of showing up.</p>
+                <a href="resources/small-acts-toolkit.html" class="download-btn">View Toolkit →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">📚</div>
+                <h3>Digital Detox Guide</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">START HERE</span>
+                    <span class="meta-badge">Interactive</span>
+                </div>
+                <p>7-day plan to reset your media consumption, reclaim your attention, and choose to be 90% positive. Interactive guide with progress tracking.</p>
+                <a href="digital-detox-guide.html" class="download-btn">Start 7-Day Challenge →</a>
+            </div>
+        </div>
+
+        <!-- TIER 2: Deep Dive Resources -->
+        <div class="section-divider">
+            <h2>📖 Deep Dive Resources</h2>
+            <p>Ready to go deeper? These comprehensive guides support long-term transformation</p>
+        </div>
+
+        <div class="resource-grid">
+            <div class="resource-card">
+                <div class="resource-icon">🏡</div>
+                <h3>Neighborhood Connection Challenge</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge">30-Day Program</span>
+                    <span class="meta-badge">Web Guide</span>
+                </div>
+                <p>Build community right where you live. Daily micro-actions from learning names to hosting gatherings. Turn abstract "community" into concrete, doable actions.</p>
+                <a href="resources/neighborhood-challenge.html" class="download-btn">Start Challenge →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">🧘</div>
+                <h3>Media Mindfulness Guide</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge">Protect Your Peace</span>
+                    <span class="meta-badge">Web Guide</span>
+                </div>
+                <p>Consume news and social media without losing hope. Create a media diet, recognize manipulation, set boundaries, and find trustworthy sources of good news.</p>
+                <a href="resources/media-mindfulness-guide.html" class="download-btn">View Guide →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">🌟</div>
+                <h3>Intergenerational Connection Guide</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge">Bridge Age Gaps</span>
+                    <span class="meta-badge">Web Resource</span>
+                </div>
+                <p>Questions to ask elders, skills-sharing opportunities, creating spaces where all ages feel valued. Combat age segregation with meaningful connections.</p>
+                <a href="resources/intergenerational-guide.html" class="download-btn">View Guide →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">🗣️</div>
+                <h3>Conflict-to-Connection Translator</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge">Communication Tool</span>
+                    <span class="meta-badge">Quick Reference</span>
+                </div>
+                <p>Phrases that de-escalate and connect. How to disagree without disconnecting. Transform arguments into understanding with practical language tools.</p>
+                <a href="resources/conflict-translator.html" class="download-btn">View Translator →</a>
+            </div>
+
+            <div class="resource-card">
+                <div class="resource-icon">📍</div>
+                <h3>Local Good Directory Template</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge">Community Tool</span>
+                    <span class="meta-badge">Editable Template</span>
+                </div>
+                <p>Create a hyper-local resource of positive things. Track local businesses doing good, community gardens, volunteer opportunities, and gathering places.</p>
+                <a href="resources/local-directory-template.html" class="download-btn">View Template →</a>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of people who are reclaiming their time and choosing good every day.</p>
+            <div class="cta-buttons">
+                <a href="/pledge" class="btn-large">Take the Pledge</a>
+                <a href="digital-detox-guide.html" class="btn-large" style="background: white; color: #0066CC;">Start 7-Day Challenge</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Choose90.org | Reclaim 90 minutes. Change your life.</p>
+        <p style="margin-top: 10px; font-size: 14px;">All resources are free to download and share. Built with ❤️ for the community.</p>
+    </div>
+</body>
+</html>
+

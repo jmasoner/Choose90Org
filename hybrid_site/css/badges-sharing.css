@@ -1,0 +1,234 @@
+/* Choose90 Badge System & Social Sharing Styles */
+
+/* Badge Notification */
+.badge-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 102, 204, 0.3);
+    padding: 20px;
+    z-index: 10000;
+    max-width: 400px;
+    animation: slideInRight 0.3s ease-out;
+    border-left: 4px solid #0066CC;
+}
+
+.badge-notification-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.badge-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+}
+
+.badge-info h3 {
+    margin: 0 0 5px 0;
+    color: #0066CC;
+    font-size: 18px;
+}
+
+.badge-info p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.badge-share-btn {
+    background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.badge-share-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.badge-notification.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Social Share Buttons */
+.choose90-share-buttons {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f0f8ff;
+    border-radius: 10px;
+    border-left: 4px solid #0066CC;
+}
+
+.share-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.share-facebook:hover {
+    background: #1877F2;
+    color: white;
+    border-color: #1877F2;
+}
+
+.share-twitter:hover {
+    background: #000;
+    color: white;
+    border-color: #000;
+}
+
+.share-linkedin:hover {
+    background: #0077B5;
+    color: white;
+    border-color: #0077B5;
+}
+
+.share-copy:hover {
+    background: #0066CC;
+    color: white;
+    border-color: #0066CC;
+}
+
+/* Copy Notification */
+.share-copy-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.share-copy-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Badge Display */
+.badge-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.badge-item {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.badge-item.earned {
+    border-color: #E8B93E;
+    background: #fff9e6;
+    box-shadow: 0 4px 12px rgba(232, 185, 62, 0.2);
+}
+
+.badge-item.locked {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.badge-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.2);
+}
+
+.badge-item .badge-emoji {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.badge-item .badge-name {
+    font-weight: 600;
+    color: #0066CC;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.badge-item .badge-description {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .badge-notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .share-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .badge-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 15px;
+    }
+}
+

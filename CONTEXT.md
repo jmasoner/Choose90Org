@@ -15,6 +15,7 @@ This document serves as the persistent memory and operational context for AI age
 The project follows a standard WordPress directory structure, with specific attention to custom asset locations and premium plugin/theme integration.
 
 ```
+
 /home/constit2/choose90.org
 ├── index.php
 ├── wp-admin/
@@ -33,6 +34,7 @@ The project follows a standard WordPress directory structure, with specific atte
 │   └── ...
 ├── wp-includes/
 └── ...
+
 ```
 
 ## Technology Stack
@@ -70,6 +72,13 @@ The development is structured into distinct phases to manage complexity and prov
     *   Strategy for hosting scaling (migration to Managed WordPress/VPS).
     *   Integration with advanced CRM systems.
     *   Planning and implementation of new features (e.g., membership portals, advanced reporting).
+
+---
+
+## Key Operational Documents
+- **`DriveMap.md`**: Guide for WebDAV drive mapping for this and other projects.
+- **`CHAPTERS_NEXT_STEPS.md`**: Specific handoff for the Chapters section development.
+- **`RECAP.md`**: Phase 1 initiation status.
 
 ## User Profile & Contact Information
 
@@ -109,6 +118,7 @@ The development is structured into distinct phases to manage complexity and prov
 
 **Goal for this prompt:** To prepare the site's foundation securely and efficiently, ready for content creation in Phase 2. Proceed with the detailed plan for Phase 1.
 ```
+
 ```powershell
 # FILENAME: init_choose90org.ps1
 
@@ -233,6 +243,7 @@ This document serves as the persistent memory and operational context for AI age
 The project follows a standard WordPress directory structure, with specific attention to custom asset locations and premium plugin/theme integration.
 
 ```
+
 /home/constit2/choose90.org
 ├── index.php
 ├── wp-admin/
@@ -251,6 +262,7 @@ The project follows a standard WordPress directory structure, with specific atte
 │   └── ...
 ├── wp-includes/
 └── ...
+
 ```
 
 ## Technology Stack
@@ -417,6 +429,7 @@ Choose90Org is a modular WordPress site utilizing Divi 4 and a suite of premium 
 A high-level overview of the project directory structure. For detailed insights, see `CONTEXT.md`.
 
 ```
+
 /Choose90Org/
 ├── wp-content/
 │   ├── plugins/                 (Premium plugins go here)
@@ -429,6 +442,7 @@ A high-level overview of the project directory structure. For detailed insights,
 ├── .gitignore                   (Files and directories to ignore in Git)
 ├── README.md                    (This file)
 └── ... (Other WordPress core files)
+
 ```
 
 ## Contact Information
@@ -522,6 +536,7 @@ if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
 # --- Completion ---
 Write-Host "`nIgnition Complete: Choose90Org project structure initialized and committed to Git (if gh CLI was available)." -ForegroundColor Green
 ```
+
 ```powershell
 # FILENAME: resume_choose90org.ps1
 
