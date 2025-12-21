@@ -47,10 +47,10 @@ get_header();
                         <!-- We will add dynamic meta fields here later. For now, rely on Content or generic text. -->
                         <p><strong>Meeting Details:</strong><br>Check the description for upcoming dates.</p>
 
-                        <a href="mailto:john@choose90.org?subject=Contact Host: <?php the_title_attribute(); ?>"
+                        <a href="mailto:chapters@choose90.org?subject=Contact Host: <?php the_title_attribute(); ?>"
                             class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">Contact
                             Host</a>
-                        <a href="mailto:john@choose90.org?subject=Join Chapter: <?php the_title_attribute(); ?>"
+                        <a href="mailto:chapters@choose90.org?subject=Join Chapter: <?php the_title_attribute(); ?>"
                             class="btn btn-outline" style="width: 100%; text-align: center; margin-top: 10px;">Join This
                             Chapter</a>
                     </div>

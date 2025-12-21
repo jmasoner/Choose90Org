@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
 
                 $submission_success = true;
 
-                // Optional: Send Admin Email Notification
-                wp_mail(get_option('admin_email'), 'New Chapter Application: ' . $host_location, "A new chapter application has been received from $host_name for $host_location.\n\nReview it here: " . admin_url('post.php?post=' . $new_chapter_id . '&action=edit'));
+                // Send Admin Email Notification to chapters distribution list
+                wp_mail('chapters@choose90.org', 'New Chapter Application: ' . $host_location, "A new chapter application has been received from $host_name for $host_location.\n\nHost Email: $host_email\nTarget Start Date: $host_date\n\nReview it here: " . admin_url('post.php?post=' . $new_chapter_id . '&action=edit'));
 
             } else {
                 $submission_error = 'Error saving application. Please try again.';
