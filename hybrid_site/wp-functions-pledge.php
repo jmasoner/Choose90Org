@@ -244,7 +244,7 @@ function choose90_send_welcome_email($user_id, $screen_name) {
                 </ul>
                 
                 <div style='text-align: center; margin: 30px 0;'>
-                    <a href='https://choose90.org/resources' style='display: inline-block; padding: 14px 30px; background: #0066CC; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;'>Explore Resources</a>
+                    <a href='https://choose90.org/resources-hub.html' style='display: inline-block; padding: 14px 30px; background: #0066CC; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;'>Explore Resources</a>
                 </div>
                 
                 <p style='margin-top: 30px; font-size: 14px; color: #666;'>

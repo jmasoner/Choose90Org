@@ -159,7 +159,7 @@
             <h2>Welcome to Choose90!</h2>
             <p>You've earned your first badge: <strong>I Choose 90</strong></p>
             <div id="pledge-share-buttons" class="pledge-share-section"></div>
-            <a href="/resources" class="success-cta-btn">Explore Resources</a>
+            <a href="resources-hub.html" class="success-cta-btn">Explore Resources</a>
         </div>
     </div>
 </div>

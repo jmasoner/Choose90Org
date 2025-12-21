@@ -29,7 +29,7 @@ const Choose90Share = {
      */
     shareResource: function(resourceName, platform) {
         const text = encodeURIComponent(`I just completed the ${resourceName} from Choose90! 📚 #Choose90`);
-        const url = encodeURIComponent('https://choose90.org/resources');
+        const url = encodeURIComponent('https://choose90.org/resources-hub.html');
         
         this.share(platform, text, url);
     },

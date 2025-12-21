@@ -28,7 +28,7 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
                         <h2 style="color: #0066cc; margin-top: 0;">Welcome back, <?php echo esc_html($screen_name); ?>! 🎯</h2>
                         <p style="font-size: 1.2em; line-height: 1.6;">
                             You've already taken the pledge. Thank you for choosing 90% positive!<br>
-                            <a href="/resources" style="color: #0066CC; font-weight: 600;">Explore Resources</a> | 
+                            <a href="resources-hub.html" style="color: #0066CC; font-weight: 600;">Explore Resources</a> | 
                             <a href="/chapters" style="color: #0066CC; font-weight: 600;">Find a Chapter</a>
                         </p>
                     </div>
