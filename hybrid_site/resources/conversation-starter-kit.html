@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversation Starter Kit - Choose90.org</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../style.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -12,7 +12,7 @@
             line-height: 1.7;
             color: #333;
             background: #f9fafb;
-            padding: 20px;
+            padding: 0; padding-top: 80px;
         }
         .container {
             max-width: 900px;
@@ -67,7 +67,7 @@
         }
         .question-card {
             background: #fff9e6;
-            padding: 20px;
+            padding: 0; padding-top: 80px;
             border-radius: 8px;
             margin: 15px 0;
             border-left: 4px solid #E8B93E;
@@ -85,7 +85,7 @@
         }
         .tip-box {
             background: #e8f5e9;
-            padding: 20px;
+            padding: 0; padding-top: 80px;
             border-radius: 8px;
             margin: 20px 0;
             border-left: 4px solid #4caf50;
@@ -99,6 +99,31 @@
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+<!-- Shared static header for Choose90 hybrid site -->
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">Choose<span>90</span>.</a>
+        <div class="mobile-menu-btn">☰</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about.html">Our Story</a></li>
+                <!-- Links to WordPress Backend Pages -->
+                <li><a href="/chapters/">Chapters</a></li>
+                <li><a href="/resources-hub.html">Resources</a></li>
+                <li><a href="/pledge/" class="btn btn-outline"
+                        style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
+                <li><a href="/donate/" class="btn btn-starfield"
+                        style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+
+
     <div class="container">
         <div class="header">
             <div class="logo">
@@ -317,6 +342,45 @@
             <p style="margin-top: 10px;">Built with ❤️ for conversations that build bridges</p>
         </div>
     </div>
+    <!-- Footer -->
+<!-- Shared static footer for Choose90 hybrid site -->
+<footer>
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-col" style="flex: 2;">
+                <a href="/" class="logo"
+                    style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
+                    focusing on the good.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/resources-hub.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Action</h4>
+                <ul>
+                    <li><a href="/pledge/">Take the Pledge</a></li>
+                    <li><a href="/donate/">Donate</a></li>
+                    <li><a href="/support.html">Contact Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="/privacy.html">Privacy Policy</a></p>
+        </div>
+    </div>
+</footer>
+
+
+
+
+    <script src="../script.js"></script>
 </body>
 </html>
 

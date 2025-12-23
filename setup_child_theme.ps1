@@ -141,6 +141,23 @@ function choose90_ensure_pages_exist() {
             update_post_meta($res_page_id, '_wp_page_template', 'page-resources.php');
         }
     }
+
+    // Ensure Pledge page exists and uses custom template
+    $existing_pledge = get_page_by_path('pledge');
+    if ($existing_pledge) {
+        // Make sure it uses our custom template
+        update_post_meta($existing_pledge->ID, '_wp_page_template', 'page-pledge.php');
+    } else {
+        $pledge_page_id = wp_insert_post(array(
+            "post_title"  => "Pledge",
+            "post_name"   => "pledge",
+            "post_status" => "publish",
+            "post_type"   => "page"
+        ));
+        if ($pledge_page_id && !is_wp_error($pledge_page_id)) {
+            update_post_meta($pledge_page_id, '_wp_page_template', 'page-pledge.php');
+        }
+    }
 }
 add_action('init', 'choose90_ensure_pages_exist');
 
@@ -205,7 +222,7 @@ $HeaderContent = @"
                     <li><a href="/">Home</a></li>
                     <li><a href="/about.html">Our Story</a></li>
                     <li><a href="/chapters/">Chapters</a></li>
-                    <li><a href="/resources/">Resources</a></li>
+                    <li><a href="/resources-hub.html">Resources</a></li>
                     <li><a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
                     <li><a href="/donate/" class="btn btn-starfield" style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
                 </ul>
@@ -232,7 +249,7 @@ $FooterContent = @"
                         <li><a href="/">Home</a></li>
                         <li><a href="/about.html">Our Story</a></li>
                         <li><a href="/chapters/">Chapters</a></li>
-                        <li><a href="/resources/">Resources</a></li>
+                        <li><a href="/resources-hub.html">Resources</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -272,6 +289,16 @@ else {
     } else {
         Write-Warning "page-resources.php not found. Skipping."
     }
+}
+
+# 5. Deploy page-pledge.php template (custom pledge page)
+Write-Host "Updating page-pledge.php template..."
+$PledgeTemplateSource = Join-Path $PSScriptRoot "hybrid_site\page-pledge.php"
+if (Test-Path $PledgeTemplateSource) {
+    Copy-Item -Path $PledgeTemplateSource -Destination (Join-Path $ThemePath "page-pledge.php") -Force
+    Write-Host "Pledge template deployed." -ForegroundColor Green
+} else {
+    Write-Warning "page-pledge.php not found. Skipping."
 }
 
 # 5. Deploy Chapters Templates

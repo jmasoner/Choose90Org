@@ -7,63 +7,68 @@ $submission_success = false;
 // --- FORM HANDLING LOGIC ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])) {
 
-    // 1. Simple Math CAPTCHA Verification
-    $captcha_answer = isset($_POST['captcha_answer']) ? intval($_POST['captcha_answer']) : 0;
-    $correct_answer = isset($_POST['captcha_correct']) ? intval($_POST['captcha_correct']) : 0;
-
-    if ($captcha_answer !== $correct_answer) {
-        $submission_error = 'Incorrect math answer. Please try again.';
+    // CSRF protection via nonce
+    if (!isset($_POST['choose90_host_nonce']) || !wp_verify_nonce($_POST['choose90_host_nonce'], 'choose90_host_application')) {
+        $submission_error = 'Your session has expired. Please refresh the page and try again.';
     } else {
-        // 2. Sanitize Inputs
-        $host_name = sanitize_text_field($_POST['host_name']);
-        $host_location = sanitize_text_field($_POST['host_location']); // "City & State" -> Chapter Title
-        $host_email = sanitize_email($_POST['host_email']);
-        $host_date = sanitize_text_field($_POST['host_date']);
+        // 1. Simple Math CAPTCHA Verification
+        $captcha_answer = isset($_POST['captcha_answer']) ? intval($_POST['captcha_answer']) : 0;
+        $correct_answer = isset($_POST['captcha_correct']) ? intval($_POST['captcha_correct']) : 0;
 
-        if (!$host_name || !$host_location || !$host_email) {
-            $submission_error = 'Please fill in all required fields.';
+        if ($captcha_answer !== $correct_answer) {
+            $submission_error = 'Incorrect math answer. Please try again.';
         } else {
-            // 3. Create "Pending" Chapter Post
-            // Parse location for city/state if possible
-            $city = '';
-            $state = '';
-            if (preg_match('/(.+?)\s*,\s*([A-Z]{2}|[A-Za-z\s]+)$/', $host_location, $matches)) {
-                $city = trim($matches[1]);
-                $state = trim($matches[2]);
-                // Remove "Choose90" prefix if present
-                $city = preg_replace('/^Choose90\s*/i', '', $city);
+            // 2. Sanitize Inputs
+            $host_name = sanitize_text_field($_POST['host_name']);
+            $host_location = sanitize_text_field($_POST['host_location']); // "City & State" -> Chapter Title
+            $host_email = sanitize_email($_POST['host_email']);
+            $host_date = sanitize_text_field($_POST['host_date']);
+
+            if (!$host_name || !$host_location || !$host_email) {
+                $submission_error = 'Please fill in all required fields.';
             } else {
-                // Try to extract from host_location
-                $city = preg_replace('/^Choose90\s*/i', '', $host_location);
-            }
-            
-            $new_chapter_id = wp_insert_post(array(
-                'post_title' => wp_strip_all_tags($host_location), // e.g. "Choose90 Austin" or "Austin, TX"
-                'post_type' => 'chapter',
-                'post_status' => 'draft', // Saved as Draft (Pending Review)
-                'post_content' => "Host Name: $host_name\nEmail: $host_email\nTarget Start Date: $host_date\n\n(This chapter is pending review. Publish to make it live.)",
-            ));
-
-            if ($new_chapter_id && !is_wp_error($new_chapter_id)) {
-
-                // Save meta fields
-                if ($city) {
-                    update_post_meta($new_chapter_id, '_chapter_city', sanitize_text_field($city));
+                // 3. Create "Pending" Chapter Post
+                // Parse location for city/state if possible
+                $city = '';
+                $state = '';
+                if (preg_match('/(.+?)\s*,\s*([A-Z]{2}|[A-Za-z\s]+)$/', $host_location, $matches)) {
+                    $city = trim($matches[1]);
+                    $state = trim($matches[2]);
+                    // Remove "Choose90" prefix if present
+                    $city = preg_replace('/^Choose90\s*/i', '', $city);
+                } else {
+                    // Try to extract from host_location
+                    $city = preg_replace('/^Choose90\s*/i', '', $host_location);
                 }
-                if ($state) {
-                    update_post_meta($new_chapter_id, '_chapter_state', sanitize_text_field($state));
+                
+                $new_chapter_id = wp_insert_post(array(
+                    'post_title' => wp_strip_all_tags($host_location), // e.g. "Choose90 Austin" or "Austin, TX"
+                    'post_type' => 'chapter',
+                    'post_status' => 'draft', // Saved as Draft (Pending Review)
+                    'post_content' => "Host Name: $host_name\nEmail: $host_email\nTarget Start Date: $host_date\n\n(This chapter is pending review. Publish to make it live.)",
+                ));
+
+                if ($new_chapter_id && !is_wp_error($new_chapter_id)) {
+
+                    // Save meta fields
+                    if ($city) {
+                        update_post_meta($new_chapter_id, '_chapter_city', sanitize_text_field($city));
+                    }
+                    if ($state) {
+                        update_post_meta($new_chapter_id, '_chapter_state', sanitize_text_field($state));
+                    }
+                    update_post_meta($new_chapter_id, '_chapter_leader_name', sanitize_text_field($host_name));
+                    update_post_meta($new_chapter_id, '_chapter_leader_email', sanitize_email($host_email));
+                    update_post_meta($new_chapter_id, '_chapter_status', 'pending'); // Set status to pending
+
+                    $submission_success = true;
+
+                    // Send Admin Email Notification to chapters distribution list
+                    wp_mail('chapters@choose90.org', 'New Chapter Application: ' . $host_location, "A new chapter application has been received from $host_name for $host_location.\n\nHost Email: $host_email\nTarget Start Date: $host_date\n\nReview it here: " . admin_url('post.php?post=' . $new_chapter_id . '&action=edit'));
+
+                } else {
+                    $submission_error = 'Error saving application. Please try again.';
                 }
-                update_post_meta($new_chapter_id, '_chapter_leader_name', sanitize_text_field($host_name));
-                update_post_meta($new_chapter_id, '_chapter_leader_email', sanitize_email($host_email));
-                update_post_meta($new_chapter_id, '_chapter_status', 'pending'); // Set status to pending
-
-                $submission_success = true;
-
-                // Send Admin Email Notification to chapters distribution list
-                wp_mail('chapters@choose90.org', 'New Chapter Application: ' . $host_location, "A new chapter application has been received from $host_name for $host_location.\n\nHost Email: $host_email\nTarget Start Date: $host_date\n\nReview it here: " . admin_url('post.php?post=' . $new_chapter_id . '&action=edit'));
-
-            } else {
-                $submission_error = 'Error saving application. Please try again.';
             }
         }
     }
@@ -212,6 +217,8 @@ get_header();
 
                 <form method="POST" action=""
                     style="max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+                    <?php wp_nonce_field('choose90_host_application', 'choose90_host_nonce'); ?>
 
                     <div style="margin-bottom: 20px;">
                         <label for="host_name" style="display: block; margin-bottom: 5px; font-weight: bold;">Your

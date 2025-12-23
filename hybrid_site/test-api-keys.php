@@ -181,7 +181,7 @@ if (php_sapi_name() !== 'cli') {
             $test_prompt = "Say 'Choose90 API test successful' if you can read this.";
             
             $ch = curl_init($deepseek_url . '/chat/completions');
-            curl_setopt_array($ch, array(
+            $curlOptions = array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST => true,
                 CURLOPT_HTTPHEADER => array(
@@ -196,9 +196,18 @@ if (php_sapi_name() !== 'cli') {
                     'max_tokens' => 50
                 )),
                 CURLOPT_TIMEOUT => 10,
-                CURLOPT_SSL_VERIFYPEER => false, // For local testing only
-                CURLOPT_SSL_VERIFYHOST => false  // For local testing only
-            ));
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2
+            );
+
+            // Allow explicitly insecure mode ONLY when query param is present (local troubleshooting)
+            $insecure = isset($_GET['insecure_ssl']) && $_GET['insecure_ssl'] === '1';
+            if ($insecure) {
+                $curlOptions[CURLOPT_SSL_VERIFYPEER] = false;
+                $curlOptions[CURLOPT_SSL_VERIFYHOST] = false;
+            }
+
+            curl_setopt_array($ch, $curlOptions);
             
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -273,7 +282,7 @@ if (php_sapi_name() !== 'cli') {
             $test_prompt = "Say 'Choose90 API test successful' if you can read this.";
             
             $ch = curl_init($grok_url . '/chat/completions');
-            curl_setopt_array($ch, array(
+            $curlOptions = array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST => true,
                 CURLOPT_HTTPHEADER => array(
@@ -288,9 +297,16 @@ if (php_sapi_name() !== 'cli') {
                     'max_tokens' => 50
                 )),
                 CURLOPT_TIMEOUT => 10,
-                CURLOPT_SSL_VERIFYPEER => false, // For local testing only
-                CURLOPT_SSL_VERIFYHOST => false  // For local testing only
-            ));
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2
+            );
+
+            if ($insecure) {
+                $curlOptions[CURLOPT_SSL_VERIFYPEER] = false;
+                $curlOptions[CURLOPT_SSL_VERIFYHOST] = false;
+            }
+
+            curl_setopt_array($ch, $curlOptions);
             
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

@@ -412,49 +412,29 @@
 
 <body>
     <!-- Navigation -->
-    <header class="site-header">
-        <div class="container">
-            <!-- ANIMATED LOGO INTEGRATION -->
-            <a href="index.html" class="logo-animated">
-                <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" aria-labelledby="logoTitle" role="img">
-                    <title id="logoTitle">Choose90 Logo</title>
+<!-- Shared static header for Choose90 hybrid site -->
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">Choose<span>90</span>.</a>
+        <div class="mobile-menu-btn">☰</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about.html">Our Story</a></li>
+                <!-- Links to WordPress Backend Pages -->
+                <li><a href="/chapters/">Chapters</a></li>
+                <li><a href="/resources-hub.html">Resources</a></li>
+                <li><a href="/pledge/" class="btn btn-outline"
+                        style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
+                <li><a href="/donate/" class="btn btn-starfield"
+                        style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-                    <!-- Left Figure (Blue) -->
-                    <circle class="figure-blue" cx="30" cy="40" r="18" fill="#0066CC" />
 
-                    <!-- Right Figure (Yellow/Gold) -->
-                    <circle class="figure-yellow" cx="80" cy="40" r="18" fill="#E8B93E" />
 
-                    <!-- Center Connecting Figure (Gray) -->
-                    <circle class="figure-gray" cx="55" cy="25" r="14" fill="#6B7280" />
-
-                    <!-- Text: "CHOOSE 90" -->
-                    <text class="logo-text" x="110" y="50" font-family="'Outfit', sans-serif" font-size="32"
-                        font-weight="700" fill="#0066CC">
-                        CHOOSE
-                    </text>
-                    <text class="logo-text" x="235" y="50" font-family="'Outfit', sans-serif" font-size="32"
-                        font-weight="700" fill="#E8B93E">
-                        90
-                    </text>
-                </svg>
-            </a>
-
-            <div class="mobile-menu-btn">☰</div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">Our Story</a></li>
-                    <li><a href="/chapters/">Chapters</a></li>
-                    <li><a href="/resources.html" class="active">Resources</a></li>
-                    <li><a href="/pledge/" class="btn btn-outline"
-                            style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
-                    <li><a href="/donate/" class="btn btn-starfield"
-                            style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -576,38 +556,42 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-col" style="flex: 2;">
-                    <a href="index.html" class="logo"
-                        style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
-                    <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
-                        focusing on the good.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Explore</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">Our Story</a></li>
-                        <li><a href="/chapters/">Chapters</a></li>
-                        <li><a href="/resources.html">Resources</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Action</h4>
-                    <ul>
-                        <li><a href="/pledge/">Take the Pledge</a></li>
-                        <li><a href="/donate/">Donate</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </div>
+<!-- Shared static footer for Choose90 hybrid site -->
+<footer>
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-col" style="flex: 2;">
+                <a href="/" class="logo"
+                    style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
+                    focusing on the good.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="privacy.html">Privacy Policy</a></p>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/resources-hub.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Action</h4>
+                <ul>
+                    <li><a href="/pledge/">Take the Pledge</a></li>
+                    <li><a href="/donate/">Donate</a></li>
+                    <li><a href="/support.html">Contact Support</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="/privacy.html">Privacy Policy</a></p>
+        </div>
+    </div>
+</footer>
+
+
+
 
     <script src="script.js"></script>
     <script>

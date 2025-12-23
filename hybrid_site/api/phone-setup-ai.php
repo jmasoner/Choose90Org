@@ -175,12 +175,19 @@ curl_setopt_array($ch, array(
 $response = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 $curl_error = curl_error($ch);
+$curl_errno = curl_errno($ch);
 curl_close($ch);
 
 // Handle errors
 if ($curl_error) {
-    // Try without SSL verification as fallback (for development/local testing)
-    if (strpos($curl_error, 'SSL') !== false || strpos($curl_error, 'certificate') !== false) {
+    // In production, fail hard on SSL errors to avoid insecure fallbacks
+    $is_ssl_error = ($curl_errno === CURLE_SSL_PEER_CERTIFICATE ||
+                     $curl_errno === CURLE_SSL_CACERT ||
+                     stripos($curl_error, 'SSL') !== false ||
+                     stripos($curl_error, 'certificate') !== false);
+
+    // Optional dev-only insecure fallback, enabled only when this constant is defined and true
+    if ($is_ssl_error && defined('CHOOSE90_DEV_ALLOW_INSECURE_SSL') && CHOOSE90_DEV_ALLOW_INSECURE_SSL) {
         $ch = curl_init($base_url . '/chat/completions');
         curl_setopt_array($ch, array(
             CURLOPT_RETURNTRANSFER => true,

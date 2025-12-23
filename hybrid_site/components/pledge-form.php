@@ -141,6 +141,9 @@
             </div>
         </div>
 
+        <!-- Error Banner -->
+        <div id="pledge-error-banner" style="display:none; margin-bottom: 15px; padding: 12px 16px; border-radius: 8px; background: #ffebee; border: 1px solid #d32f2f; color: #b71c1c; font-size: 14px;"></div>
+
         <!-- Submit Button -->
         <button type="submit" class="pledge-submit-btn" id="pledge-submit-btn">
             Take the Pledge
@@ -212,14 +215,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById('pledge-share-buttons').innerHTML = shareButtons;
                     }
                 } else {
-                    alert(data.data.message || 'There was an error. Please try again.');
+                    const errorBanner = document.getElementById('pledge-error-banner');
+                    if (errorBanner) {
+                        errorBanner.textContent = data.data.message || 'There was an error. Please try again.';
+                        errorBanner.style.display = 'block';
+                    } else {
+                        alert(data.data.message || 'There was an error. Please try again.');
+                    }
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Take the Pledge';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('There was an error. Please try again.');
+                const errorBanner = document.getElementById('pledge-error-banner');
+                if (errorBanner) {
+                    errorBanner.textContent = 'There was an error. Please try again.';
+                    errorBanner.style.display = 'block';
+                } else {
+                    alert('There was an error. Please try again.');
+                }
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Take the Pledge';
             });
