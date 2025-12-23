@@ -167,6 +167,12 @@ if (file_exists(get_stylesheet_directory() . '/wp-functions-personalization.php'
 if (file_exists(get_stylesheet_directory() . '/wp-functions-chapters.php')) {
     require_once get_stylesheet_directory() . '/wp-functions-chapters.php';
 }
+if (file_exists(get_stylesheet_directory() . '/../hybrid_site/wp-functions-dashboard.php')) {
+    require_once get_stylesheet_directory() . '/../hybrid_site/wp-functions-dashboard.php';
+}
+if (file_exists(get_stylesheet_directory() . '/wp-functions-dashboard.php')) {
+    require_once get_stylesheet_directory() . '/wp-functions-dashboard.php';
+}
 ?>
 '@
 $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")
@@ -252,13 +258,20 @@ $FooterContent | Set-Content (Join-Path $ThemePath "footer.php")
 
 # 4. Deploy page-resources.php template
 Write-Host "Updating page-resources.php template..."
-$ResourcesTemplateSource = Join-Path $PSScriptRoot "page-resources.php"
+$ResourcesTemplateSource = Join-Path $PSScriptRoot "hybrid_site\page-resources.php"
 if (Test-Path $ResourcesTemplateSource) {
     Copy-Item -Path $ResourcesTemplateSource -Destination (Join-Path $ThemePath "page-resources.php") -Force
     Write-Host "Resources template deployed." -ForegroundColor Green
 }
 else {
-    Write-Warning "page-resources.php not found in project root. Skipping."
+    # Fallback to project root
+    $ResourcesTemplateSourceFallback = Join-Path $PSScriptRoot "page-resources.php"
+    if (Test-Path $ResourcesTemplateSourceFallback) {
+        Copy-Item -Path $ResourcesTemplateSourceFallback -Destination (Join-Path $ThemePath "page-resources.php") -Force
+        Write-Host "Resources template deployed (from root)." -ForegroundColor Green
+    } else {
+        Write-Warning "page-resources.php not found. Skipping."
+    }
 }
 
 # 5. Deploy Chapters Templates
@@ -296,7 +309,8 @@ Write-Host "Checking for WordPress functions files..."
 $WpFunctionsFiles = @(
     "hybrid_site\wp-functions-pledge.php",
     "hybrid_site\wp-functions-personalization.php",
-    "hybrid_site\wp-functions-chapters.php"
+    "hybrid_site\wp-functions-chapters.php",
+    "hybrid_site\wp-functions-dashboard.php"
 )
 
 foreach ($file in $WpFunctionsFiles) {
@@ -305,6 +319,26 @@ foreach ($file in $WpFunctionsFiles) {
         $dest = Join-Path $ThemePath (Split-Path -Leaf $file)
         Copy-Item -Path $source -Destination $dest -Force
         Write-Host "Deployed $(Split-Path -Leaf $file) to theme." -ForegroundColor Green
+    }
+}
+
+# 7. Deploy Components (contact forms, etc.)
+Write-Host "Deploying components..."
+$ComponentsDir = Join-Path $ThemePath "components"
+if (-not (Test-Path $ComponentsDir)) {
+    New-Item -ItemType Directory -Path $ComponentsDir -Force | Out-Null
+}
+
+$ComponentFiles = @(
+    "hybrid_site\components\chapter-contact-form.php"
+)
+
+foreach ($file in $ComponentFiles) {
+    $source = Join-Path $PSScriptRoot $file
+    if (Test-Path $source) {
+        $dest = Join-Path $ComponentsDir (Split-Path -Leaf $file)
+        Copy-Item -Path $source -Destination $dest -Force
+        Write-Host "Deployed component: $(Split-Path -Leaf $file)" -ForegroundColor Green
     }
 }
 

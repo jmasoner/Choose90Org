@@ -55,6 +55,11 @@ foreach ($Item in $Items) {
         continue
     }
     
+    # Special handling: resources/ folder should deploy to resources-backup/ to avoid WordPress conflict
+    if ($RelativePath -like "resources\*") {
+        $RelativePath = $RelativePath -replace "^resources\\", "resources-backup\"
+    }
+    
     $DestItemPath = Join-Path $DestPath $RelativePath
     
     try {

@@ -197,6 +197,9 @@ function choose90_handle_pledge_submission() {
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id);
     
+    // Create CRM contact if plugin is active
+    choose90_create_crm_contact($user_id, $full_name, $email, $phone, $location_city, $location_state);
+    
     // Send welcome email
     choose90_send_welcome_email($user_id, $screen_name);
     
@@ -206,6 +209,61 @@ function choose90_handle_pledge_submission() {
         'user_id' => $user_id,
         'screen_name' => $screen_name,
     ));
+}
+
+// Create CRM contact from pledge
+function choose90_create_crm_contact($user_id, $name, $email, $phone = '', $city = '', $state = '') {
+    // Check if CRM plugin is active
+    if (!class_exists('Choose90_CRM_Post_Types')) {
+        return false;
+    }
+    
+    // Check if contact already exists
+    $existing = get_posts(array(
+        'post_type' => 'crm_contact',
+        'meta_key' => '_crm_contact_email',
+        'meta_value' => $email,
+        'posts_per_page' => 1,
+        'post_status' => 'any',
+    ));
+    
+    if (!empty($existing)) {
+        // Update existing contact
+        $contact_id = $existing[0]->ID;
+        update_post_meta($contact_id, '_crm_contact_phone', $phone);
+        update_post_meta($contact_id, '_crm_contact_city', $city);
+        update_post_meta($contact_id, '_crm_contact_state', $state);
+        update_post_meta($contact_id, '_crm_contact_source', 'pledge_form');
+        update_post_meta($contact_id, '_crm_contact_user_id', $user_id);
+        update_post_meta($contact_id, '_crm_last_contact_date', current_time('Y-m-d'));
+        return $contact_id;
+    }
+    
+    // Create new contact
+    $contact_data = array(
+        'post_type' => 'crm_contact',
+        'post_title' => $name ? $name : $email,
+        'post_status' => 'publish',
+        'post_date' => current_time('mysql'),
+    );
+    
+    $contact_id = wp_insert_post($contact_data);
+    
+    if ($contact_id && !is_wp_error($contact_id)) {
+        // Save meta fields
+        update_post_meta($contact_id, '_crm_contact_email', $email);
+        update_post_meta($contact_id, '_crm_contact_phone', $phone);
+        update_post_meta($contact_id, '_crm_contact_city', $city);
+        update_post_meta($contact_id, '_crm_contact_state', $state);
+        update_post_meta($contact_id, '_crm_contact_source', 'pledge_form');
+        update_post_meta($contact_id, '_crm_contact_user_id', $user_id);
+        update_post_meta($contact_id, '_crm_last_contact_date', current_time('Y-m-d'));
+        update_post_meta($contact_id, '_crm_contact_status', 'new_member');
+        
+        return $contact_id;
+    }
+    
+    return false;
 }
 add_action('admin_post_choose90_pledge_submit', 'choose90_handle_pledge_submission');
 add_action('admin_post_nopriv_choose90_pledge_submit', 'choose90_handle_pledge_submission');

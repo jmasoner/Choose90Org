@@ -97,12 +97,24 @@ get_header();
                         }
                         ?>
 
-                        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
-                            <a href="mailto:chapters@choose90.org?subject=Contact Host: <?php the_title_attribute(); ?>"
-                                class="btn btn-primary" style="width: 100%; text-align: center; display: block; padding: 12px; margin-bottom: 10px; text-decoration: none; border-radius: 6px; background: #0066CC; color: white; font-weight: 600;">Contact Host</a>
-                            <a href="mailto:chapters@choose90.org?subject=Join Chapter: <?php the_title_attribute(); ?>"
-                                class="btn btn-outline" style="width: 100%; text-align: center; display: block; padding: 12px; text-decoration: none; border-radius: 6px; border: 2px solid #0066CC; color: #0066CC; font-weight: 600;">Join This Chapter</a>
-                        </div>
+                        <?php
+                        // Include contact form component
+                        if (file_exists(get_stylesheet_directory() . '/components/chapter-contact-form.php')) {
+                            include(get_stylesheet_directory() . '/components/chapter-contact-form.php');
+                        } elseif (file_exists(get_stylesheet_directory() . '/../hybrid_site/components/chapter-contact-form.php')) {
+                            include(get_stylesheet_directory() . '/../hybrid_site/components/chapter-contact-form.php');
+                        } else {
+                            // Fallback to mailto links if form component not found
+                            ?>
+                            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+                                <a href="mailto:chapters@choose90.org?subject=Contact Host: <?php the_title_attribute(); ?>"
+                                    class="btn btn-primary" style="width: 100%; text-align: center; display: block; padding: 12px; margin-bottom: 10px; text-decoration: none; border-radius: 6px; background: #0066CC; color: white; font-weight: 600;">Contact Host</a>
+                                <a href="mailto:chapters@choose90.org?subject=Join Chapter: <?php the_title_attribute(); ?>"
+                                    class="btn btn-outline" style="width: 100%; text-align: center; display: block; padding: 12px; text-decoration: none; border-radius: 6px; border: 2px solid #0066CC; color: #0066CC; font-weight: 600;">Join This Chapter</a>
+                            </div>
+                            <?php
+                        }
+                        ?>
                         
                         <?php if ($location_address): ?>
                             <div style="margin-top: 15px;">
