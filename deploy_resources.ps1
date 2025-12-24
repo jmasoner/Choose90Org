@@ -2,7 +2,8 @@
 # Deploys resources (PDFs, guides, etc.) to the live server
 
 $SourcePDF = Join-Path $PSScriptRoot "Choose90-Digital-Detox-Guide.pdf"
-$DestResourcesDir = "Z:\resources"
+# IMPORTANT: Use resources-backup to avoid conflicting with the WordPress /resources/ page
+$DestResourcesDir = "Z:\resources-backup"
 $ThemePath = "Z:\wp-content\themes\Divi-choose90"
 
 Write-Host "==========================================" -ForegroundColor Cyan
@@ -15,11 +16,11 @@ if (-not (Test-Path "Z:\")) {
     exit 1
 }
 
-# 2. Create resources directory if it doesn't exist
+# 2. Create resources-backup directory if it doesn't exist
 if (-not (Test-Path $DestResourcesDir)) {
-    Write-Host "Creating resources directory..." -ForegroundColor Cyan
+    Write-Host "Creating resources-backup directory..." -ForegroundColor Cyan
     New-Item -ItemType Directory -Force -Path $DestResourcesDir | Out-Null
-    Write-Host "Resources directory created." -ForegroundColor Green
+    Write-Host "resources-backup directory created." -ForegroundColor Green
 }
 
 # 3. Deploy PDF
@@ -73,7 +74,7 @@ Write-Host "3. In Page Attributes, select 'Resources Page' as the template" -For
 Write-Host "4. Set the permalink to '/resources/'" -ForegroundColor White
 Write-Host "5. Publish the page" -ForegroundColor White
 Write-Host ""
-Write-Host "The Digital Detox Guide will be available at:" -ForegroundColor Cyan
-Write-Host "https://choose90.org/resources/Choose90-Digital-Detox-Guide.pdf" -ForegroundColor Green
+Write-Host "The Digital Detox Guide PDF will be available at:" -ForegroundColor Cyan
+Write-Host "https://choose90.org/resources-backup/Choose90-Digital-Detox-Guide.pdf" -ForegroundColor Green
 
 Start-Sleep -Seconds 5

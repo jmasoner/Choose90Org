@@ -7,8 +7,9 @@
 class PhoneSetupAI {
     constructor() {
         // Determine API endpoint based on current page location
-        const isResourcePage = window.location.pathname.includes('/resources/');
-        this.apiEndpoint = isResourcePage ? '../api/phone-setup-ai.php' : '/api/phone-setup-ai.php';
+        // Use a more specific check for the phone-setup resource HTML path
+        const onPhoneSetupResource = window.location.pathname.includes('/resources-backup/phone-setup-optimizer.html');
+        this.apiEndpoint = onPhoneSetupResource ? '../api/phone-setup-ai.php' : '/api/phone-setup-ai.php';
         this.currentStep = null;
         this.deviceInfo = {
             brand: '',

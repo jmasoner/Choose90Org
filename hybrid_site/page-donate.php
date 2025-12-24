@@ -23,7 +23,7 @@ get_header();
             // Check if WooCommerce is active
             if (class_exists('WooCommerce')) {
                 // Include donation form component
-                $donation_form_path = get_stylesheet_directory() . '/../hybrid_site/components/donation-form.html';
+                $donation_form_path = get_stylesheet_directory() . '/components/donation-form.html';
                 if (file_exists($donation_form_path)) {
                     echo file_get_contents($donation_form_path);
                 } else {

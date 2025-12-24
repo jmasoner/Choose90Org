@@ -142,6 +142,25 @@ function choose90_ensure_pages_exist() {
         }
     }
 
+    // Check if Chapters page exists
+    if (!get_page_by_path('chapters')) {
+        $chapters_page_id = wp_insert_post(array(
+            'post_title'    => 'Chapters',
+            'post_name'     => 'chapters',
+            'post_status'   => 'publish',
+            'post_type'     => 'page',
+        ));
+        if ($chapters_page_id && !is_wp_error($chapters_page_id)) {
+            update_post_meta($chapters_page_id, '_wp_page_template', 'page-chapters.php');
+        }
+    } else {
+        // Ensure existing Chapters page uses correct template
+        $existing_chapters = get_page_by_path('chapters');
+        if ($existing_chapters) {
+            update_post_meta($existing_chapters->ID, '_wp_page_template', 'page-chapters.php');
+        }
+    }
+
     // Ensure Pledge page exists and uses custom template
     $existing_pledge = get_page_by_path('pledge');
     if ($existing_pledge) {
