@@ -242,6 +242,11 @@ $HeaderContent = @"
                     <li><a href="/about.html">Our Story</a></li>
                     <li><a href="/chapters/">Chapters</a></li>
                     <li><a href="/resources-hub.html">Resources</a></li>
+                    <?php if (is_user_logged_in()): ?>
+                        <li><a href="<?php echo admin_url('profile.php'); ?>">My Account</a></li>
+                    <?php else: ?>
+                        <li><a href="<?php echo wp_login_url(); ?>">Log In</a></li>
+                    <?php endif; ?>
                     <li><a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
                     <li><a href="/donate/" class="btn btn-starfield" style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
                 </ul>
