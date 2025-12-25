@@ -209,6 +209,26 @@ if (file_exists(get_stylesheet_directory() . '/../hybrid_site/wp-functions-dashb
 if (file_exists(get_stylesheet_directory() . '/wp-functions-dashboard.php')) {
     require_once get_stylesheet_directory() . '/wp-functions-dashboard.php';
 }
+
+// --- REDIRECT USERS AFTER LOGIN ---
+// Redirect regular users to homepage, admins/editors to dashboard
+function choose90_login_redirect($redirect_to, $requested_redirect_to, $user) {
+    // If there's a specific redirect requested, use it
+    if ($requested_redirect_to) {
+        return $requested_redirect_to;
+    }
+    
+    // If user is admin or editor, allow dashboard access
+    if (isset($user->roles) && is_array($user->roles)) {
+        if (in_array('administrator', $user->roles) || in_array('editor', $user->roles)) {
+            return admin_url();
+        }
+    }
+    
+    // For all other users (subscribers, etc.), redirect to homepage
+    return home_url('/');
+}
+add_filter('login_redirect', 'choose90_login_redirect', 10, 3);
 ?>
 '@
 $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")
