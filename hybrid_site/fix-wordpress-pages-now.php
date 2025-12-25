@@ -53,24 +53,13 @@ if ($chapters_page) {
     }
 }
 
-// 2. Fix Resources Page
+// 2. Fix Resources Page (if it exists - but we use resources-hub.html directly)
+// Note: All links point to /resources-hub.html (static file), but if WordPress /resources/ page exists,
+// we'll set it to output the static HTML directly via page-resources.php (no redirects)
 $resources_page = get_page_by_path('resources');
 if ($resources_page) {
     update_post_meta($resources_page->ID, '_wp_page_template', 'page-resources.php');
-    $fixes[] = "✓ Resources page: Template set to 'page-resources.php'";
-} else {
-    $fixes[] = "✗ Resources page: Not found - creating...";
-    $new_id = wp_insert_post(array(
-        'post_title' => 'Resources',
-        'post_name' => 'resources',
-        'post_content' => '',
-        'post_status' => 'publish',
-        'post_type' => 'page'
-    ));
-    if ($new_id && !is_wp_error($new_id)) {
-        update_post_meta($new_id, '_wp_page_template', 'page-resources.php');
-        $fixes[] = "✓ Resources page: Created with template 'page-resources.php'";
-    }
+    $fixes[] = "✓ Resources page: Template set to 'page-resources.php' (outputs resources-hub.html directly)";
 }
 
 // 3. Fix Pledge Page

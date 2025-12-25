@@ -1,17 +1,20 @@
 <?php
 /**
  * Template Name: Resources Page
- * Description: Redirects to resources-hub.html
+ * Description: Plain hard-coded output of resources-hub.html content
  */
 
-// Redirect must happen before any output
-if (!headers_sent()) {
-    wp_redirect(home_url('/resources-hub.html'), 301);
+// Just output the static HTML file directly - no redirects, no fancy stuff
+$html_file = ABSPATH . 'resources-hub.html';
+
+if (file_exists($html_file)) {
+    // Read and output the HTML file
+    readfile($html_file);
     exit;
 } else {
-    // Fallback if headers already sent
-    echo '<script>window.location.href="' . esc_url(home_url('/resources-hub.html')) . '";</script>';
-    echo '<meta http-equiv="refresh" content="0;url=' . esc_url(home_url('/resources-hub.html')) . '">';
-    echo '<a href="' . esc_url(home_url('/resources-hub.html')) . '">Click here if not redirected</a>';
+    // Fallback if file doesn't exist
+    echo '<!DOCTYPE html><html><head><title>Resources - Choose90.org</title></head><body>';
+    echo '<h1>Resources</h1>';
+    echo '<p>The resources page is temporarily unavailable.</p>';
+    echo '</body></html>';
 }
-
