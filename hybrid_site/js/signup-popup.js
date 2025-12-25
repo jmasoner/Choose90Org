@@ -26,7 +26,16 @@
         // Start new login check
         loginCheckPromise = (async () => {
             try {
-                // First, do quick client-side checks
+                console.log('Choose90: Starting login check...');
+                
+                // Check for WordPress admin bar FIRST (most reliable)
+                if (document.body.classList.contains('admin-bar')) {
+                    console.log('Choose90: Admin bar detected - logged in');
+                    cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
+                    return true;
+                }
+                
+                // Check cookies
                 const cookies = document.cookie.split(';');
                 let foundCookie = false;
                 for (let i = 0; i < cookies.length; i++) {
@@ -35,55 +44,62 @@
                         const cookieValue = cookie.split('=')[1];
                         if (cookieValue && cookieValue.length > 10) {
                             foundCookie = true;
+                            console.log('Choose90: WordPress cookie found');
                             break;
                         }
                     }
                 }
                 
-                // Check for WordPress admin bar
-                if (document.body.classList.contains('admin-bar')) {
-                    cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
-                    return true;
-                }
-                
-                // Check for WordPress data object
-                if (typeof wp !== 'undefined' && wp.data && wp.data.select('core').getCurrentUser) {
-                    const user = wp.data.select('core').getCurrentUser();
-                    if (user !== null) {
-                        cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
-                        return true;
-                    }
-                }
-                
-                // Check for choose90User object
-                if (typeof choose90User !== 'undefined' && choose90User.isLoggedIn) {
-                    cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
-                    return true;
-                }
-                
-                // If cookie found, verify with server
-                if (foundCookie) {
-                    try {
-                        const response = await fetch('/api/check-auth.php', {
-                            method: 'GET',
-                            credentials: 'include'
-                        });
-                        if (response.ok) {
-                            const data = await response.json();
-                            cachedLoginStatus = { 
-                                loggedIn: data.logged_in, 
-                                expires: Date.now() + 300000 // 5 minutes
-                            };
-                            return data.logged_in;
+                // ALWAYS check with server API (most reliable method)
+                console.log('Choose90: Checking API...');
+                try {
+                    const apiUrl = '/api/check-auth.php?t=' + Date.now();
+                    console.log('Choose90: Fetching:', apiUrl);
+                    const response = await fetch(apiUrl, {
+                        method: 'GET',
+                        credentials: 'include',  // CRITICAL: Include cookies
+                        cache: 'no-store',
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
                         }
-                    } catch (e) {
-                        // If API fails but cookie exists, assume logged in
+                    });
+                    
+                    console.log('Choose90: API response status:', response.status);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Choose90: API response data:', data);
+                        // Support both snake_case and camelCase
+                        const isLoggedIn = data.logged_in || data.isLoggedIn || false;
+                        cachedLoginStatus = { 
+                            loggedIn: isLoggedIn, 
+                            expires: Date.now() + 300000
+                        };
+                        console.log('Choose90: Final result - logged in:', isLoggedIn);
+                        return isLoggedIn;
+                    } else {
+                        const text = await response.text();
+                        console.warn('Choose90: API failed. Status:', response.status, 'Response:', text);
+                        // If cookie exists, trust it
+                        if (foundCookie) {
+                            console.log('Choose90: API failed but cookie exists - assuming logged in');
+                            cachedLoginStatus = { loggedIn: true, expires: Date.now() + 60000 };
+                            return true;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Choose90: API check exception:', e);
+                    // If cookie exists, trust it
+                    if (foundCookie) {
+                        console.log('Choose90: API error but cookie exists - assuming logged in');
                         cachedLoginStatus = { loggedIn: true, expires: Date.now() + 60000 };
                         return true;
                     }
                 }
                 
                 // No indication of login
+                console.log('Choose90: No login indicators found - returning false');
                 cachedLoginStatus = { loggedIn: false, expires: Date.now() + 300000 };
                 return false;
             } catch (error) {
@@ -261,22 +277,49 @@
     }
 
     // Attach to AI/interactive feature links
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Clear any stale cache first
+        cachedLoginStatus = null;
+        
+        // Pre-check login status once on page load
+        const loggedIn = await isUserLoggedIn();
+        console.log('Choose90: Login check result:', loggedIn);
+        
+        // If logged in, remove the signup requirement from links
+        if (loggedIn) {
+            const aiFeatures = document.querySelectorAll('[data-requires-signup]');
+            console.log('Choose90: Removing signup requirement from', aiFeatures.length, 'links');
+            aiFeatures.forEach(function(link) {
+                link.removeAttribute('data-requires-signup');
+                // Also remove any click handlers that might have been added
+                link.onclick = null;
+                // Make sure the link works normally
+                link.style.pointerEvents = 'auto';
+            });
+            return; // Don't attach click handlers if logged in
+        }
+        
         // Find all AI/interactive feature links
         const aiFeatures = document.querySelectorAll('[data-requires-signup], .ai-feature, [href*="phone-setup-optimizer"], [href*="digital-detox-guide"]');
+        console.log('Choose90: Found', aiFeatures.length, 'protected features');
         
         aiFeatures.forEach(function(link) {
             link.addEventListener('click', async function(e) {
-                // Check login status (async)
-                const loggedIn = await isUserLoggedIn();
-                if (!loggedIn) {
+                // Check login status (async) - double check in case status changed
+                const isLoggedIn = await isUserLoggedIn();
+                console.log('Choose90: Click check - logged in?', isLoggedIn);
+                if (!isLoggedIn) {
                     e.preventDefault();
+                    e.stopPropagation();
                     const featureName = link.getAttribute('data-feature-name') || 
                                        link.textContent.trim() || 
                                        'This Feature';
                     showSignupPopup(featureName);
+                } else {
+                    // User is logged in, allow navigation
+                    console.log('Choose90: User logged in, allowing navigation');
                 }
-            });
+            }, true); // Use capture phase to catch early
         });
     });
 

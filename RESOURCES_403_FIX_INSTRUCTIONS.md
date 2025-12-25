@@ -39,3 +39,5 @@ WordPress uses URL rewriting to serve pages. When a physical directory exists wi
 
 The `deploy_production.ps1` script now automatically deploys resource files to `resources-backup/` instead of `resources/` to prevent this conflict in the future.
 
+
+

@@ -63,3 +63,5 @@ DirectoryIndex index.html index.php /index.php
 ```
 (Static HTML homepage loads first, WordPress routes still work)
 
+
+

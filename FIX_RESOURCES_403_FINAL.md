@@ -46,3 +46,5 @@ After removing the directory, future deployments will use `resources-backup/` fo
 
 If you can't access cPanel, you can try using FTP or SSH to remove the directory, but cPanel File Manager is the easiest method.
 
+
+

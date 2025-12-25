@@ -157,3 +157,5 @@ Completed comprehensive cleanup of Resources links and routing across the Choose
 
 **Status:** ✅ Resources links cleanup complete. All links now point directly to `/resources-hub.html`. Simple, reliable, maintainable.
 
+
+

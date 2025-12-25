@@ -11,17 +11,74 @@
 </head>
 
 <body>
-    <header class="site-header">
-        <div class="container">
-            <a href="index.html" class="logo">Choose<span>90</span>.</a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">Our Story</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- Shared static header for Choose90 hybrid site -->
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">Choose<span>90</span>.</a>
+        <div class="mobile-menu-btn">☰</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about.html">Our Story</a></li>
+                <li><a href="/pledge/" class="btn btn-outline"
+                        style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
+                <li><a href="/resources-hub.html">Resources</a></li>
+                <li><a href="/chapters/">Chapters</a></li>
+                <li><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
+                <li><a href="/donate/" class="btn btn-starfield"
+                        style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+            </ul>
+            <script>
+                // Update login link based on authentication status
+                (function() {
+                    const loginLink = document.getElementById('nav-login-link');
+                    if (!loginLink) return;
+                    
+                    // Check if logged in
+                    function checkLogin() {
+                        // Check for WordPress admin bar
+                        if (document.body.classList.contains('admin-bar')) {
+                            loginLink.textContent = 'My Account';
+                            loginLink.href = '/wp-admin/profile.php';
+                            return;
+                        }
+                        
+                        // Check for WordPress cookies
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            if (cookies[i].trim().indexOf('wordpress_logged_in') !== -1) {
+                                loginLink.textContent = 'My Account';
+                                loginLink.href = '/wp-admin/profile.php';
+                                return;
+                            }
+                        }
+                        
+                        // Check via API
+                        fetch('/api/check-auth.php', { credentials: 'include' })
+                            .then(r => r.json())
+                            .then(data => {
+                                if (data.logged_in) {
+                                    loginLink.textContent = 'My Account';
+                                    loginLink.href = '/wp-admin/profile.php';
+                                }
+                            })
+                            .catch(() => {});
+                    }
+                    
+                    // Check on page load
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', checkLogin);
+                    } else {
+                        checkLogin();
+                    }
+                })();
+            </script>
+        </nav>
+    </div>
+</header>
+
+
+
 
     <div class="container" style="padding-top: 150px; padding-bottom: 80px; max-width: 800px;">
         <h1>Privacy Policy</h1>

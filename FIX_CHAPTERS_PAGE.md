@@ -63,3 +63,5 @@ If "Chapters Directory" template doesn't appear in the dropdown:
 
 4. **Check theme:** Make sure you're using the "Divi-choose90" child theme, not the parent Divi theme
 
+
+

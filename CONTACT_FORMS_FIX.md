@@ -79,3 +79,5 @@ Make sure WordPress can send emails:
 - [ ] Add spam protection (reCAPTCHA) if needed
 - [ ] Create contact form for support page (if needed)
 
+
+

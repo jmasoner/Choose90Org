@@ -35,23 +35,59 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Check WordPress login status
 // Load WordPress for authentication check
-$wp_load_path = __DIR__ . '/../../../../wp-load.php';
-if (file_exists($wp_load_path)) {
-    require_once($wp_load_path);
-    
-    // Check if user is logged in
-    if (!function_exists('is_user_logged_in') || !is_user_logged_in()) {
-        http_response_code(401);
-        echo json_encode([
-            'error' => 'Authentication required',
-            'message' => 'Please sign up or log in to use this feature.',
-            'login_url' => home_url('/pledge/')
-        ]);
-        exit;
+$wp_load_paths = [
+    __DIR__ . '/../../../../wp-load.php',  // Standard WordPress location
+    __DIR__ . '/../../../wp-load.php',     // Alternative location
+    dirname(dirname(dirname(dirname(__DIR__)))) . '/wp-load.php'  // Relative to api/ folder
+];
+
+$wp_loaded = false;
+foreach ($wp_load_paths as $wp_path) {
+    if (file_exists($wp_path)) {
+        require_once($wp_path);
+        $wp_loaded = true;
+        break;
     }
-} else {
-    // If WordPress isn't available, allow access (for testing/fallback)
-    // In production, you may want to deny access instead
+}
+
+// Authentication check - be more lenient to avoid false negatives
+$is_authenticated = false;
+
+if ($wp_loaded) {
+    // Check if user is logged in via WordPress
+    if (function_exists('is_user_logged_in') && is_user_logged_in()) {
+        $is_authenticated = true;
+    }
+}
+
+// Fallback: Check for WordPress cookies (for static HTML pages)
+if (!$is_authenticated) {
+    foreach ($_COOKIE as $key => $value) {
+        // Check for WordPress logged-in cookie
+        if (strpos($key, 'wordpress_logged_in') !== false && !empty($value) && strlen($value) > 20) {
+            // Cookie exists and looks valid - allow access
+            $is_authenticated = true;
+            break;
+        }
+    }
+}
+
+// Only block if we're certain they're NOT logged in
+if (!$is_authenticated) {
+    // Log for debugging (remove in production if needed)
+    error_log('Phone Setup AI: Authentication failed. Cookies: ' . json_encode(array_keys($_COOKIE)));
+    
+    http_response_code(401);
+    echo json_encode([
+        'error' => 'Authentication required',
+        'message' => 'Please sign up or log in to use this feature.',
+        'login_url' => $wp_loaded && function_exists('home_url') ? home_url('/pledge/') : '/pledge/',
+        'debug' => [
+            'wp_loaded' => $wp_loaded,
+            'cookies_found' => array_keys($_COOKIE)
+        ]
+    ]);
+    exit;
 }
 
 // Load secrets

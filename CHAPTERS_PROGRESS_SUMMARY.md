@@ -122,3 +122,5 @@ Chapters have 4 statuses:
 
 Only "active" chapters appear on the public directory page.
 
+
+

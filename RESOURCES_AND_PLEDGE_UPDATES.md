@@ -113,3 +113,5 @@ To automatically create CRM entries when someone pledges:
 - All data stored in WordPress database
 - CRM integration is optional enhancement
 
+
+

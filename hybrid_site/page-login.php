@@ -13,22 +13,25 @@ if (is_user_logged_in()) {
 get_header();
 ?>
 
-<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/../css/star-field.css">
+<link rel="stylesheet" href="<?php echo esc_url(home_url('/css/star-field.css')); ?>">
+
 <style>
 
-/* Login Form Container */
+/* Login Form Container - Ensure visibility */
 .login-container {
     position: relative;
     z-index: 10;
     min-height: 100vh;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     padding: 40px 20px;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .login-box {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 50px 40px;
@@ -37,6 +40,9 @@ get_header();
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(100, 150, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
     animation: slideUp 0.6s ease-out;
+    visibility: visible !important;
+    display: block !important;
+    opacity: 1 !important;
 }
 
 @keyframes slideUp {
@@ -80,8 +86,45 @@ get_header();
     font-size: 14px;
 }
 
+.login-form {
+    visibility: visible !important;
+    display: block !important;
+}
+
 .login-form .form-group {
     margin-bottom: 25px;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* BPS CAPTCHA styling */
+.bps-captcha-container {
+    margin: 20px 0;
+}
+
+.bps-captcha-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.bps-captcha-container input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+    box-sizing: border-box;
+}
+
+.bps-captcha-container input[type="text"]:focus {
+    outline: none;
+    border-color: #0066CC;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
 }
 
 .login-form label {
@@ -214,6 +257,7 @@ get_header();
 }
 </style>
 
+<!-- Login Template Loaded Successfully -->
 <div class="star-field" id="starField"></div>
 
 <div class="login-container">
@@ -248,8 +292,22 @@ get_header();
 
         <form class="login-form" name="loginform" id="loginform" action="<?php echo esc_url(site_url('wp-login.php', 'login_post')); ?>" method="post">
             <?php
-            // WordPress login form hooks
-            do_action('login_form');
+            // Check if BPS is active - only show CAPTCHA if it is
+            $bps_active = false;
+            if (function_exists('is_plugin_active')) {
+                $bps_active = is_plugin_active('bulletproof-security/bulletproof-security.php');
+            } else {
+                // Fallback: check if BPS functions exist
+                $bps_active = function_exists('bps_captcha_login_form_field');
+            }
+            
+            // Only capture CAPTCHA if BPS is active
+            $login_form_hooks = '';
+            if ($bps_active) {
+                ob_start();
+                do_action('login_form');
+                $login_form_hooks = ob_get_clean();
+            }
             ?>
             
             <div class="form-group">
@@ -261,6 +319,15 @@ get_header();
                 <label for="user_pass">Password</label>
                 <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" required autocomplete="current-password">
             </div>
+
+            <?php
+            // Output CAPTCHA only if BPS is active and CAPTCHA was generated
+            if ($bps_active && !empty($login_form_hooks)) {
+                echo '<div class="form-group bps-captcha-container">';
+                echo $login_form_hooks;
+                echo '</div>';
+            }
+            ?>
 
             <div class="remember-me">
                 <input name="rememberme" type="checkbox" id="rememberme" value="forever">
@@ -288,17 +355,19 @@ get_header();
     </div>
 </div>
 
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/../js/star-field.js"></script>
+<script src="<?php echo esc_url(home_url('/js/star-field.js')); ?>"></script>
 <script>
 // Initialize star field
 document.addEventListener('DOMContentLoaded', function() {
-    window.loginStarField = new StarField('starField', {
-        starCount: 150,
-        maxDistance: 300,
-        baseSpeed: 0.015,
-        sparkleRatio: 0.1,
-        colors: ['white', '#ffffff', '#e8f4f8']
-    });
+    if (typeof StarField !== 'undefined') {
+        window.loginStarField = new StarField('starField', {
+            starCount: 150,
+            maxDistance: 300,
+            baseSpeed: 0.015,
+            sparkleRatio: 0.1,
+            colors: ['white', '#ffffff', '#e8f4f8']
+        });
+    }
 });
 </script>
 

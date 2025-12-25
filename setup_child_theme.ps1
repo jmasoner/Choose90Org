@@ -196,6 +196,19 @@ function choose90_ensure_pages_exist() {
 }
 add_action('init', 'choose90_ensure_pages_exist');
 
+// --- FORCE LOGIN PAGE TEMPLATE ---
+// Force WordPress to use page-login.php for the login page
+function choose90_force_login_template($template) {
+    if (is_page('login')) {
+        $login_template = locate_template(array('page-login.php'));
+        if ($login_template) {
+            return $login_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'choose90_force_login_template', 99);
+
 // Include Choose90 custom functions
 // Note: Adjust paths based on your server structure
 // Option 1: If wp-functions files are in a parallel directory
@@ -294,14 +307,14 @@ $HeaderContent = @"
                 <ul class="nav-links">
                     <li><a href="/">Home</a></li>
                     <li><a href="/about.html">Our Story</a></li>
-                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
                     <li><a href="/resources-hub.html">Resources</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
                     <?php if (is_user_logged_in()): ?>
                         <li><a href="<?php echo admin_url('profile.php'); ?>">My Account</a></li>
                     <?php else: ?>
                         <li><a href="<?php echo wp_login_url(); ?>">Log In</a></li>
                     <?php endif; ?>
-                    <li><a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
                     <li><a href="/donate/" class="btn btn-starfield" style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
                 </ul>
             </nav>

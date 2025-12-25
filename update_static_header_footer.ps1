@@ -37,22 +37,37 @@ foreach ($file in $HtmlFiles) {
 
     Write-Host "Processing $relative..." -NoNewline
     $content = Get-Content $file.FullName -Raw
+    $originalContent = $content
 
-    # Replace navigation header between <!-- Navigation --> and </header>
+    # Method 1: Replace header with comment marker
     if ($content -match "<!-- Navigation -->") {
         $content = $content -replace "(?s)<!-- Navigation -->.*?</header>", "<!-- Navigation -->`r`n$HeaderHtml"
     }
+    # Method 2: Replace entire <header> section (for pages with hardcoded headers)
+    elseif ($content -match "<header[^>]*>") {
+        $content = $content -replace "(?s)<header[^>]*>.*?</header>", $HeaderHtml
+    }
 
-    # Replace footer between <!-- Footer --> and </footer>
+    # Method 1: Replace footer with comment marker
     if ($content -match "<!-- Footer -->") {
         $content = $content -replace "(?s)<!-- Footer -->.*?</footer>", "<!-- Footer -->`r`n$FooterHtml"
     }
+    # Method 2: Replace entire <footer> section
+    elseif ($content -match "<footer[^>]*>") {
+        $content = $content -replace "(?s)<footer[^>]*>.*?</footer>", $FooterHtml
+    }
 
-    Set-Content -Path $file.FullName -Value $content -NoNewline
-    Write-Host " [OK]" -ForegroundColor Green
+    if ($content -ne $originalContent) {
+        Set-Content -Path $file.FullName -Value $content -NoNewline
+        Write-Host " [OK]" -ForegroundColor Green
+    } else {
+        Write-Host " [SKIP - No header/footer found]" -ForegroundColor Yellow
+    }
 }
 
 Write-Host ""
 Write-Host "Done. Static HTML headers and footers updated from components." -ForegroundColor Green
+
+
 
 

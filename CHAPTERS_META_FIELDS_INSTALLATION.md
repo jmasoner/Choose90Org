@@ -143,3 +143,5 @@ get_chapter_status($post_id);         // Returns status (defaults to 'active')
 - Ensure jQuery is loaded (if needed)
 - Verify data attributes are set on chapter cards
 
+
+

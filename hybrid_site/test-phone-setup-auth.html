@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phone Setup Auth Test</title>
+</head>
+<body>
+    <h1>Phone Setup Authentication Test</h1>
+    <button onclick="testAuth()">Test Authentication</button>
+    <button onclick="testAPI()">Test API Endpoint</button>
+    <div id="results"></div>
+    
+    <script>
+        async function testAuth() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing authentication...</p>';
+            
+            try {
+                const response = await fetch('/api/check-auth.php', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                results.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                results.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing API endpoint...</p>';
+            
+            try {
+                const response = await fetch('/api/phone-setup-ai.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        brand: 'Apple',
+                        model: 'iPhone 15',
+                        software_version: 'iOS 17',
+                        step: '1',
+                        task: 'Test'
+                    })
+                });
+                const data = await response.json();
+                results.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                results.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        // Show cookies
+        document.addEventListener('DOMContentLoaded', function() {
+            const cookies = document.cookie.split(';').map(c => c.trim());
+            const cookieInfo = document.createElement('div');
+            cookieInfo.innerHTML = '<h2>Cookies Found:</h2><pre>' + cookies.join('\n') + '</pre>';
+            document.body.appendChild(cookieInfo);
+        });
+    </script>
+</body>
+</html>
+

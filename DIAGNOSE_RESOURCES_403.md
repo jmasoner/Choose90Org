@@ -60,3 +60,5 @@ Try accessing these URLs directly:
 
 If `resources-hub.html` works but `/resources/` gives 403, it's definitely a WordPress page configuration issue.
 
+
+

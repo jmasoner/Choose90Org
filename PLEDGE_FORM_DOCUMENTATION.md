@@ -105,3 +105,5 @@ if (class_exists('Choose90_CRM')) {
 - [ ] Create admin dashboard for viewing pledges
 - [ ] Set up automated CRM sync
 
+
+
