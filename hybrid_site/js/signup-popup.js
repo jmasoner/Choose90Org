@@ -7,19 +7,103 @@
     'use strict';
 
     // Check if user is logged in (WordPress)
-    function isUserLoggedIn() {
-        // Check for WordPress logged-in cookie or user data
-        if (typeof wp !== 'undefined' && wp.data && wp.data.select('core').getCurrentUser) {
-            return wp.data.select('core').getCurrentUser() !== null;
+    // Use cached result to avoid repeated API calls
+    let cachedLoginStatus = null;
+    let loginCheckPromise = null;
+    
+    async function isUserLoggedIn() {
+        // Return cached result if available (for 5 minutes)
+        if (cachedLoginStatus !== null && cachedLoginStatus.expires > Date.now()) {
+            return cachedLoginStatus.loggedIn;
         }
-        // Fallback: check for WordPress logged-in cookie
-        return document.cookie.indexOf('wordpress_logged_in') !== -1;
+        
+        // If a check is already in progress, wait for it
+        if (loginCheckPromise) {
+            const result = await loginCheckPromise;
+            return result;
+        }
+        
+        // Start new login check
+        loginCheckPromise = (async () => {
+            try {
+                // First, do quick client-side checks
+                const cookies = document.cookie.split(';');
+                let foundCookie = false;
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.indexOf('wordpress_logged_in') !== -1) {
+                        const cookieValue = cookie.split('=')[1];
+                        if (cookieValue && cookieValue.length > 10) {
+                            foundCookie = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // Check for WordPress admin bar
+                if (document.body.classList.contains('admin-bar')) {
+                    cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
+                    return true;
+                }
+                
+                // Check for WordPress data object
+                if (typeof wp !== 'undefined' && wp.data && wp.data.select('core').getCurrentUser) {
+                    const user = wp.data.select('core').getCurrentUser();
+                    if (user !== null) {
+                        cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
+                        return true;
+                    }
+                }
+                
+                // Check for choose90User object
+                if (typeof choose90User !== 'undefined' && choose90User.isLoggedIn) {
+                    cachedLoginStatus = { loggedIn: true, expires: Date.now() + 300000 };
+                    return true;
+                }
+                
+                // If cookie found, verify with server
+                if (foundCookie) {
+                    try {
+                        const response = await fetch('/api/check-auth.php', {
+                            method: 'GET',
+                            credentials: 'include'
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            cachedLoginStatus = { 
+                                loggedIn: data.logged_in, 
+                                expires: Date.now() + 300000 // 5 minutes
+                            };
+                            return data.logged_in;
+                        }
+                    } catch (e) {
+                        // If API fails but cookie exists, assume logged in
+                        cachedLoginStatus = { loggedIn: true, expires: Date.now() + 60000 };
+                        return true;
+                    }
+                }
+                
+                // No indication of login
+                cachedLoginStatus = { loggedIn: false, expires: Date.now() + 300000 };
+                return false;
+            } catch (error) {
+                console.error('Login check error:', error);
+                // On error, default to not logged in
+                cachedLoginStatus = { loggedIn: false, expires: Date.now() + 60000 };
+                return false;
+            } finally {
+                loginCheckPromise = null;
+            }
+        })();
+        
+        return await loginCheckPromise;
     }
 
     // Show signup popup
-    function showSignupPopup(featureName) {
+    async function showSignupPopup(featureName) {
         // Don't show if already logged in
-        if (isUserLoggedIn()) {
+        const loggedIn = await isUserLoggedIn();
+        if (loggedIn) {
             return;
         }
 
@@ -182,9 +266,10 @@
         const aiFeatures = document.querySelectorAll('[data-requires-signup], .ai-feature, [href*="phone-setup-optimizer"], [href*="digital-detox-guide"]');
         
         aiFeatures.forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                // Only intercept if user is not logged in
-                if (!isUserLoggedIn()) {
+            link.addEventListener('click', async function(e) {
+                // Check login status (async)
+                const loggedIn = await isUserLoggedIn();
+                if (!loggedIn) {
                     e.preventDefault();
                     const featureName = link.getAttribute('data-feature-name') || 
                                        link.textContent.trim() || 
@@ -201,4 +286,6 @@
         isLoggedIn: isUserLoggedIn
     };
 })();
+
+
 

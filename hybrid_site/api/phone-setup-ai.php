@@ -33,6 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Check WordPress login status
+// Load WordPress for authentication check
+$wp_load_path = __DIR__ . '/../../../../wp-load.php';
+if (file_exists($wp_load_path)) {
+    require_once($wp_load_path);
+    
+    // Check if user is logged in
+    if (!function_exists('is_user_logged_in') || !is_user_logged_in()) {
+        http_response_code(401);
+        echo json_encode([
+            'error' => 'Authentication required',
+            'message' => 'Please sign up or log in to use this feature.',
+            'login_url' => home_url('/pledge/')
+        ]);
+        exit;
+    }
+} else {
+    // If WordPress isn't available, allow access (for testing/fallback)
+    // In production, you may want to deny access instead
+}
+
 // Load secrets
 $secrets_path = __DIR__ . '/../../secrets.json';
 if (!file_exists($secrets_path)) {
