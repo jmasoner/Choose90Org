@@ -250,7 +250,7 @@ add_filter('login_redirect', 'choose90_login_redirect', 10, 3);
 // Use our custom login page instead of wp-login.php
 function choose90_login_url($login_url, $redirect) {
     $login_page = get_page_by_path('login');
-    if ($login_page) {
+    if ($login_page && get_post_status($login_page->ID) === 'publish') {
         $login_url = get_permalink($login_page->ID);
         if ($redirect) {
             $login_url = add_query_arg('redirect_to', urlencode($redirect), $login_url);
@@ -259,6 +259,7 @@ function choose90_login_url($login_url, $redirect) {
     return $login_url;
 }
 add_filter('login_url', 'choose90_login_url', 10, 2);
+
 ?>
 '@
 $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")

@@ -234,7 +234,7 @@ get_header();
         }
         ?>
 
-        <form class="login-form" name="loginform" id="loginform" action="<?php echo esc_url(site_url('wp-login.php', 'login_post')); ?>" method="post">
+        <form class="login-form" name="loginform" id="loginform" action="<?php echo esc_url(wp_login_url()); ?>" method="post">
             <div class="form-group">
                 <label for="user_login">Username or Email</label>
                 <input type="text" name="log" id="user_login" class="input" value="" size="20" required autofocus>
