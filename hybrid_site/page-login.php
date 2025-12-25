@@ -225,24 +225,41 @@ get_header();
         </div>
 
         <?php
-        // Show error messages
+        // Show error messages from WordPress
         if (isset($_GET['login']) && $_GET['login'] == 'failed') {
             echo '<div class="login-error">Invalid username or password. Please try again.</div>';
         }
         if (isset($_GET['loggedout']) && $_GET['loggedout'] == 'true') {
             echo '<div class="login-success">You have been logged out successfully.</div>';
         }
+        if (isset($_GET['registered']) && $_GET['registered'] == 'true') {
+            echo '<div class="login-success">Registration successful! Please log in.</div>';
+        }
+        // Check for error parameter
+        if (isset($_GET['error'])) {
+            $error = $_GET['error'];
+            if ($error == 'incorrect_password' || $error == 'empty_password') {
+                echo '<div class="login-error">Invalid username or password. Please try again.</div>';
+            } elseif ($error == 'empty_username') {
+                echo '<div class="login-error">Please enter your username or email.</div>';
+            }
+        }
         ?>
 
-        <form class="login-form" name="loginform" id="loginform" action="<?php echo esc_url(wp_login_url()); ?>" method="post">
+        <form class="login-form" name="loginform" id="loginform" action="<?php echo esc_url(site_url('wp-login.php', 'login_post')); ?>" method="post">
+            <?php
+            // WordPress login form hooks
+            do_action('login_form');
+            ?>
+            
             <div class="form-group">
                 <label for="user_login">Username or Email</label>
-                <input type="text" name="log" id="user_login" class="input" value="" size="20" required autofocus>
+                <input type="text" name="log" id="user_login" class="input" value="<?php echo isset($_GET['log']) ? esc_attr($_GET['log']) : ''; ?>" size="20" required autofocus autocomplete="username">
             </div>
 
             <div class="form-group">
                 <label for="user_pass">Password</label>
-                <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" required>
+                <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" required autocomplete="current-password">
             </div>
 
             <div class="remember-me">
@@ -250,7 +267,11 @@ get_header();
                 <label for="rememberme">Remember me</label>
             </div>
 
-            <input type="hidden" name="redirect_to" value="<?php echo esc_url(home_url('/')); ?>">
+            <?php
+            // Get redirect URL
+            $redirect_to = isset($_REQUEST['redirect_to']) ? $_REQUEST['redirect_to'] : home_url('/');
+            ?>
+            <input type="hidden" name="redirect_to" value="<?php echo esc_url($redirect_to); ?>">
             
             <button type="submit" name="wp-submit" id="wp-submit" class="login-button">
                 Sign In

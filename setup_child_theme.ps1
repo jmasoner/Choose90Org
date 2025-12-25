@@ -247,13 +247,16 @@ function choose90_login_redirect($redirect_to, $requested_redirect_to, $user) {
 add_filter('login_redirect', 'choose90_login_redirect', 10, 3);
 
 // --- CUSTOM LOGIN PAGE URL ---
-// Use our custom login page instead of wp-login.php
+// Use our custom login page for display, but keep wp-login.php for form processing
 function choose90_login_url($login_url, $redirect) {
-    $login_page = get_page_by_path('login');
-    if ($login_page && get_post_status($login_page->ID) === 'publish') {
-        $login_url = get_permalink($login_page->ID);
-        if ($redirect) {
-            $login_url = add_query_arg('redirect_to', urlencode($redirect), $login_url);
+    // Only change the URL if we're not processing a form submission
+    if (!isset($_POST['log']) && !isset($_POST['pwd'])) {
+        $login_page = get_page_by_path('login');
+        if ($login_page && get_post_status($login_page->ID) === 'publish') {
+            $login_url = get_permalink($login_page->ID);
+            if ($redirect) {
+                $login_url = add_query_arg('redirect_to', urlencode($redirect), $login_url);
+            }
         }
     }
     return $login_url;
