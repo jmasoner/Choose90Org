@@ -177,6 +177,22 @@ function choose90_ensure_pages_exist() {
             update_post_meta($pledge_page_id, '_wp_page_template', 'page-pledge.php');
         }
     }
+
+    // Ensure Login page exists and uses custom template
+    $existing_login = get_page_by_path('login');
+    if ($existing_login) {
+        update_post_meta($existing_login->ID, '_wp_page_template', 'page-login.php');
+    } else {
+        $login_page_id = wp_insert_post(array(
+            "post_title"  => "Login",
+            "post_name"   => "login",
+            "post_status" => "publish",
+            "post_type"   => "page"
+        ));
+        if ($login_page_id && !is_wp_error($login_page_id)) {
+            update_post_meta($login_page_id, '_wp_page_template', 'page-login.php');
+        }
+    }
 }
 add_action('init', 'choose90_ensure_pages_exist');
 
@@ -229,6 +245,20 @@ function choose90_login_redirect($redirect_to, $requested_redirect_to, $user) {
     return home_url('/');
 }
 add_filter('login_redirect', 'choose90_login_redirect', 10, 3);
+
+// --- CUSTOM LOGIN PAGE URL ---
+// Use our custom login page instead of wp-login.php
+function choose90_login_url($login_url, $redirect) {
+    $login_page = get_page_by_path('login');
+    if ($login_page) {
+        $login_url = get_permalink($login_page->ID);
+        if ($redirect) {
+            $login_url = add_query_arg('redirect_to', urlencode($redirect), $login_url);
+        }
+    }
+    return $login_url;
+}
+add_filter('login_url', 'choose90_login_url', 10, 2);
 ?>
 '@
 $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")
@@ -343,6 +373,16 @@ if (Test-Path $PledgeTemplateSource) {
     Write-Host "Pledge template deployed." -ForegroundColor Green
 } else {
     Write-Warning "page-pledge.php not found. Skipping."
+}
+
+# 5b. Deploy page-login.php template (custom login page)
+Write-Host "Updating page-login.php template..."
+$LoginTemplateSource = Join-Path $PSScriptRoot "hybrid_site\page-login.php"
+if (Test-Path $LoginTemplateSource) {
+    Copy-Item -Path $LoginTemplateSource -Destination (Join-Path $ThemePath "page-login.php") -Force
+    Write-Host "Login template deployed." -ForegroundColor Green
+} else {
+    Write-Warning "page-login.php not found. Skipping."
 }
 
 # 5. Deploy Chapters Templates
