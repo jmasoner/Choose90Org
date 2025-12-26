@@ -101,3 +101,5 @@ foreach ($file in $ResourceFiles) {
 
 Write-Host "`nDone! All resource files updated." -ForegroundColor Green
 
+
+
