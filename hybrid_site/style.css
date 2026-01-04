@@ -249,6 +249,128 @@ header .container {
     cursor: pointer;
 }
 
+/* Dropdown Menu Styles */
+.nav-dropdown {
+    position: relative;
+}
+
+.dropdown-arrow {
+    font-size: 10px;
+    margin-left: 4px;
+    opacity: 0.7;
+    transition: transform 0.2s;
+}
+
+.nav-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    background: white;
+    min-width: 240px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    padding: 8px 0;
+    z-index: 1000;
+    list-style: none;
+    animation: fadeInDown 0.2s ease-out;
+    margin-top: 0;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown .dropdown-menu:hover {
+    display: block;
+}
+
+/* Bridge the gap between trigger and dropdown to keep it open */
+.nav-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 999;
+    background: transparent;
+}
+
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 20px;
+    color: #374151;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.dropdown-menu a:hover {
+    background: #f3f4f6;
+    color: #667eea;
+    padding-left: 24px;
+}
+
+.dropdown-header {
+    padding: 8px 20px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #9ca3af;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 8px 0;
+    list-style: none;
+}
+
+/* Mobile dropdown */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        background: #f9fafb;
+        border-radius: 0;
+        margin-top: 0;
+        padding: 0;
+        display: none;
+    }
+    
+    .nav-dropdown.active .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-menu a {
+        padding-left: 40px;
+    }
+    
+    .dropdown-arrow {
+        display: none;
+    }
+}
+
 /* Hero */
 .hero {
     height: 100vh;

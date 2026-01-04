@@ -209,6 +209,19 @@ function choose90_force_login_template($template) {
 }
 add_filter('template_include', 'choose90_force_login_template', 99);
 
+// --- FORCE PLEDGE PAGE TEMPLATE ---
+// Force WordPress to use page-pledge.php for the pledge page
+function choose90_force_pledge_template($template) {
+    if (is_page('pledge')) {
+        $pledge_template = locate_template(array('page-pledge.php'));
+        if ($pledge_template) {
+            return $pledge_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'choose90_force_pledge_template', 99);
+
 // Include Choose90 custom functions
 // Note: Adjust paths based on your server structure
 // Option 1: If wp-functions files are in a parallel directory
@@ -288,6 +301,77 @@ $FunctionsContent | Set-Content (Join-Path $ThemePath "functions.php")
 # I will just run the header/footer updates again to be sure.
 
 Write-Host "Updating header.php..."
+$StaticHeaderPath = Join-Path $PSScriptRoot "hybrid_site\components\static-header.html"
+if (Test-Path $StaticHeaderPath) {
+    $StaticHeaderContent = Get-Content $StaticHeaderPath -Raw
+    # Extract just the header content (skip the comment at the top)
+    if ($StaticHeaderContent -match '<header[^>]*>.*?</header>') {
+        $HeaderNavOnly = $matches[0]
+    } else {
+        $HeaderNavOnly = $StaticHeaderContent
+    }
+} else {
+    $HeaderNavOnly = @"
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">Choose<span>90</span>.</a>
+        <div class="mobile-menu-btn">☰</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">Our Story</a></li>
+                <?php if (!is_user_logged_in()): ?>
+                <!-- Pledge Dropdown (hidden when logged in) -->
+                <li class="nav-dropdown" id="nav-pledge-dropdown">
+                    <a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge <span class="dropdown-arrow">▼</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pledge/">Take the Pledge</a></li>
+                        <li><a href="/pledge-wall.html">Pledge Wall</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                <?php endif; ?>
+                <li class="nav-dropdown">
+                    <a href="/resources-hub.html">Resources <span class="dropdown-arrow">▼</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/resources-hub.html">Resources Hub</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Tools</li>
+                        <li><a href="/tools/content-generator.html">Content Generator</a></li>
+                        <li><a href="/pwa.html">Browser Extension & PWA</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Challenges</li>
+                        <li><a href="/resources/30-day-choose90-challenge.html">30-Day Challenge</a></li>
+                        <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Special Events</li>
+                        <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                <li><a href="/chapters/">Chapters</a></li>
+                <?php if (is_user_logged_in()): ?>
+                    <!-- Account Dropdown -->
+                    <li class="nav-dropdown">
+                        <a href="<?php echo admin_url('profile.php'); ?>" style="color: #666; text-decoration: none;">
+                            My Account <span class="dropdown-arrow">▼</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo admin_url('profile.php'); ?>">My Account</a></li>
+                            <li><a href="<?php echo wp_logout_url(home_url('/')); ?>">Log Out</a></li>
+                        </ul>
+                    </li>
+                <?php else: ?>
+                    <li><a href="<?php echo wp_login_url(); ?>" id="nav-login-link">Log In</a></li>
+                <?php endif; ?>
+                <li><a href="/donate/" class="btn btn-starfield" style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+"@
+}
+
 $HeaderContent = @"
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -299,27 +383,7 @@ $HeaderContent = @"
 </head>
 <body <?php body_class(); ?>>
     <div id="page-container">
-    <header class="site-header">
-        <div class="container">
-            <a href="/" class="logo">Choose<span>90</span>.</a>
-            <div class="mobile-menu-btn">☰</div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about.html">Our Story</a></li>
-                    <li><a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
-                    <li><a href="/resources-hub.html">Resources</a></li>
-                    <li><a href="/chapters/">Chapters</a></li>
-                    <?php if (is_user_logged_in()): ?>
-                        <li><a href="<?php echo admin_url('profile.php'); ?>">My Account</a></li>
-                    <?php else: ?>
-                        <li><a href="<?php echo wp_login_url(); ?>">Log In</a></li>
-                    <?php endif; ?>
-                    <li><a href="/donate/" class="btn btn-starfield" style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    $HeaderNavOnly
     <div id="et-main-area">
 "@
 $HeaderContent | Set-Content (Join-Path $ThemePath "header.php")
@@ -351,9 +415,21 @@ $FooterContent = @"
                         <li><a href="/support.html">Contact Support</a></li>
                     </ul>
                 </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy.html">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="/delete-account.html">Delete Account</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="/privacy.html">Privacy Policy</a></p>
+                <p>&copy; 2025 Choose90.org. All rights reserved. | 
+                    <a href="/privacy.html">Privacy Policy</a> | 
+                    <a href="/terms-of-service.html">Terms of Service</a> | 
+                    <a href="/delete-account.html">Delete Account</a>
+                </p>
             </div>
         </div>
     </footer>

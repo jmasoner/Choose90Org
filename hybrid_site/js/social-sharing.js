@@ -11,6 +11,11 @@ const Choose90Share = {
         const text = encodeURIComponent('I just pledged to support the Choose90 movement! 🎯 Join me in choosing 90% positive. #Choose90');
         const url = encodeURIComponent('https://choose90.org/pledge');
         
+        // Track social share event
+        if (typeof window.trackSocialShare === 'function') {
+            window.trackSocialShare(platform, 'pledge', url);
+        }
+        
         this.share(platform, text, url);
     },
 
@@ -30,6 +35,11 @@ const Choose90Share = {
     shareResource: function(resourceName, platform) {
         const text = encodeURIComponent(`I just completed the ${resourceName} from Choose90! 📚 #Choose90`);
         const url = encodeURIComponent('https://choose90.org/resources-hub.html');
+        
+        // Track social share event
+        if (typeof window.trackSocialShare === 'function') {
+            window.trackSocialShare(platform, 'resource', url);
+        }
         
         this.share(platform, text, url);
     },

@@ -1,0 +1,840 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Days of Choose90 Challenge | Choose90.org</title>
+    <meta name="description" content="Take the 30-day challenge to make 90% of your online influence positive, uplifting, and constructive. Daily prompts and inspiration.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .challenge-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .challenge-hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .challenge-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .challenge-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .day-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        
+        .day-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .day-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .day-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+        
+        .day-prompt {
+            font-size: 15px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 50px;
+            height: 8px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 50px;
+            transition: width 0.3s;
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 3px solid #3b82f6;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
+<!-- Shared static header for Choose90 hybrid site -->
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">Choose<span>90</span>.</a>
+        <div class="mobile-menu-btn">☰</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about.html">Our Story</a></li>
+                
+                <!-- Pledge Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">
+                        Join <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pledge/">Join the Movement</a></li>
+                        <li><a href="/pledge-wall.html">Join Wall</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Resources Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/resources-hub.html">
+                        Resources <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/resources-hub.html">Resources Hub</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Tools</li>
+                        <li><a href="/tools/content-generator.html">Content Generator</a></li>
+                        <li><a href="/pwa.html">Browser Extension & PWA</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Challenges</li>
+                        <li><a href="/resources/30-day-choose90-challenge.html">30-Day Challenge</a></li>
+                        <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Special Events</li>
+                        <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="/chapters/">Chapters</a></li>
+                <!-- Account Dropdown (hidden by default, shown when logged in) -->
+                <li class="nav-dropdown" id="nav-account-dropdown" style="display: none; list-style: none;">
+                    <a href="/wp-admin/profile.php" id="nav-account-link" style="color: #666; text-decoration: none;">
+                        My Account <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/wp-admin/profile.php">My Account</a></li>
+                        <li><a href="#" id="nav-logout-link">Log Out</a></li>
+                    </ul>
+                </li>
+                <!-- Login Link (shown by default, hidden when logged in) -->
+                <li id="nav-login-item" style="list-style: none;"><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
+                <li><a href="/donate/" class="btn btn-starfield"
+                        style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+            </ul>
+            <script>
+                // Update login/account link based on authentication status
+                (function() {
+                    const loginItem = document.getElementById('nav-login-item');
+                    const loginLink = document.getElementById('nav-login-link');
+                    const accountDropdown = document.getElementById('nav-account-dropdown');
+                    const accountLink = document.getElementById('nav-account-link');
+                    const logoutLink = document.getElementById('nav-logout-link');
+                    
+                    if (!loginItem || !accountDropdown || !logoutLink) return;
+                    
+                    // Handle logout
+                    logoutLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            // Sign out from Firebase if available
+                            if (window.choose90Auth && typeof window.choose90Auth.signOut === 'function') {
+                                await window.choose90Auth.signOut();
+                            }
+                            
+                            // Sign out from WordPress
+                            const response = await fetch('/api/logout.php', {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                // Redirect to homepage or login page
+                                window.location.href = data.redirect_to || '/';
+                            } else {
+                                // Even if API fails, try to redirect
+                                window.location.href = '/';
+                            }
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            // Still redirect even on error
+                            window.location.href = '/';
+                        }
+                    });
+                    
+                    // Check if logged in
+                    function checkLogin() {
+                        // Check for WordPress admin bar
+                        if (document.body.classList.contains('admin-bar')) {
+                            if (loginItem) loginItem.style.display = 'none';
+                            if (accountDropdown) accountDropdown.style.display = 'list-item';
+                            return;
+                        }
+                        
+                        // Check for WordPress cookies
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            if (cookies[i].trim().indexOf('wordpress_logged_in') !== -1) {
+                                if (loginItem) loginItem.style.display = 'none';
+                                if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                return;
+                            }
+                        }
+                        
+                        // Check via API
+                        fetch('/api/check-auth.php', { credentials: 'include' })
+                            .then(r => r.json())
+                            .then(data => {
+                                if (data.logged_in) {
+                                    if (loginItem) loginItem.style.display = 'none';
+                                    if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                } else {
+                                    if (loginItem) loginItem.style.display = 'list-item';
+                                    if (accountDropdown) accountDropdown.style.display = 'none';
+                                }
+                            })
+                            .catch(() => {
+                                // On error, default to showing login link
+                                if (loginItem) loginItem.style.display = 'list-item';
+                                if (accountDropdown) accountDropdown.style.display = 'none';
+                            });
+                    }
+                    
+                    // Check on page load
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', checkLogin);
+                    } else {
+                        checkLogin();
+                    }
+                })();
+                
+                // Mobile dropdown toggle
+                (function() {
+                    const mobileBtn = document.querySelector('.mobile-menu-btn');
+                    const navLinks = document.querySelector('.nav-links');
+                    
+                    if (mobileBtn && navLinks) {
+                        mobileBtn.addEventListener('click', () => {
+                            navLinks.classList.toggle('active');
+                        });
+                        
+                        // Toggle dropdowns on mobile
+                        document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                if (window.innerWidth <= 768) {
+                                    e.preventDefault();
+                                    link.parentElement.classList.toggle('active');
+                                }
+                            });
+                        });
+                    }
+                })();
+            </script>
+        </nav>
+    </div>
+    
+    <!-- Top Announcement Banner (Below Menu on Desktop) -->
+    <div id="campaign-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; text-align: center; display: none; border-top: 1px solid rgba(255,255,255,0.2);">
+        <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+            <span style="font-weight: 600; font-size: 15px;">🎉 <strong>New Year's Resolution:</strong> Start 2026 with intention! <a href="/new-years-resolution.html" style="color: white; text-decoration: underline; font-weight: 700;">Join the movement →</a></span>
+            <button id="banner-close" onclick="closeCampaignBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 18px; line-height: 1; transition: background 0.2s;">×</button>
+        </div>
+    </div>
+    
+    <script>
+        function showCampaignBanner() {
+            const dismissed = localStorage.getItem('campaign-banner-dismissed');
+            const banner = document.getElementById('campaign-banner');
+            if (banner && !dismissed) {
+                banner.style.display = 'block';
+                document.body.style.paddingTop = 'calc(var(--header-height, 80px) + 45px)';
+                document.querySelector('header.site-header').classList.add('has-banner');
+            }
+        }
+        function closeCampaignBanner() {
+            const banner = document.getElementById('campaign-banner');
+            if (banner) {
+                banner.style.display = 'none';
+                localStorage.setItem('campaign-banner-dismissed', 'true');
+                document.body.style.paddingTop = '';
+                document.querySelector('header.site-header').classList.remove('has-banner');
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showCampaignBanner);
+        } else {
+            showCampaignBanner();
+        }
+        window.closeCampaignBanner = closeCampaignBanner;
+    </script>
+</header>
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+    <!-- Hero -->
+    <section class="challenge-hero">
+        <div class="container">
+            <h1>30 Days of Choose90 Challenge</h1>
+            <p style="font-size: 20px; opacity: 0.95;">Transform your online influence, one day at a time</p>
+        </div>
+    </section>
+
+    <!-- Challenge Content -->
+    <div class="challenge-container">
+        <div class="challenge-card">
+            <h2 style="font-size: 32px; margin-bottom: 20px;">✨ Welcome to Your 30-Day Journey</h2>
+            <p style="font-size: 18px; line-height: 1.8; color: #6b7280;">
+                For the next 30 days, you'll receive a daily prompt to help you create positive, uplifting content. 
+                Each day focuses on a different aspect of positive influence, from gratitude to encouragement to celebration.
+            </p>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <p style="text-align: center; color: #6b7280; margin-top: 12px;" id="progress-text">Start your journey today!</p>
+        </div>
+
+        <div class="challenge-card">
+            <h2 style="font-size: 28px; margin-bottom: 30px;">Daily Prompts</h2>
+            <div class="day-grid" id="days-grid"></div>
+        </div>
+
+        <div class="cta-box">
+            <h3 style="font-size: 24px; color: #1e40af; margin-bottom: 20px;">Ready to Start?</h3>
+            <p style="font-size: 18px; color: #1e3a8a; margin-bottom: 30px;">
+                Take Choose90 and commit to 30 days of positive influence!
+            </p>
+            <a href="/pledge/" class="btn-hero btn-hero-primary" style="background: #3b82f6; color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; display: inline-block;">Join the Movement</a>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+<!-- Shared static footer for Choose90 hybrid site -->
+<footer>
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-col" style="flex: 2;">
+                <a href="/" class="logo"
+                    style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
+                    focusing on the good.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/resources-hub.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Action</h4>
+                <ul>
+                    <li><a href="/pledge/">Join the Movement</a></li>
+                    <li><a href="/donate/">Donate</a></li>
+                    <li><a href="/support.html">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/delete-account.html">Delete Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Campaigns</h4>
+                <ul>
+                    <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                    <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                    <li><a href="/digital-detox-guide.html">Digital Detox Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-newsletter" style="margin: 40px 0; padding: 40px 0; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+            <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <h4 style="color: white; font-size: 20px; margin-bottom: 12px; font-weight: 600;">Stay Connected with Choose90</h4>
+                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Get weekly inspiration, tips, and updates on making your online influence 90% positive.</p>
+                <form id="footer-newsletter-form" onsubmit="submitFooterEmail(event)" style="display: flex; gap: 8px; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="footer-email" placeholder="Enter your email" required style="flex: 1; min-width: 200px; padding: 12px 16px; border: 2px solid #444; border-radius: 6px; font-size: 14px; background: #2a2a2a; color: white;">
+                    <button type="submit" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">Subscribe</button>
+                </form>
+                <p style="color: #666; font-size: 11px; margin-top: 12px;">We respect your privacy. Unsubscribe at any time.</p>
+                <div id="footer-email-success" style="display: none; background: #10b981; color: white; padding: 12px; border-radius: 6px; margin-top: 12px; font-size: 14px;">
+                    ✓ Thank you! Check your email to confirm.
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Choose90.org. All rights reserved. | 
+                <a href="/privacy.html">Privacy Policy</a> | 
+                <a href="/terms-of-service.html">Terms of Service</a> | 
+                <a href="/delete-account.html">Delete Account</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+    
+    <script>
+        // 30 Days of prompts
+        const dailyPrompts = [
+            { day: 1, title: "Gratitude", prompt: "Share three things you're grateful for today." },
+            { day: 2, title: "Encouragement", prompt: "Post something encouraging for someone who might need it." },
+            { day: 3, title: "Celebration", prompt: "Celebrate someone else's achievement or milestone." },
+            { day: 4, title: "Kindness", prompt: "Share a story of kindness you witnessed or experienced." },
+            { day: 5, title: "Hope", prompt: "Post something that gives others hope for the future." },
+            { day: 6, title: "Community", prompt: "Highlight someone in your community making a positive difference." },
+            { day: 7, title: "Learning", prompt: "Share something positive you learned this week." },
+            { day: 8, title: "Connection", prompt: "Reach out and connect with someone you haven't talked to in a while." },
+            { day: 9, title: "Inspiration", prompt: "Share a quote or story that inspires you." },
+            { day: 10, title: "Appreciation", prompt: "Publicly appreciate someone who has helped you." },
+            { day: 11, title: "Positivity", prompt: "Share something positive happening in your life right now." },
+            { day: 12, title: "Support", prompt: "Offer help or support to someone who might need it." },
+            { day: 13, title: "Reflection", prompt: "Reflect on a positive change you've made recently." },
+            { day: 14, title: "Joy", prompt: "Share something that brings you joy." },
+            { day: 15, title: "Midpoint Check", prompt: "Reflect on your Choose90 journey so far. What's been the impact?" },
+            { day: 16, title: "Growth", prompt: "Share something you're working on improving in a positive way." },
+            { day: 17, title: "Gratitude Again", prompt: "Express gratitude for the people in your life." },
+            { day: 18, title: "Encouragement Again", prompt: "Encourage someone pursuing a goal or dream." },
+            { day: 19, title: "Celebration Again", prompt: "Celebrate progress, not just perfection." },
+            { day: 20, title: "Impact", prompt: "Share how choosing positivity has impacted your life." },
+            { day: 21, title: "Community Again", prompt: "Highlight a positive community initiative or event." },
+            { day: 22, title: "Wisdom", prompt: "Share a piece of wisdom or advice that's helped you." },
+            { day: 23, title: "Connection Again", prompt: "Share how you've connected with others through positive content." },
+            { day: 24, title: "Hope Again", prompt: "Share something that gives you hope for tomorrow." },
+            { day: 25, title: "Appreciation Again", prompt: "Appreciate the small moments of beauty in everyday life." },
+            { day: 26, title: "Support Again", prompt: "Offer words of support to someone going through a challenge." },
+            { day: 27, title: "Reflection Again", prompt: "Reflect on how your online presence has changed." },
+            { day: 28, title: "Impact Again", prompt: "Share the positive impact you've seen from choosing 90% positive." },
+            { day: 29, title: "Commitment", prompt: "Reaffirm your commitment to Choose90." },
+            { day: 30, title: "Celebration", prompt: "Celebrate completing 30 days of Choose90! Share your journey." }
+        ];
+        
+        // Render days
+        function renderDays() {
+            const grid = document.getElementById('days-grid');
+            grid.innerHTML = dailyPrompts.map(day => `
+                <div class="day-card">
+                    <div class="day-number">Day ${day.day}</div>
+                    <div class="day-title">${day.title}</div>
+                    <div class="day-prompt">${day.prompt}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Calculate progress
+        function updateProgress() {
+            const startDate = localStorage.getItem('challenge-start-date');
+            if (!startDate) {
+                document.getElementById('progress-text').textContent = 'Start your journey today!';
+                document.getElementById('progress-fill').style.width = '0%';
+                return;
+            }
+            
+            const start = new Date(startDate);
+            const now = new Date();
+            const daysElapsed = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
+            const progress = Math.min((daysElapsed / 30) * 100, 100);
+            
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Day ${Math.min(daysElapsed, 30)} of 30 - ${Math.round(progress)}% complete!`;
+        }
+        
+        // Initialize
+        renderDays();
+        updateProgress();
+        
+        // Update login link
+        (function() {
+            const loginLink = document.getElementById('nav-login-link');
+            if (!loginLink) return;
+            
+            function checkLogin() {
+                if (document.body.classList.contains('admin-bar')) {
+                    loginLink.textContent = 'My Account';
+                    loginLink.href = '/wp-admin/profile.php';
+                    return;
+                }
+                
+                fetch('/api/check-auth.php', { credentials: 'include' })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.logged_in) {
+                            loginLink.textContent = 'My Account';
+                            loginLink.href = '/wp-admin/profile.php';
+                        }
+                    })
+                    .catch(() => {});
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkLogin);
+            } else {
+                checkLogin();
+            }
+        })();
+    </script>
+</body>
+</html>
+
+

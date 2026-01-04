@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose90 PWA Demo - Try the Mobile App | Choose90.org</title>
+    <meta name="description" content="Interactive demo of the Choose90 PWA mobile app - see how it rewrites your posts to be 90% positive.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            color: #0066CC;
+            margin-bottom: 12px;
+        }
+
+        .demo-header p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .demo-instructions {
+            background: #e8f4f8;
+            border-left: 4px solid #0066CC;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .demo-instructions h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #0066CC;
+        }
+
+        .demo-instructions ol {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .demo-instructions li {
+            margin-bottom: 8px;
+        }
+
+        /* PWA Mobile App Interface */
+        .pwa-interface {
+            max-width: 400px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .pwa-header {
+            text-align: center;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .pwa-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .pwa-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .pwa-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .daily-inspiration-card {
+            text-align: center;
+        }
+
+        .daily-inspiration-card h3 {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 16px;
+        }
+
+        .quote {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #374151;
+            font-style: italic;
+            margin-bottom: 12px;
+            min-height: 60px;
+        }
+
+        .quote-author {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .composer-card {
+            display: none;
+        }
+
+        .composer-card.active {
+            display: block;
+        }
+
+        .composer-card h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #1f2937;
+        }
+
+        .compose-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+
+        .compose-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .pwa-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-bottom: 8px;
+        }
+
+        .pwa-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .pwa-btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .pwa-btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .pwa-btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .pwa-btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .comparison-card {
+            display: none;
+        }
+
+        .comparison-card.active {
+            display: block;
+        }
+
+        .comparison-section {
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .comparison-original {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+        }
+
+        .comparison-rewritten {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+        }
+
+        .comparison-section h4 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-original h4 {
+            color: #991b1b;
+        }
+
+        .comparison-rewritten h4 {
+            color: #166534;
+        }
+
+        .comparison-text {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .example-button {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            transition: all 0.2s;
+        }
+
+        .example-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .reset-button {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .reset-button:hover {
+            background: #e5e7eb;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-box h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .cta-box p {
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .pwa-interface {
+                max-width: 100%;
+                margin: 0 auto 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <!--#include virtual="/components/static-header.html" -->
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>Choose90 PWA Demo</h1>
+            <p>Try the Choose90 mobile app experience. See how it works on your phone!</p>
+        </div>
+
+        <div class="demo-instructions">
+            <h3>📱 How to Use This Demo:</h3>
+            <ol>
+                <li>Try an example post below, or type your own (up to 100 words)</li>
+                <li>Click "✨ Make it Choose90" to rewrite your post</li>
+                <li>Compare the original vs. Choose90 version</li>
+                <li>Copy or use the rewritten version</li>
+                <li>Install the PWA on your phone for the full experience!</li>
+            </ol>
+        </div>
+
+        <!-- Example Posts -->
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 18px; margin-bottom: 12px; color: #1f2937;">💡 Try These Example Posts:</h3>
+            <div class="example-buttons">
+                <button class="example-button" data-example="traffic">Traffic Complaint</button>
+                <button class="example-button" data-example="work">Work Frustration</button>
+                <button class="example-button" data-example="weather">Weather Complaint</button>
+                <button class="example-button" data-example="politics">Political Frustration</button>
+            </div>
+            <button class="reset-button" id="reset-button">Clear & Start Over</button>
+        </div>
+
+        <!-- PWA Mobile App Interface -->
+        <div class="pwa-interface">
+            <div class="pwa-header">
+                <h2>✨ Choose90</h2>
+                <p>Make your posts 90% positive</p>
+            </div>
+
+            <!-- Daily Inspiration Card -->
+            <div class="pwa-card daily-inspiration-card" id="daily-inspiration-card">
+                <h3>Daily Inspiration</h3>
+                <div class="quote" id="daily-quote">"Be the reason someone feels seen, heard, and valued today."</div>
+                <div class="quote-author">— Choose90</div>
+                <button class="pwa-btn pwa-btn-primary" id="compose-btn">Compose Post</button>
+            </div>
+
+            <!-- Composer Card -->
+            <div class="pwa-card composer-card" id="composer-card">
+                <h3>Compose Your Post</h3>
+                <!-- Tone Selector -->
+                <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <label for="tone-selector" style="font-weight: 600; color: #374151; font-size: 13px;">Tone:</label>
+                    <select id="tone-selector" style="flex: 1; min-width: 120px; padding: 8px 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; background: white; cursor: pointer;">
+                        <option value="positive">Positive</option>
+                        <option value="uplifting">Uplifting</option>
+                        <option value="encouraging">Encouraging</option>
+                        <option value="grateful">Grateful</option>
+                        <option value="inspiring">Inspiring</option>
+                        <option value="celebratory">Celebratory</option>
+                    </select>
+                    <span style="font-size: 11px; color: #6b7280;">(100 words max)</span>
+                </div>
+                <textarea 
+                    id="post-textarea" 
+                    class="compose-textarea" 
+                    placeholder="What's on your mind? Choose90 will help make it positive and uplifting..."
+                    maxlength="600"
+                ></textarea>
+                <div class="char-count" id="char-count">0 characters (0 words)</div>
+                <button class="pwa-btn pwa-btn-primary" id="rewrite-btn" disabled>✨ Make it Choose90</button>
+                <button class="pwa-btn pwa-btn-secondary" id="clear-btn">Clear</button>
+                <div class="error-message" id="error-message"></div>
+            </div>
+
+            <!-- Comparison Card -->
+            <div class="pwa-card comparison-card" id="comparison-card">
+                <div class="comparison-section comparison-original">
+                    <h4>Your Original Post</h4>
+                    <div class="comparison-text" id="original-text"></div>
+                </div>
+                <div class="comparison-section comparison-rewritten">
+                    <h4>✨ Choose90 Version</h4>
+                    <div class="comparison-text" id="choose90-text"></div>
+                </div>
+                <button class="pwa-btn pwa-btn-secondary" id="back-btn">Back</button>
+                <button class="pwa-btn pwa-btn-primary" id="copy-btn">📋 Copy to Clipboard</button>
+                <button class="pwa-btn pwa-btn-primary" id="use-btn">Use This Version</button>
+            </div>
+        </div>
+
+        <!-- CTA Box -->
+        <div class="cta-box">
+            <h3>Ready to Install?</h3>
+            <p>Install the Choose90 PWA on your phone for the full mobile app experience!</p>
+            <a href="/pwa/" class="cta-button">Install Choose90 PWA →</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!--#include virtual="/components/static-footer.html" -->
+
+    <script>
+        // Example posts
+        const examples = {
+            traffic: "Ugh, traffic was terrible today. Took me forever to get home. Why does this always happen on Fridays? So frustrating.",
+            work: "So frustrated with this project. Nothing is working and I'm running out of time. This is so stressful and I don't know what to do.",
+            weather: "Another rainy day. Can't believe how gloomy it is outside. I hate this weather, it's so depressing.",
+            politics: "I can't believe what's happening in politics right now. Everything is so messed up and I'm losing faith in the system."
+        };
+
+        // Daily quotes
+        const dailyQuotes = [
+            "Be the reason someone feels seen, heard, and valued today.",
+            "Your words have power. Use them to lift others up.",
+            "Small acts of kindness create ripples of positivity.",
+            "Choose to be 90% positive. The other 10%? That's being human.",
+            "Every post is a chance to add light to someone's day."
+        ];
+
+        // Count words
+        function countWords(text) {
+            return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+        }
+
+        // Check word limit
+        function exceedsWordLimit(text) {
+            return countWords(text) > 100;
+        }
+
+        // Truncate to 100 words
+        function truncateTo100Words(text) {
+            const words = text.trim().split(/\s+/);
+            if (words.length <= 100) return text;
+            return words.slice(0, 100).join(' ') + '...';
+        }
+
+        // Call AI API
+        async function rewriteWithAI(originalText, tone) {
+            try {
+                if (exceedsWordLimit(originalText)) {
+                    originalText = truncateTo100Words(originalText);
+                }
+
+                const response = await fetch('/api/rewrite-post.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: originalText,
+                        platform: 'general',
+                        tone: tone || 'positive'
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to rewrite post');
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.rewritten) {
+                    return data.rewritten;
+                } else {
+                    throw new Error('Invalid response from API');
+                }
+            } catch (error) {
+                console.error('Rewrite error:', error);
+                throw error;
+            }
+        }
+
+        // Get elements
+        const dailyInspirationCard = document.getElementById('daily-inspiration-card');
+        const composerCard = document.getElementById('composer-card');
+        const comparisonCard = document.getElementById('comparison-card');
+        const composeBtn = document.getElementById('compose-btn');
+        const textarea = document.getElementById('post-textarea');
+        const charCount = document.getElementById('char-count');
+        const rewriteBtn = document.getElementById('rewrite-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const backBtn = document.getElementById('back-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const useBtn = document.getElementById('use-btn');
+        const errorMessage = document.getElementById('error-message');
+        const originalText = document.getElementById('original-text');
+        const choose90Text = document.getElementById('choose90-text');
+        const dailyQuote = document.getElementById('daily-quote');
+        const resetButton = document.getElementById('reset-button');
+        const toneSelector = document.getElementById('tone-selector');
+
+        // Set daily quote
+        const today = new Date();
+        const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+        const quoteIndex = dayOfYear % dailyQuotes.length;
+        dailyQuote.textContent = `"${dailyQuotes[quoteIndex]}"`;
+
+        // Show composer
+        composeBtn.addEventListener('click', () => {
+            dailyInspirationCard.style.display = 'none';
+            composerCard.classList.add('active');
+            textarea.focus();
+        });
+
+        // Character count and validation
+        textarea.addEventListener('input', function() {
+            const text = this.value;
+            const length = text.length;
+            const wordCount = countWords(text);
+            
+            if (exceedsWordLimit(text)) {
+                const truncated = truncateTo100Words(text);
+                this.value = truncated;
+                charCount.textContent = `${truncated.length} characters (100 words - limit reached)`;
+                charCount.style.color = '#f59e0b';
+            } else {
+                charCount.textContent = `${length} characters (${wordCount} words)`;
+                charCount.style.color = wordCount >= 10 ? '#10b981' : '#6b7280';
+            }
+            
+            rewriteBtn.disabled = length === 0 || wordCount > 100 || wordCount < 10;
+        });
+
+        // Example buttons
+        document.querySelectorAll('.example-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const example = this.dataset.example;
+                if (examples[example]) {
+                    dailyInspirationCard.style.display = 'none';
+                    composerCard.classList.add('active');
+                    textarea.value = examples[example];
+                    textarea.dispatchEvent(new Event('input'));
+                    textarea.focus();
+                }
+            });
+        });
+
+        // Reset button
+        resetButton.addEventListener('click', () => {
+            dailyInspirationCard.style.display = 'block';
+            composerCard.classList.remove('active');
+            comparisonCard.classList.remove('active');
+            textarea.value = '';
+            toneSelector.value = 'positive';
+            textarea.dispatchEvent(new Event('input'));
+            errorMessage.classList.remove('active');
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            textarea.value = '';
+            textarea.dispatchEvent(new Event('input'));
+            errorMessage.classList.remove('active');
+        });
+
+        // Rewrite button
+        rewriteBtn.addEventListener('click', async () => {
+            const text = textarea.value.trim();
+            if (text.length < 10) {
+                showError('Please enter at least 10 characters');
+                return;
+            }
+
+            if (exceedsWordLimit(text)) {
+                showError('Please limit your post to 100 words for the demo.');
+                return;
+            }
+
+            rewriteBtn.disabled = true;
+            rewriteBtn.textContent = 'Rewriting...';
+            errorMessage.classList.remove('active');
+
+            try {
+                // Get selected tone
+                const tone = toneSelector.value;
+                
+                const rewritten = await rewriteWithAI(text, tone);
+                
+                originalText.textContent = text;
+                choose90Text.textContent = rewritten;
+                
+                composerCard.classList.remove('active');
+                comparisonCard.classList.add('active');
+            } catch (error) {
+                showError(error.message || 'Failed to rewrite post. Please try again.');
+            } finally {
+                rewriteBtn.disabled = false;
+                rewriteBtn.textContent = '✨ Make it Choose90';
+            }
+        });
+
+        // Back button
+        backBtn.addEventListener('click', () => {
+            comparisonCard.classList.remove('active');
+            composerCard.classList.add('active');
+        });
+
+        // Copy button
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(choose90Text.textContent);
+                copyBtn.textContent = '✅ Copied!';
+                copyBtn.style.background = '#10b981';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy to Clipboard';
+                    copyBtn.style.background = '';
+                }, 2000);
+            } catch (err) {
+                // Fallback: select text
+                const range = document.createRange();
+                range.selectNodeContents(choose90Text);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                copyBtn.textContent = '📋 Text Selected - Copy Manually';
+            }
+        });
+
+        // Use button
+        useBtn.addEventListener('click', () => {
+            textarea.value = choose90Text.textContent;
+            comparisonCard.classList.remove('active');
+            composerCard.classList.add('active');
+            textarea.dispatchEvent(new Event('input'));
+        });
+
+        // Show error
+        function showError(message) {
+            errorMessage.textContent = `Error: ${message}`;
+            errorMessage.classList.add('active');
+        }
+    </script>
+</body>
+</html>

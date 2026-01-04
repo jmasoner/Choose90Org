@@ -58,6 +58,136 @@ class Choose90_CRM_Admin {
             'choose90-crm-settings',
             array($this, 'render_settings')
         );
+        
+        // Analytics Dashboard (registered here to ensure it appears)
+        // Ensure Analytics class is loaded before checking
+        $analytics_file = CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-analytics.php';
+        if (!class_exists('Choose90_CRM_Analytics') && file_exists($analytics_file)) {
+            require_once $analytics_file;
+        }
+        
+        // Only register menu if class exists AND menu doesn't already exist (prevent duplicates)
+        global $submenu;
+        $menu_already_exists = false;
+        if (isset($submenu['choose90-crm'])) {
+            foreach ($submenu['choose90-crm'] as $item) {
+                if (isset($item[2]) && ($item[2] === 'choose90-crm-analytics' || $item[2] === 'choose90-crm-analytics-settings')) {
+                    $menu_already_exists = true;
+                    break;
+                }
+            }
+        }
+        
+        if (class_exists('Choose90_CRM_Analytics') && !$menu_already_exists) {
+            add_submenu_page(
+                'choose90-crm',
+                __('Analytics Dashboard', 'choose90-crm'),
+                __('Analytics', 'choose90-crm'),
+                'manage_options',
+                'choose90-crm-analytics',
+                array($this, 'render_analytics_dashboard')
+            );
+            
+            add_submenu_page(
+                'choose90-crm',
+                __('Analytics Settings', 'choose90-crm'),
+                __('Analytics Settings', 'choose90-crm'),
+                'manage_options',
+                'choose90-crm-analytics-settings',
+                array($this, 'render_analytics_settings')
+            );
+        }
+    }
+    
+    /**
+     * Render analytics dashboard (wrapper to call Analytics class)
+     */
+    public function render_analytics_dashboard() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+        
+        // Check if class exists
+        if (!class_exists('Choose90_CRM_Analytics')) {
+            echo '<div class="wrap"><h1>Analytics Dashboard</h1>';
+            echo '<div class="notice notice-error"><p><strong>Error:</strong> Choose90_CRM_Analytics class not found.</p>';
+            echo '<p>This means the Analytics class file is not being loaded. Check:</p>';
+            echo '<ul><li>File exists: wp-content/plugins/choose90-crm/includes/class-crm-analytics.php</li>';
+            echo '<li>Plugin is activated</li>';
+            echo '<li>No PHP syntax errors in the Analytics class file</li></ul></div></div>';
+            return;
+        }
+        
+        // Try to get instance
+        try {
+            $analytics = Choose90_CRM_Analytics::get_instance();
+            if (!$analytics) {
+                throw new Exception('get_instance() returned null');
+            }
+            
+            // Check if method exists
+            if (!method_exists($analytics, 'render_dashboard')) {
+                echo '<div class="wrap"><h1>Analytics Dashboard</h1>';
+                echo '<div class="notice notice-error"><p><strong>Error:</strong> render_dashboard() method not found in Analytics class.</p></div></div>';
+                return;
+            }
+            
+            // Call the method
+            $analytics->render_dashboard();
+            
+        } catch (Exception $e) {
+            echo '<div class="wrap"><h1>Analytics Dashboard</h1>';
+            echo '<div class="notice notice-error">';
+            echo '<p><strong>Error loading Analytics:</strong></p>';
+            echo '<p>' . esc_html($e->getMessage()) . '</p>';
+            echo '<p>Stack trace:</p><pre>' . esc_html($e->getTraceAsString()) . '</pre>';
+            echo '</div></div>';
+        } catch (Error $e) {
+            echo '<div class="wrap"><h1>Analytics Dashboard</h1>';
+            echo '<div class="notice notice-error">';
+            echo '<p><strong>Fatal Error:</strong></p>';
+            echo '<p>' . esc_html($e->getMessage()) . '</p>';
+            echo '</div></div>';
+        }
+    }
+    
+    /**
+     * Render analytics settings (wrapper to call Analytics class)
+     */
+    public function render_analytics_settings() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+        
+        // Check if class exists
+        if (!class_exists('Choose90_CRM_Analytics')) {
+            echo '<div class="wrap"><h1>Analytics Settings</h1>';
+            echo '<div class="notice notice-error"><p><strong>Error:</strong> Choose90_CRM_Analytics class not found.</p></div></div>';
+            return;
+        }
+        
+        // Try to get instance
+        try {
+            $analytics = Choose90_CRM_Analytics::get_instance();
+            if (!$analytics) {
+                throw new Exception('get_instance() returned null');
+            }
+            
+            if (!method_exists($analytics, 'render_settings')) {
+                echo '<div class="wrap"><h1>Analytics Settings</h1>';
+                echo '<div class="notice notice-error"><p><strong>Error:</strong> render_settings() method not found.</p></div></div>';
+                return;
+            }
+            
+            $analytics->render_settings();
+            
+        } catch (Exception $e) {
+            echo '<div class="wrap"><h1>Analytics Settings</h1>';
+            echo '<div class="notice notice-error"><p><strong>Error:</strong> ' . esc_html($e->getMessage()) . '</p></div></div>';
+        } catch (Error $e) {
+            echo '<div class="wrap"><h1>Analytics Settings</h1>';
+            echo '<div class="notice notice-error"><p><strong>Fatal Error:</strong> ' . esc_html($e->getMessage()) . '</p></div></div>';
+        }
     }
     
     /**

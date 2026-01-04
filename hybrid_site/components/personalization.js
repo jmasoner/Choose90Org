@@ -68,7 +68,7 @@ const Choose90Personalize = {
                 <h3>Login Required</h3>
                 <p>${message || 'Please log in to access this feature.'}</p>
                 <a href="/wp-login.php" class="login-prompt-btn">Log In</a>
-                <a href="/pledge" class="login-prompt-btn secondary">Take the Pledge</a>
+                <a href="/pledge" class="login-prompt-btn secondary">Join the Movement</a>
             </div>
         `;
         return prompt;

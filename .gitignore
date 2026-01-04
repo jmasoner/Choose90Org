@@ -7,14 +7,27 @@ wp-config.php
 # General
 node_modules/
 .env
+.env.local
+.env.production
 .DS_Store
 
 secrets.json
 
 const key -API.txt
 
+# Analytics Configuration (contains real Measurement ID and Stream ID)
+ANALYTICS_CONFIG.md
+GA4_CONFIGURATION.md
+
 # WebDisk setup scripts (may contain sensitive paths)
 setup_webdisk*.ps1
 
 # Backup directories
 backup-choose90/
+
+# Analytics configuration documents (contain Measurement ID and Stream ID)
+GA4_CONFIGURATION.md
+
+# Note: GA4 Measurement IDs in frontend files (analytics-snippet.html, analytics.js) 
+# are public by design and must remain in the codebase for tracking to work.
+# Only configuration/documentation files are excluded here.

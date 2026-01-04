@@ -35,18 +35,17 @@ Write-Host "  Source: $SourcePath" -ForegroundColor Green
 Write-Host "  Dest:   $DestPath" -ForegroundColor Green
 Write-Host ""
 
-$Files = Get-ChildItem $SourcePath
-
-foreach ($File in $Files) {
-    Write-Host "Deploying: $($File.Name)..." -NoNewline
-    try {
-        Copy-Item -Path $File.FullName -Destination $DestPath -Force
-        Write-Host " [OK]" -ForegroundColor Green
-    }
-    catch {
-        Write-Host " [FAILED]" -ForegroundColor Red
-        Write-Error $_
-    }
+# Copy files recursively to preserve folder structure
+Write-Host "Deploying files recursively..." -ForegroundColor Yellow
+try {
+    # Copy all files and folders recursively
+    Copy-Item -Path "$SourcePath\*" -Destination $DestPath -Recurse -Force
+    Write-Host " [OK] All files deployed" -ForegroundColor Green
+}
+catch {
+    Write-Host " [FAILED]" -ForegroundColor Red
+    Write-Error $_
+    exit 1
 }
 
 Write-Host ""

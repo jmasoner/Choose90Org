@@ -1,0 +1,87 @@
+/**
+ * Choose90 Social Sharing Widget Styles
+ */
+
+.choose90-share-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.choose90-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.choose90-share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.choose90-share-btn.twitter {
+    background: #1da1f2;
+    color: white;
+}
+
+.choose90-share-btn.facebook {
+    background: #1877f2;
+    color: white;
+}
+
+.choose90-share-btn.linkedin {
+    background: #0077b5;
+    color: white;
+}
+
+.choose90-share-btn.whatsapp {
+    background: #25d366;
+    color: white;
+}
+
+.choose90-share-btn.email {
+    background: #6b7280;
+    color: white;
+}
+
+.choose90-share-btn.copy {
+    background: #10b981;
+    color: white;
+}
+
+.choose90-share-btn.generic {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.choose90-share-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.choose90-share-inline:hover {
+    opacity: 0.8;
+}
+
+.choose90-share-text {
+    display: inline-block;
+}
+
+

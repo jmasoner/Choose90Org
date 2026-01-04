@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,8 +16,12 @@
 </head>
 
 <body>
-
     <!-- Navigation -->
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
 <!-- Shared static header for Choose90 hybrid site -->
 <header class="site-header">
     <div class="container">
@@ -27,26 +31,109 @@
             <ul class="nav-links">
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="/about.html">Our Story</a></li>
-                <li><a href="/pledge/" class="btn btn-outline"
-                        style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
-                <li><a href="/resources-hub.html">Resources</a></li>
+                
+                <!-- Join Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">
+                        Join <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pledge/">Join the Movement</a></li>
+                        <li><a href="/pledge-wall.html">Join Wall</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Resources Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/resources-hub.html">
+                        Resources <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/resources-hub.html">Resources Hub</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Tools</li>
+                        <li><a href="/tools/content-generator.html">Content Generator</a></li>
+                        <li><a href="/pwa.html">Browser Extension & PWA</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Challenges</li>
+                        <li><a href="/resources/30-day-choose90-challenge.html">30-Day Challenge</a></li>
+                        <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Special Events</li>
+                        <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
                 <li><a href="/chapters/">Chapters</a></li>
-                <li><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
+                <!-- Account Dropdown (hidden by default, shown when logged in) -->
+                <li class="nav-dropdown" id="nav-account-dropdown" style="display: none; list-style: none;">
+                    <a href="/wp-admin/profile.php" id="nav-account-link" style="color: #666; text-decoration: none;">
+                        My Account <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/wp-admin/profile.php">My Account</a></li>
+                        <li><a href="#" id="nav-logout-link">Log Out</a></li>
+                    </ul>
+                </li>
+                <!-- Login Link (shown by default, hidden when logged in) -->
+                <li id="nav-login-item" style="list-style: none;"><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
                 <li><a href="/donate/" class="btn btn-starfield"
                         style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
             </ul>
             <script>
-                // Update login link based on authentication status
+                // Update login/account link based on authentication status
                 (function() {
+                    const loginItem = document.getElementById('nav-login-item');
                     const loginLink = document.getElementById('nav-login-link');
-                    if (!loginLink) return;
+                    const accountDropdown = document.getElementById('nav-account-dropdown');
+                    const accountLink = document.getElementById('nav-account-link');
+                    const logoutLink = document.getElementById('nav-logout-link');
+                    
+                    if (!loginItem || !accountDropdown || !logoutLink) return;
+                    
+                    // Handle logout
+                    logoutLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            // Sign out from Firebase if available
+                            if (window.choose90Auth && typeof window.choose90Auth.signOut === 'function') {
+                                await window.choose90Auth.signOut();
+                            }
+                            
+                            // Sign out from WordPress
+                            const response = await fetch('/api/logout.php', {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                // Redirect to homepage or login page
+                                window.location.href = data.redirect_to || '/';
+                            } else {
+                                // Even if API fails, try to redirect
+                                window.location.href = '/';
+                            }
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            // Still redirect even on error
+                            window.location.href = '/';
+                        }
+                    });
                     
                     // Check if logged in
                     function checkLogin() {
                         // Check for WordPress admin bar
                         if (document.body.classList.contains('admin-bar')) {
-                            loginLink.textContent = 'My Account';
-                            loginLink.href = '/wp-admin/profile.php';
+                            if (loginItem) loginItem.style.display = 'none';
+                            if (accountDropdown) accountDropdown.style.display = 'list-item';
                             return;
                         }
                         
@@ -54,8 +141,8 @@
                         const cookies = document.cookie.split(';');
                         for (let i = 0; i < cookies.length; i++) {
                             if (cookies[i].trim().indexOf('wordpress_logged_in') !== -1) {
-                                loginLink.textContent = 'My Account';
-                                loginLink.href = '/wp-admin/profile.php';
+                                if (loginItem) loginItem.style.display = 'none';
+                                if (accountDropdown) accountDropdown.style.display = 'list-item';
                                 return;
                             }
                         }
@@ -65,11 +152,18 @@
                             .then(r => r.json())
                             .then(data => {
                                 if (data.logged_in) {
-                                    loginLink.textContent = 'My Account';
-                                    loginLink.href = '/wp-admin/profile.php';
+                                    if (loginItem) loginItem.style.display = 'none';
+                                    if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                } else {
+                                    if (loginItem) loginItem.style.display = 'list-item';
+                                    if (accountDropdown) accountDropdown.style.display = 'none';
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => {
+                                // On error, default to showing login link
+                                if (loginItem) loginItem.style.display = 'list-item';
+                                if (accountDropdown) accountDropdown.style.display = 'none';
+                            });
                     }
                     
                     // Check on page load
@@ -79,10 +173,187 @@
                         checkLogin();
                     }
                 })();
+                
+                // Mobile dropdown toggle
+                (function() {
+                    const mobileBtn = document.querySelector('.mobile-menu-btn');
+                    const navLinks = document.querySelector('.nav-links');
+                    
+                    if (mobileBtn && navLinks) {
+                        mobileBtn.addEventListener('click', () => {
+                            navLinks.classList.toggle('active');
+                        });
+                        
+                        // Toggle dropdowns on mobile
+                        document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                if (window.innerWidth <= 768) {
+                                    e.preventDefault();
+                                    link.parentElement.classList.toggle('active');
+                                }
+                            });
+                        });
+                    }
+                })();
             </script>
         </nav>
     </div>
+    
+    <!-- Top Announcement Banner (Below Menu on Desktop) -->
+    <div id="campaign-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; text-align: center; display: none; border-top: 1px solid rgba(255,255,255,0.2);">
+        <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+            <span style="font-weight: 600; font-size: 15px;">🎉 <strong>New Year's Resolution:</strong> Start 2026 with intention! <a href="/new-years-resolution.html" style="color: white; text-decoration: underline; font-weight: 700;">Join the movement →</a></span>
+            <button id="banner-close" onclick="closeCampaignBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 18px; line-height: 1; transition: background 0.2s;">×</button>
+        </div>
+    </div>
+    
+    <script>
+        function showCampaignBanner() {
+            const dismissed = localStorage.getItem('campaign-banner-dismissed');
+            const banner = document.getElementById('campaign-banner');
+            if (banner && !dismissed) {
+                banner.style.display = 'block';
+                document.body.style.paddingTop = 'calc(var(--header-height, 80px) + 45px)';
+                document.querySelector('header.site-header').classList.add('has-banner');
+            }
+        }
+        function closeCampaignBanner() {
+            const banner = document.getElementById('campaign-banner');
+            if (banner) {
+                banner.style.display = 'none';
+                localStorage.setItem('campaign-banner-dismissed', 'true');
+                document.body.style.paddingTop = '';
+                document.querySelector('header.site-header').classList.remove('has-banner');
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showCampaignBanner);
+        } else {
+            showCampaignBanner();
+        }
+        window.closeCampaignBanner = closeCampaignBanner;
+    </script>
 </header>
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
 
 
 
@@ -103,12 +374,12 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <span class="hero-tag">Join the Movement</span>
+                <span class="hero-tag" id="hero-tag">Join the Movement</span>
                 <h1>Focus on the 90% that is Good.</h1>
                 <p>In a world that amplifies the negative, we choose to amplify the good. Join millions who are choosing
                     positivity, kindness, and connection.</p>
-                <div class="hero-btns" style="display: flex; gap: 1rem;">
-                    <a href="/pledge/" class="btn btn-primary">Take the Pledge</a>
+                <div class="hero-btns" style="display: flex; gap: 1rem;" id="hero-btns">
+                    <a href="/pledge/" class="btn btn-primary" id="hero-pledge-btn">Join the Movement <span style="font-size: 0.9em; opacity: 0.9;">(Free)</span></a>
                     <a href="about.html" class="btn btn-outline">Read Our Story</a>
                 </div>
             </div>
@@ -116,6 +387,49 @@
             <div class="hero-visual">
                 <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
                     alt="Happy group of friends in sunset">
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Campaigns Section -->
+    <section class="featured-campaigns" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 80px 20px;">
+        <div class="container">
+            <div class="section-title">
+                <span id="campaigns-tag">Join the Movement</span>
+                <h2>Featured Campaigns</h2>
+                <p style="font-size: 18px; color: #6b7280; margin-top: 16px; max-width: 700px; margin-left: auto; margin-right: auto;">Special opportunities to deepen your Choose90 commitment and connect with our community.</p>
+            </div>
+            
+            <div class="campaigns-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; max-width: 1200px; margin: 60px auto 0;">
+                <!-- New Year's Resolution Campaign -->
+                <div class="campaign-card" style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; border-top: 6px solid #667eea; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 20px; border-radius: 0 20px 0 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">New Year</div>
+                    <div style="margin-top: 20px;">
+                        <h3 style="font-size: 32px; font-weight: 700; color: #1f2937; margin-bottom: 16px; font-family: 'Outfit', sans-serif;">New Year's Resolution</h3>
+                        <p style="font-size: 18px; color: #6b7280; line-height: 1.7; margin-bottom: 24px;">Start 2026 with intention. Make a resolution that matters—commit to making 90% of your influence positive, uplifting, and constructive.</p>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                            <li style="padding: 8px 0; color: #374151; font-size: 16px;">✨ Set your intention for the year</li>
+                            <li style="padding: 8px 0; color: #374151; font-size: 16px;">🎯 Join thousands making the pledge</li>
+                            <li style="padding: 8px 0; color: #374151; font-size: 16px;">🌟 Share your commitment</li>
+                        </ul>
+                        <a href="/new-years-resolution.html" class="btn btn-primary" id="campaign-join-btn" style="display: inline-block; padding: 14px 32px; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 50px;">Join the Movement →</a>
+                    </div>
+                </div>
+                
+                <!-- Kwanzaa Campaign -->
+                <div class="campaign-card" style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; border-top: 6px solid #C8102E; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #C8102E 0%, #00843D 100%); color: white; padding: 8px 20px; border-radius: 0 20px 0 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Kwanzaa</div>
+                    <div style="margin-top: 20px;">
+                        <h3 style="font-size: 32px; font-weight: 700; color: #1f2937; margin-bottom: 16px; font-family: 'Outfit', sans-serif;">Kwanzaa & Choose90</h3>
+                        <p style="font-size: 18px; color: #6b7280; line-height: 1.7; margin-bottom: 24px;">Honor the Nguzo Saba through intentional positive influence. A 7-day challenge that connects Kwanzaa's principles with Choose90's mission.</p>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                            <li style="padding: 8px 0; color: #374151; font-size: 16px;">🎯 7-day guided challenge</li>
+                            <li style="padding: 8px 0; color: #374151; font-size: 16px;">🌍 Honor Nguzo Saba principles</li>
+                            <li style="padding: 8px 0; color: #374151; font-size: 16px;">✨ Daily actions & reflections</li>
+                        </ul>
+                        <a href="/kwanzaa-choose90.html" class="btn btn-primary" style="display: inline-block; padding: 14px 32px; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 50px; background: linear-gradient(135deg, #C8102E 0%, #00843D 100%);">Start Challenge →</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -159,16 +473,30 @@
                     <p>Future Chapters</p>
                 </div>
                 <div class="impact-item">
-                    <h3 class="counter" data-target="1000">0</h3>
-                    <p>Pledges Goal</p>
+                    <h3 class="counter" id="movement-members-counter" data-target="3363">0</h3>
+                    <p>Movement Members</p>
                 </div>
                 <div class="impact-item">
-                    <h3 class="counter" data-target="100">0</h3>
+                    <h3 class="counter" id="lives-touched-counter" data-target="312">0</h3>
                     <p>Lives Touched</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Campaign Cards Hover Effect -->
+    <style>
+        .campaign-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .campaigns-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
 
     <!-- Footer -->
 <!-- Shared static footer for Choose90 hybrid site -->
@@ -193,17 +521,235 @@
             <div class="footer-col">
                 <h4>Action</h4>
                 <ul>
-                    <li><a href="/pledge/">Take the Pledge</a></li>
+                    <li><a href="/pledge/">Join the Movement</a></li>
                     <li><a href="/donate/">Donate</a></li>
                     <li><a href="/support.html">Contact Support</a></li>
                 </ul>
             </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/delete-account.html">Delete Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Campaigns</h4>
+                <ul>
+                    <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                    <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                    <li><a href="/digital-detox-guide.html">Digital Detox Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-newsletter" style="margin: 40px 0; padding: 40px 0; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+            <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <h4 style="color: white; font-size: 20px; margin-bottom: 12px; font-weight: 600;">Stay Connected with Choose90</h4>
+                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Get weekly inspiration, tips, and updates on making your online influence 90% positive.</p>
+                <form id="footer-newsletter-form" onsubmit="submitFooterEmail(event)" style="display: flex; gap: 8px; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="footer-email" placeholder="Enter your email" required style="flex: 1; min-width: 200px; padding: 12px 16px; border: 2px solid #444; border-radius: 6px; font-size: 14px; background: #2a2a2a; color: white;">
+                    <button type="submit" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">Subscribe</button>
+                </form>
+                <p style="color: #666; font-size: 11px; margin-top: 12px;">We respect your privacy. Unsubscribe at any time.</p>
+                <div id="footer-email-success" style="display: none; background: #10b981; color: white; padding: 12px; border-radius: 6px; margin-top: 12px; font-size: 14px;">
+                    ✓ Thank you! Check your email to confirm.
+                </div>
+            </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="/privacy.html">Privacy Policy</a></p>
+            <p>&copy; 2025 Choose90.org. All rights reserved. | 
+                <a href="/privacy.html">Privacy Policy</a> | 
+                <a href="/terms-of-service.html">Terms of Service</a> | 
+                <a href="/delete-account.html">Delete Account</a>
+            </p>
         </div>
     </div>
 </footer>
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
 
 
 
@@ -221,6 +767,102 @@
 
 
     <script src="script.js"></script>
+    <script src="/js/hide-pledge-when-logged-in.js"></script>
+    
+    <!-- Load Movement Members Counter and Lives Touched Counter -->
+    <script>
+        (function() {
+            // Fetch the actual pledge count from the API
+            fetch('/api/get-pledge-count.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.count) {
+                        const counterEl = document.getElementById('movement-members-counter');
+                        if (counterEl) {
+                            // Update the data-target attribute so the animation uses the real count
+                            counterEl.setAttribute('data-target', data.count);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading movement members count:', error);
+                });
+            
+            // Fetch testimonials count and calculate Lives Touched (testimonials + 12)
+            fetch('/api/get-testimonials.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.count !== undefined) {
+                        const livesTouchedCount = data.count + 12;
+                        const counterEl = document.getElementById('lives-touched-counter');
+                        if (counterEl) {
+                            // Update the data-target attribute so the animation uses the real count
+                            counterEl.setAttribute('data-target', livesTouchedCount);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading lives touched count:', error);
+                });
+        })();
+    </script>
+    
+    <!-- Hide pledge-related content when logged in (additional homepage-specific) -->
+    <script>
+        (function() {
+            function hidePledgeContent() {
+                // Check if user is logged in
+                fetch('/api/check-auth.php', { credentials: 'include' })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.logged_in) {
+                            // Hide "Join the Movement" button
+                            const pledgeBtn = document.getElementById('hero-pledge-btn');
+                            if (pledgeBtn) pledgeBtn.style.display = 'none';
+                            
+                            // Hide "Join the Movement" tag in hero
+                            const heroTag = document.getElementById('hero-tag');
+                            if (heroTag) heroTag.style.display = 'none';
+                            
+                            // Hide "Join the Movement" tag in campaigns section
+                            const campaignsTag = document.getElementById('campaigns-tag');
+                            if (campaignsTag) campaignsTag.style.display = 'none';
+                            
+                            // Hide "Join the Movement" button in campaigns
+                            const campaignJoinBtn = document.getElementById('campaign-join-btn');
+                            if (campaignJoinBtn) campaignJoinBtn.style.display = 'none';
+                            
+                            // Update hero text for logged-in users
+                            const heroContent = document.querySelector('.hero-content h1');
+                            if (heroContent) {
+                                heroContent.textContent = 'Welcome back! Continue your Choose90 journey.';
+                            }
+                            
+                            const heroPara = document.querySelector('.hero-content p');
+                            if (heroPara) {
+                                heroPara.textContent = 'You\'re part of a movement choosing positivity, kindness, and connection. Explore resources, connect with your chapter, and keep making a difference.';
+                            }
+                            
+                            // Update hero buttons to show resources/chapters instead
+                            const heroBtns = document.getElementById('hero-btns');
+                            if (heroBtns) {
+                                heroBtns.innerHTML = '<a href="/resources-hub.html" class="btn btn-primary">Explore Resources</a><a href="/chapters/" class="btn btn-outline">Find Your Chapter</a>';
+                            }
+                        }
+                    })
+                    .catch(() => {
+                        // On error, show everything (assume not logged in)
+                    });
+            }
+            
+            // Run on page load
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', hidePledgeContent);
+            } else {
+                hidePledgeContent();
+            }
+        })();
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Choose90 - Make Your Posts Positive",
+  "version": "1.0.0",
+  "description": "Rewrites your social media posts to be 90% positive, uplifting, and constructive while keeping your original message.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://choose90.org/*",
+    "https://www.choose90.org/*",
+    "https://twitter.com/*",
+    "https://x.com/*",
+    "https://www.facebook.com/*",
+    "https://www.linkedin.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://twitter.com/*",
+        "https://x.com/*",
+        "https://www.facebook.com/*",
+        "https://www.linkedin.com/*"
+      ],
+      "js": ["content-script.js"],
+      "css": ["content-styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["rewrite-overlay.html", "rewrite-overlay.css", "rewrite-overlay.js"],
+      "matches": [
+        "https://twitter.com/*",
+        "https://x.com/*",
+        "https://www.facebook.com/*",
+        "https://www.linkedin.com/*"
+      ]
+    }
+  ]
+}
+
+

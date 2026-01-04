@@ -1,3 +1,8 @@
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
 <!-- Shared static header for Choose90 hybrid site -->
 <header class="site-header">
     <div class="container">
@@ -7,50 +12,160 @@
             <ul class="nav-links">
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="/about.html">Our Story</a></li>
-                <li><a href="/pledge/" class="btn btn-outline"
-                        style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
-                <li><a href="/resources-hub.html">Resources</a></li>
+                
+                <!-- Join Dropdown (hidden when logged in) -->
+                <li class="nav-dropdown" id="nav-pledge-dropdown">
+                    <a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">
+                        Join <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pledge/">Join the Movement</a></li>
+                        <li><a href="/pledge-wall.html">Join Wall</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Resources Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/resources-hub.html">
+                        Resources <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/resources-hub.html">Resources Hub</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Tools</li>
+                        <li><a href="/tools/content-generator.html">Content Generator</a></li>
+                        <li><a href="/pwa.html">Browser Extension & PWA</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Challenges</li>
+                        <li><a href="/resources/30-day-choose90-challenge.html">30-Day Challenge</a></li>
+                        <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Special Events</li>
+                        <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
                 <li><a href="/chapters/">Chapters</a></li>
-                <li><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
+                <!-- Account Dropdown (hidden by default, shown when logged in) -->
+                <li class="nav-dropdown" id="nav-account-dropdown" style="display: none; list-style: none;">
+                    <a href="/wp-admin/profile.php" id="nav-account-link" style="color: #666; text-decoration: none;">
+                        My Account <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/wp-admin/profile.php">My Account</a></li>
+                        <li><a href="#" id="nav-logout-link">Log Out</a></li>
+                    </ul>
+                </li>
+                <!-- Login Link (shown by default, hidden when logged in) -->
+                <li id="nav-login-item" style="list-style: none;"><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
                 <li><a href="/donate/" class="btn btn-starfield"
                         style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
             </ul>
             <script>
-                // Update login link based on authentication status
+                // Update login/account link based on authentication status
                 (function() {
+                    const loginItem = document.getElementById('nav-login-item');
                     const loginLink = document.getElementById('nav-login-link');
-                    if (!loginLink) return;
+                    const accountDropdown = document.getElementById('nav-account-dropdown');
+                    const accountLink = document.getElementById('nav-account-link');
+                    const logoutLink = document.getElementById('nav-logout-link');
+                    
+                    if (!loginItem || !accountDropdown || !logoutLink) return;
+                    
+                    // Handle logout
+                    logoutLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            // Sign out from Firebase if available
+                            if (window.choose90Auth && typeof window.choose90Auth.signOut === 'function') {
+                                await window.choose90Auth.signOut();
+                            }
+                            
+                            // Sign out from WordPress
+                            const response = await fetch('/api/logout.php', {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                // Redirect to homepage or login page
+                                window.location.href = data.redirect_to || '/';
+                            } else {
+                                // Even if API fails, try to redirect
+                                window.location.href = '/';
+                            }
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            // Still redirect even on error
+                            window.location.href = '/';
+                        }
+                    });
                     
                     // Check if logged in
                     function checkLogin() {
-                        // Check for WordPress admin bar
+                        const pledgeDropdown = document.getElementById('nav-pledge-dropdown');
+                        
+                        // Check for WordPress admin bar (most reliable)
                         if (document.body.classList.contains('admin-bar')) {
-                            loginLink.textContent = 'My Account';
-                            loginLink.href = '/wp-admin/profile.php';
+                            if (loginItem) loginItem.style.display = 'none';
+                            if (accountDropdown) accountDropdown.style.display = 'list-item';
+                            if (pledgeDropdown) pledgeDropdown.style.display = 'none'; // Hide pledge when logged in
                             return;
                         }
                         
                         // Check for WordPress cookies
                         const cookies = document.cookie.split(';');
                         for (let i = 0; i < cookies.length; i++) {
-                            if (cookies[i].trim().indexOf('wordpress_logged_in') !== -1) {
-                                loginLink.textContent = 'My Account';
-                                loginLink.href = '/wp-admin/profile.php';
+                            const cookie = cookies[i].trim();
+                            if (cookie.indexOf('wordpress_logged_in') === 0 || cookie.indexOf('wordpress_') === 0) {
+                                if (loginItem) loginItem.style.display = 'none';
+                                if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                if (pledgeDropdown) pledgeDropdown.style.display = 'none'; // Hide pledge when logged in
                                 return;
                             }
                         }
                         
-                        // Check via API
-                        fetch('/api/check-auth.php', { credentials: 'include' })
-                            .then(r => r.json())
+                        // Check via API (most reliable method)
+                        fetch('/api/check-auth.php', { 
+                            credentials: 'include',
+                            cache: 'no-cache',
+                            headers: {
+                                'Cache-Control': 'no-cache'
+                            }
+                        })
+                            .then(r => {
+                                if (!r.ok) throw new Error('API error');
+                                return r.json();
+                            })
                             .then(data => {
-                                if (data.logged_in) {
-                                    loginLink.textContent = 'My Account';
-                                    loginLink.href = '/wp-admin/profile.php';
+                                if (data.logged_in || data.isLoggedIn) {
+                                    if (loginItem) loginItem.style.display = 'none';
+                                    if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                    if (pledgeDropdown) pledgeDropdown.style.display = 'none'; // Hide pledge when logged in
+                                } else {
+                                    if (loginItem) loginItem.style.display = 'list-item';
+                                    if (accountDropdown) accountDropdown.style.display = 'none';
+                                    if (pledgeDropdown) pledgeDropdown.style.display = 'list-item'; // Show pledge when not logged in
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => {
+                                // On error, default to showing login link
+                                if (loginItem) loginItem.style.display = 'list-item';
+                                if (accountDropdown) accountDropdown.style.display = 'none';
+                                if (pledgeDropdown) pledgeDropdown.style.display = 'list-item'; // Show pledge on error
+                            });
                     }
+                    
+                    // Re-check login status periodically (in case auth state changes)
+                    setInterval(checkLogin, 5000); // Check every 5 seconds
                     
                     // Check on page load
                     if (document.readyState === 'loading') {
@@ -59,9 +174,123 @@
                         checkLogin();
                     }
                 })();
+                
+                // Mobile dropdown toggle
+                (function() {
+                    const mobileBtn = document.querySelector('.mobile-menu-btn');
+                    const navLinks = document.querySelector('.nav-links');
+                    
+                    if (mobileBtn && navLinks) {
+                        mobileBtn.addEventListener('click', () => {
+                            navLinks.classList.toggle('active');
+                        });
+                        
+                        // Toggle dropdowns on mobile
+                        document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                if (window.innerWidth <= 768) {
+                                    e.preventDefault();
+                                    link.parentElement.classList.toggle('active');
+                                }
+                            });
+                        });
+                    }
+                })();
             </script>
         </nav>
     </div>
+    
+    <!-- Top Announcement Banner (Below Menu on Desktop) -->
+    <div id="campaign-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; text-align: center; display: none; border-top: 1px solid rgba(255,255,255,0.2);">
+        <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+            <span style="font-weight: 600; font-size: 15px;">🎉 <strong>New Year's Resolution:</strong> Start 2026 with intention! <a href="/new-years-resolution.html" style="color: white; text-decoration: underline; font-weight: 700;">Join the movement →</a></span>
+            <button id="banner-close" onclick="closeCampaignBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 18px; line-height: 1; transition: background 0.2s;">×</button>
+        </div>
+    </div>
+    
+    <script>
+        function showCampaignBanner() {
+            // Check if user is logged in - don't show banner if logged in
+            fetch('/api/check-auth.php', { credentials: 'include' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        // User is logged in, don't show banner
+                        return;
+                    }
+                    
+                    const dismissed = localStorage.getItem('campaign-banner-dismissed');
+                    const banner = document.getElementById('campaign-banner');
+                    if (banner && !dismissed) {
+                        banner.style.display = 'block';
+                        document.body.style.paddingTop = 'calc(var(--header-height, 80px) + 45px)';
+                        document.querySelector('header.site-header').classList.add('has-banner');
+                    }
+                })
+                .catch(() => {
+                    // On error, show banner anyway (assume not logged in)
+                    const dismissed = localStorage.getItem('campaign-banner-dismissed');
+                    const banner = document.getElementById('campaign-banner');
+                    if (banner && !dismissed) {
+                        banner.style.display = 'block';
+                        document.body.style.paddingTop = 'calc(var(--header-height, 80px) + 45px)';
+                        document.querySelector('header.site-header').classList.add('has-banner');
+                    }
+                });
+        }
+        function closeCampaignBanner() {
+            const banner = document.getElementById('campaign-banner');
+            if (banner) {
+                banner.style.display = 'none';
+                localStorage.setItem('campaign-banner-dismissed', 'true');
+                document.body.style.paddingTop = '';
+                document.querySelector('header.site-header').classList.remove('has-banner');
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showCampaignBanner);
+        } else {
+            showCampaignBanner();
+        }
+        window.closeCampaignBanner = closeCampaignBanner;
+    </script>
 </header>
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
 
 

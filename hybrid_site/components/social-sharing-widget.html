@@ -1,0 +1,33 @@
+<!-- Choose90 Social Sharing Widget -->
+<!-- Include this component in pages where you want sharing buttons -->
+
+<div class="choose90-share-buttons">
+    <a href="#" class="choose90-share-btn twitter" data-share="twitter" data-share-url="" data-share-text="">
+        🐦 Share on X
+    </a>
+    <a href="#" class="choose90-share-btn facebook" data-share="facebook" data-share-url="" data-share-text="">
+        👥 Share on Facebook
+    </a>
+    <a href="#" class="choose90-share-btn linkedin" data-share="linkedin" data-share-url="" data-share-text="">
+        💼 Share on LinkedIn
+    </a>
+    <a href="#" class="choose90-share-btn copy" data-share="copy" data-share-url="" data-share-text="">
+        📋 Copy Link
+    </a>
+</div>
+
+<script>
+    // Auto-populate share URLs and text
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-share]').forEach(btn => {
+            if (!btn.dataset.shareUrl) {
+                btn.dataset.shareUrl = window.location.href;
+            }
+            if (!btn.dataset.shareText) {
+                btn.dataset.shareText = document.title || 'Join the Choose90 movement!';
+            }
+        });
+    });
+</script>
+
+

@@ -1,5 +1,5 @@
-<!-- Choose90 Enhanced Pledge Form -->
-<div class="pledge-form-container">
+﻿<!-- Choose90 Enhanced Pledge Form -->
+<div class="pledge-form-container" id="pledge-form-container">
     <div class="pledge-intro">
         <h2 style="color: #0066CC; margin-top: 0;">I Choose 90.</h2>
         <p style="font-size: 1.2em; line-height: 1.6;">
@@ -7,6 +7,38 @@
             Nobody is judging me, this is my choice.<br>
             <strong>I Choose Positive. I Choose 90.</strong>
         </p>
+    </div>
+
+    <!-- Firebase Auth - Social Login Options -->
+    <div class="firebase-auth-section" id="firebase-auth-section" style="margin-bottom: 30px; padding: 30px; background: #f8f9fa; border-radius: 12px; border: 2px solid #e9ecef;">
+        <h3 style="text-align: center; color: #0066CC; margin-top: 0; margin-bottom: 15px;">Quick Sign Up</h3>
+        <p style="text-align: center; color: #666; margin-bottom: 25px; font-size: 14px;">Sign up instantly with your social account or email</p>
+        
+        <div class="firebase-auth-buttons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+            <button type="button" id="firebase-google-btn" class="firebase-auth-btn" style="padding: 14px 28px; background: white; border: 2px solid #4285f4; border-radius: 8px; color: #4285f4; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; font-size: 16px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" style="fill: #4285f4;">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Sign up with Google
+            </button>
+            
+            <button type="button" id="firebase-facebook-btn" class="firebase-auth-btn" style="padding: 14px 28px; background: #1877f2; border: 2px solid #1877f2; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; font-size: 16px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Sign up with Facebook
+            </button>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0; position: relative;">
+            <span style="background: #f8f9fa; padding: 0 15px; color: #666; font-size: 14px; position: relative; z-index: 1;">or</span>
+            <hr style="position: absolute; top: 50%; left: 0; right: 0; margin: 0; border: none; border-top: 1px solid #dee2e6; z-index: 0;">
+        </div>
+        
+        <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 0;">Or fill out the form below</p>
     </div>
 
     <form id="choose90-pledge-form" class="pledge-form" method="POST" action="<?php echo admin_url('admin-post.php'); ?>">
@@ -136,7 +168,7 @@
 
         <!-- Submit Button -->
         <button type="submit" class="pledge-submit-btn" id="pledge-submit-btn">
-            Take the Pledge
+            Join the Movement
         </button>
 
         <p class="form-footer">
@@ -145,13 +177,31 @@
         </p>
     </form>
 
+    <!-- Social Sharing Section (Always Visible - Outside Form Container) -->
+    <div class="social-sharing-section" id="pledge-social-sharing" style="display: block !important; visibility: visible !important; margin-top: 40px; padding: 40px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 16px; position: relative; z-index: 10;">
+        <h3 style="text-align: center; color: #0066CC; font-size: 24px; margin-bottom: 12px;">Share Your Commitment</h3>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">Help spread the Choose90 movement! Share your pledge on social media.</p>
+        
+        <div class="social-buttons-container" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <button class="social-share-btn" data-platform="twitter" onclick="shareChoose90Pledge('twitter')" style="padding: 12px 24px; background: white; border: 2px solid #1da1f2; border-radius: 8px; color: #1da1f2; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                🐦 Share on Twitter/X
+            </button>
+            <button class="social-share-btn" data-platform="facebook" onclick="shareChoose90Pledge('facebook')" style="padding: 12px 24px; background: white; border: 2px solid #1877f2; border-radius: 8px; color: #1877f2; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                👥 Share on Facebook
+            </button>
+            <button class="social-share-btn" data-platform="linkedin" onclick="shareChoose90Pledge('linkedin')" style="padding: 12px 24px; background: white; border: 2px solid #0077b5; border-radius: 8px; color: #0077b5; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                💼 Share on LinkedIn
+            </button>
+        </div>
+    </div>
+
     <!-- Success Message (Hidden initially) -->
     <div id="pledge-success" class="pledge-success" style="display: none;">
         <div class="success-content">
             <div class="success-icon">🎯</div>
             <h2>Welcome to Choose90!</h2>
             <p>You've earned your first badge: <strong>I Choose 90</strong></p>
-            <div id="pledge-share-buttons" class="pledge-share-section"></div>
+            <p style="margin: 20px 0; color: #666;">Thank you for joining our movement! Use the social sharing buttons above to let others know about Choose90.</p>
             <a href="/resources-hub.html" class="success-cta-btn">Explore Resources</a>
         </div>
     </div>
@@ -289,6 +339,17 @@
     cursor: not-allowed;
 }
 
+.social-share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.firebase-auth-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
 .form-footer {
     text-align: center;
     margin-top: 20px;
@@ -347,9 +408,143 @@
 }
 </style>
 
+<?php
+// Include Firebase config if available
+if (file_exists(__DIR__ . '/firebase-config.php')) {
+    include __DIR__ . '/firebase-config.php';
+}
+?>
+
 <script>
+// Firebase Auth Integration
+let choose90AuthInstance = null;
+
+// Initialize Firebase Auth when ready
+function initFirebaseAuth() {
+    if (window.choose90FirebaseConfig && window.Choose90FirebaseAuth) {
+        choose90AuthInstance = new window.Choose90FirebaseAuth(window.choose90FirebaseConfig);
+        choose90AuthInstance.init().then(() => {
+            setupFirebaseButtons();
+        });
+    }
+}
+
+// Setup Firebase Auth buttons
+function setupFirebaseButtons() {
+    const googleBtn = document.getElementById('firebase-google-btn');
+    const facebookBtn = document.getElementById('firebase-facebook-btn');
+    
+    if (googleBtn && choose90AuthInstance) {
+        googleBtn.addEventListener('click', async function() {
+            try {
+                googleBtn.disabled = true;
+                googleBtn.textContent = 'Redirecting...';
+                
+                // Collect additional form data if user wants to provide it
+                const additionalData = collectAdditionalFormData();
+                
+                // This will redirect to Google, then back to our site
+                // The redirect result is handled in firebase-auth.js handleAuthRedirect()
+                await choose90AuthInstance.signInWithGoogle(additionalData);
+                
+                // Note: User will be redirected, so we won't reach here
+                // The success handling happens after redirect in handleAuthRedirect()
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                alert('Sign-in failed: ' + (error.message || 'Please try again'));
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" style="fill: #4285f4;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Sign up with Google';
+            }
+        });
+    }
+    
+    if (facebookBtn && choose90AuthInstance) {
+        facebookBtn.addEventListener('click', async function() {
+            try {
+                facebookBtn.disabled = true;
+                facebookBtn.textContent = 'Redirecting...';
+                
+                // Collect additional form data
+                const additionalData = collectAdditionalFormData();
+                
+                // This will redirect to Facebook, then back to our site
+                // The redirect result is handled in firebase-auth.js handleAuthRedirect()
+                await choose90AuthInstance.signInWithFacebook(additionalData);
+                
+                // Note: User will be redirected, so we won't reach here
+                // The success handling happens after redirect in handleAuthRedirect()
+            } catch (error) {
+                console.error('Facebook sign-in error:', error);
+                alert('Sign-in failed: ' + (error.message || 'Please try again'));
+                facebookBtn.disabled = false;
+                facebookBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Sign up with Facebook';
+            }
+        });
+    }
+}
+
+// Collect additional form data for Firebase sign-up
+function collectAdditionalFormData() {
+    return {
+        full_name: document.getElementById('full_name')?.value || '',
+        screen_name: document.getElementById('screen_name')?.value || '',
+        phone: document.getElementById('phone')?.value || '',
+        location_city: document.getElementById('location_city')?.value || '',
+        location_state: document.getElementById('location_state')?.value || '',
+        facebook_url: document.getElementById('facebook_url')?.value || '',
+        instagram_handle: document.getElementById('instagram_handle')?.value || '',
+        twitter_handle: document.getElementById('twitter_handle')?.value || '',
+        tiktok_handle: document.getElementById('tiktok_handle')?.value || '',
+        linkedin_url: document.getElementById('linkedin_url')?.value || '',
+        reddit_username: document.getElementById('reddit_username')?.value || ''
+    };
+}
+
+// Show pledge success message
+function showPledgeSuccess() {
+    // Hide form and Firebase auth section
+    const form = document.getElementById('choose90-pledge-form');
+    const firebaseSection = document.getElementById('firebase-auth-section');
+    const intro = document.querySelector('.pledge-intro');
+    
+    if (form) form.style.display = 'none';
+    if (firebaseSection) firebaseSection.style.display = 'none';
+    if (intro) intro.style.display = 'none';
+    
+    // Show success message
+    const successDiv = document.getElementById('pledge-success');
+    if (successDiv) {
+        successDiv.style.display = 'block';
+        successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    // Show social sharing
+    const socialSharing = document.getElementById('pledge-social-sharing');
+    if (socialSharing) {
+        socialSharing.style.display = 'block';
+        socialSharing.style.visibility = 'visible';
+        socialSharing.style.opacity = '1';
+    }
+}
+
+// Listen for auth success event
+window.addEventListener('choose90:auth:success', function(event) {
+    showPledgeSuccess();
+});
+
 // Form validation and submission
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Firebase Auth
+    if (window.choose90FirebaseConfig) {
+        initFirebaseAuth();
+    } else {
+        // If Firebase not available, hide Firebase auth section
+        const firebaseSection = document.getElementById('firebase-auth-section');
+        if (firebaseSection) {
+            firebaseSection.style.display = 'none';
+        }
+    }
+    
     const form = document.getElementById('choose90-pledge-form');
     const submitBtn = document.getElementById('pledge-submit-btn');
     
@@ -372,34 +567,96 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    // Hide form fields and submit button, but keep social sharing visible
+                    const formFields = form.querySelectorAll('.form-section, .pledge-submit-btn, .form-footer, .pledge-intro');
+                    formFields.forEach(field => {
+                        field.style.display = 'none';
+                    });
+                    
                     // Show success message
-                    form.style.display = 'none';
                     document.getElementById('pledge-success').style.display = 'block';
                     
-                    // Award badge
-                    if (typeof Choose90Badges !== 'undefined') {
-                        Choose90Badges.awardBadge('pledge', data.user_id);
+                    // Ensure social sharing section is visible (force it) - it's outside the form
+                    const socialSharing = document.getElementById('pledge-social-sharing');
+                    if (socialSharing) {
+                        socialSharing.style.display = 'block';
+                        socialSharing.style.visibility = 'visible';
+                        socialSharing.style.opacity = '1';
+                        // Make sure it's not hidden by parent container
+                        const container = document.querySelector('.pledge-form-container');
+                        if (container) {
+                            container.style.overflow = 'visible';
+                        }
                     }
                     
-                    // Show share buttons
-                    if (typeof Choose90Share !== 'undefined') {
-                        const shareButtons = Choose90Share.createShareButtons('Pledge', {});
-                        document.getElementById('pledge-share-buttons').innerHTML = shareButtons;
+                    // Scroll to social sharing section first, then success message
+                    if (socialSharing) {
+                        socialSharing.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        setTimeout(() => {
+                            document.getElementById('pledge-success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 500);
+                    } else {
+                        document.getElementById('pledge-success').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                    
+                    // Award badge
+                    if (typeof Choose90Badges !== 'undefined' && data.data && data.data.user_id) {
+                        Choose90Badges.awardBadge('pledge', data.data.user_id);
                     }
                 } else {
                     alert(data.message || 'There was an error. Please try again.');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Take the Pledge';
+                    submitBtn.textContent = 'Join the Movement';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('There was an error. Please try again.');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Take the Pledge';
+                submitBtn.textContent = 'Join the Movement';
             });
         });
     }
 });
+
+// Social sharing function
+function shareChoose90Pledge(platform) {
+    const pledgeText = "I just took Choose90! I'm committing to make 90% of my online influence positive, uplifting, and constructive. Join me! 🌟 #Choose90";
+    const url = window.location.origin;
+    const encodedText = encodeURIComponent(pledgeText);
+    const encodedUrl = encodeURIComponent(url);
+    
+    let shareUrl = '';
+    
+    switch(platform) {
+        case 'twitter':
+        case 'x':
+            shareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&hashtags=Choose90`;
+            break;
+        case 'facebook':
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
+            break;
+        case 'linkedin':
+            shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+            break;
+        default:
+            return;
+    }
+    
+    if (shareUrl) {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+        
+        // Track social share
+        if (typeof window.trackEvent === 'function') {
+            window.trackEvent('social_share', {
+                'platform': platform,
+                'location': 'pledge_form'
+            });
+        }
+    }
+}
+
+// Make function globally available
+window.shareChoose90Pledge = shareChoose90Pledge;
 </script>
 

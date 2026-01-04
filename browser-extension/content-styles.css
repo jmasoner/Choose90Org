@@ -1,0 +1,257 @@
+/**
+ * Choose90 Browser Extension - Content Script Styles
+ */
+
+.choose90-indicator {
+  position: absolute;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: transform 0.2s, box-shadow 0.2s;
+  pointer-events: auto;
+}
+
+.choose90-indicator:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.choose90-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  animation: choose90-fade-in 0.2s ease-out;
+}
+
+@keyframes choose90-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.choose90-overlay-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: choose90-slide-up 0.3s ease-out;
+}
+
+@keyframes choose90-slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.choose90-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.choose90-overlay-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.choose90-close {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.choose90-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.choose90-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .choose90-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+.choose90-original,
+.choose90-rewritten {
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.choose90-original {
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+}
+
+.choose90-rewritten {
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+}
+
+.choose90-original h4,
+.choose90-rewritten h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.choose90-original h4 {
+  color: #991b1b;
+}
+
+.choose90-rewritten h4 {
+  color: #166534;
+}
+
+.choose90-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1f2937;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.choose90-actions {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid #e5e7eb;
+  justify-content: flex-end;
+}
+
+.choose90-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.choose90-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.choose90-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.choose90-btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.choose90-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.choose90-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.choose90-footer a {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.choose90-footer a:hover {
+  text-decoration: underline;
+}
+
+.choose90-loading,
+.choose90-error {
+  padding: 48px;
+  text-align: center;
+}
+
+.choose90-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f3f4f6;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: choose90-spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+
+@keyframes choose90-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.choose90-loading h3,
+.choose90-error h3 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.choose90-loading p,
+.choose90-error p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose90 Extension Demo - See How It Works | Choose90.org</title>
+    <meta name="description" content="Interactive demo of the Choose90 browser extension - see how it rewrites your posts to be 90% positive.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            color: #0066CC;
+            margin-bottom: 12px;
+        }
+
+        .demo-header p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .demo-instructions {
+            background: #e8f4f8;
+            border-left: 4px solid #0066CC;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .demo-instructions h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #0066CC;
+        }
+
+        .demo-instructions ol {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .demo-instructions li {
+            margin-bottom: 8px;
+        }
+
+        /* Fake Social Media Interface */
+        .social-interface {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .social-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .social-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .social-user-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        .social-user-info p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .compose-box {
+            position: relative;
+        }
+
+        .compose-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .compose-textarea:focus {
+            outline: none;
+            border-color: #0066CC;
+        }
+
+        .compose-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .char-count {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .char-count.warning {
+            color: #f59e0b;
+        }
+
+        .char-count.ready {
+            color: #10b981;
+        }
+
+        .post-button {
+            background: #1da1f2;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .post-button:hover {
+            background: #1a8cd8;
+        }
+
+        .post-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* Extension Indicator */
+        .extension-indicator {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            animation: slideInRight 0.3s ease-out;
+            z-index: 10;
+        }
+
+        .extension-indicator.show {
+            display: flex;
+        }
+
+        .extension-indicator:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Extension Popup Overlay */
+        .extension-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .extension-popup-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .extension-popup {
+            background: white;
+            border-radius: 20px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .popup-close {
+            background: #f3f4f6;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            color: #6b7280;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-close:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .popup-content {
+            padding: 24px;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-box {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            background: #f9fafb;
+        }
+
+        .comparison-box.original {
+            border-color: #d1d5db;
+        }
+
+        .comparison-box.choose90 {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            color: #6b7280;
+        }
+
+        .comparison-box.choose90 .comparison-label {
+            color: #667eea;
+        }
+
+        .comparison-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #1f2937;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .comparison-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-button.keep-original {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .action-button.keep-original:hover {
+            background: #e5e7eb;
+        }
+
+        .action-button.use-choose90 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-button.use-choose90:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-examples {
+            margin-top: 40px;
+        }
+
+        .demo-examples h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #1f2937;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .example-button {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            transition: all 0.2s;
+        }
+
+        .example-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .reset-button {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .reset-button:hover {
+            background: #e5e7eb;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <!--#include virtual="/components/static-header.html" -->
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>Choose90 Extension Demo</h1>
+            <p>See how the Choose90 browser extension works in real-time. Type a post below and watch it transform!</p>
+        </div>
+
+        <div class="demo-instructions">
+            <h3>📝 How to Use This Demo:</h3>
+            <ol>
+                <li>Try an example post below, or type your own (up to 100 words)</li>
+                <li>Select a tone for the rewrite</li>
+                <li>Watch for the ✨ Choose90 indicator to appear</li>
+                <li>Click the indicator to see your post rewritten with AI</li>
+                <li>Compare the original vs. Choose90 version side-by-side</li>
+                <li>Choose which version you want to use</li>
+            </ol>
+        </div>
+
+        <!-- Example Posts -->
+        <div class="demo-examples" style="margin-bottom: 30px;">
+            <h3 style="font-size: 20px; margin-bottom: 16px; color: #1f2937;">💡 Try These Example Posts:</h3>
+            <div class="example-buttons">
+                <button class="example-button" data-example="traffic">Traffic Complaint</button>
+                <button class="example-button" data-example="work">Work Frustration</button>
+                <button class="example-button" data-example="weather">Weather Complaint</button>
+                <button class="example-button" data-example="politics">Political Frustration</button>
+            </div>
+            <button class="reset-button" id="reset-button-top">Clear & Start Over</button>
+        </div>
+
+        <!-- Fake Social Media Interface -->
+        <div class="social-interface">
+            <div class="social-header">
+                <div class="social-avatar">JD</div>
+                <div class="social-user-info">
+                    <h3>John Doe</h3>
+                    <p>@johndoe</p>
+                </div>
+            </div>
+
+            <div class="compose-box">
+                <!-- Tone Selector -->
+                <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <label for="tone-selector" style="font-weight: 600; color: #374151; font-size: 14px;">Tone:</label>
+                    <select id="tone-selector" style="padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: white; cursor: pointer; min-width: 150px;">
+                        <option value="positive">Positive</option>
+                        <option value="uplifting">Uplifting</option>
+                        <option value="encouraging">Encouraging</option>
+                        <option value="grateful">Grateful</option>
+                        <option value="inspiring">Inspiring</option>
+                        <option value="celebratory">Celebratory</option>
+                    </select>
+                    <span style="font-size: 12px; color: #6b7280;">(Demo limited to 100 words)</span>
+                </div>
+
+                <textarea 
+                    id="post-textarea" 
+                    class="compose-textarea" 
+                    placeholder="What's happening? (Type at least 50 characters or try an example above)"
+                    autocomplete="off"
+                    maxlength="600"
+                ></textarea>
+                
+                <!-- Extension Indicator -->
+                <div class="extension-indicator" id="extension-indicator">
+                    <span>✨</span>
+                    <span>Choose90 can help make this more positive</span>
+                </div>
+
+                <div class="compose-footer">
+                    <div class="char-count" id="char-count">0 characters (0 words)</div>
+                    <button class="post-button" id="post-button" disabled>Post</button>
+                </div>
+            </div>
+
+            <div class="success-message" id="success-message">
+                ✅ <strong>Post updated!</strong> Your text has been replaced with the Choose90 version. You can now post it!
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Extension Popup Overlay -->
+    <div class="extension-popup-overlay" id="popup-overlay">
+        <div class="extension-popup">
+            <div class="popup-header">
+                <h2>
+                    <span>✨</span>
+                    Choose90 Rewrite
+                </h2>
+                <button class="popup-close" id="popup-close">×</button>
+            </div>
+            <div class="popup-content">
+                <div id="popup-loading" style="display: none; text-align: center; padding: 40px;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">✨</div>
+                    <p style="color: #6b7280; font-size: 16px;">Rewriting your post with AI...</p>
+                    <p style="color: #9ca3af; font-size: 14px; margin-top: 8px;">This may take a few seconds</p>
+                </div>
+                <div id="popup-content-main">
+                    <div class="comparison-container">
+                        <div class="comparison-box original">
+                            <div class="comparison-label">Your Original Post</div>
+                            <div class="comparison-text" id="original-text"></div>
+                        </div>
+                        <div class="comparison-box choose90">
+                            <div class="comparison-label">✨ Choose90 Version</div>
+                            <div class="comparison-text" id="choose90-text"></div>
+                        </div>
+                    </div>
+                    <div style="background: #f0f4ff; padding: 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #667eea;">
+                        <p style="margin: 0; color: #1e3a8a; font-size: 14px;">
+                            <strong>✨ AI-Powered Rewrite:</strong> This version was generated using Choose90's AI to make your post more positive while keeping your original message intact.
+                        </p>
+                    </div>
+                    <div class="comparison-actions">
+                        <button class="action-button keep-original" id="keep-original-btn">
+                            Keep Original
+                        </button>
+                        <button class="action-button use-choose90" id="use-choose90-btn">
+                            Use Choose90 Version
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!--#include virtual="/components/static-footer.html" -->
+
+    <script>
+        // Example posts
+        const examples = {
+            traffic: "Ugh, traffic was terrible today. Took me forever to get home. Why does this always happen on Fridays? So frustrating.",
+            work: "So frustrated with this project. Nothing is working and I'm running out of time. This is so stressful and I don't know what to do.",
+            weather: "Another rainy day. Can't believe how gloomy it is outside. I hate this weather, it's so depressing.",
+            politics: "I can't believe what's happening in politics right now. Everything is so messed up and I'm losing faith in the system."
+        };
+
+        // Count words in text
+        function countWords(text) {
+            return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+        }
+
+        // Check if text exceeds 100 words
+        function exceedsWordLimit(text) {
+            return countWords(text) > 100;
+        }
+
+        // Truncate text to 100 words
+        function truncateTo100Words(text) {
+            const words = text.trim().split(/\s+/);
+            if (words.length <= 100) return text;
+            return words.slice(0, 100).join(' ') + '...';
+        }
+
+        // Call real AI API to rewrite post
+        async function rewriteWithAI(originalText, tone) {
+            try {
+                // Check word limit
+                if (exceedsWordLimit(originalText)) {
+                    originalText = truncateTo100Words(originalText);
+                }
+
+                const response = await fetch('/api/rewrite-post.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: originalText,
+                        platform: 'general',
+                        tone: tone
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to rewrite post');
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.rewritten) {
+                    return data.rewritten;
+                } else {
+                    throw new Error('Invalid response from API');
+                }
+            } catch (error) {
+                console.error('Rewrite error:', error);
+                throw error;
+            }
+        }
+
+        // Get elements
+        const textarea = document.getElementById('post-textarea');
+        const charCount = document.getElementById('char-count');
+        const postButton = document.getElementById('post-button');
+        const extensionIndicator = document.getElementById('extension-indicator');
+        const popupOverlay = document.getElementById('popup-overlay');
+        const popupClose = document.getElementById('popup-close');
+        const originalText = document.getElementById('original-text');
+        const choose90Text = document.getElementById('choose90-text');
+        const keepOriginalBtn = document.getElementById('keep-original-btn');
+        const useChoose90Btn = document.getElementById('use-choose90-btn');
+        const successMessage = document.getElementById('success-message');
+        const resetButton = document.getElementById('reset-button');
+        const resetButtonTop = document.getElementById('reset-button-top');
+        const toneSelector = document.getElementById('tone-selector');
+
+        // Character count and extension detection
+        textarea.addEventListener('input', function() {
+            const text = this.value;
+            const length = text.length;
+            const wordCount = countWords(text);
+            
+            // Check word limit
+            if (exceedsWordLimit(text)) {
+                const truncated = truncateTo100Words(text);
+                this.value = truncated;
+                charCount.textContent = `${truncated.length} characters (100 words - limit reached)`;
+                charCount.className = 'char-count warning';
+            } else {
+                // Update character count
+                charCount.textContent = `${length} characters (${wordCount} words)`;
+                charCount.className = 'char-count';
+            }
+            
+            if (length < 50) {
+                charCount.classList.add('warning');
+            } else if (wordCount > 100) {
+                charCount.classList.add('warning');
+            } else {
+                charCount.classList.add('ready');
+            }
+            
+            // Enable/disable post button
+            postButton.disabled = length === 0 || wordCount > 100;
+            
+            // Show extension indicator if 50+ characters and within word limit
+            if (length >= 50 && wordCount <= 100) {
+                extensionIndicator.classList.add('show');
+            } else {
+                extensionIndicator.classList.remove('show');
+            }
+        });
+
+        // Example buttons
+        document.querySelectorAll('.example-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const example = this.dataset.example;
+                if (examples[example]) {
+                    textarea.value = examples[example];
+                    textarea.dispatchEvent(new Event('input'));
+                    textarea.focus();
+                }
+            });
+        });
+
+        // Reset buttons
+        function resetDemo() {
+            textarea.value = '';
+            textarea.dispatchEvent(new Event('input'));
+            successMessage.classList.remove('show');
+            popupOverlay.classList.remove('show');
+            toneSelector.value = 'positive';
+            textarea.focus();
+        }
+
+        if (resetButton) {
+            resetButton.addEventListener('click', resetDemo);
+        }
+        if (resetButtonTop) {
+            resetButtonTop.addEventListener('click', resetDemo);
+        }
+
+        // Extension indicator click
+        extensionIndicator.addEventListener('click', async function() {
+            const original = textarea.value.trim();
+            if (original.length < 50) return;
+            
+            // Check word limit
+            if (exceedsWordLimit(original)) {
+                alert('Please limit your post to 100 words for the demo.');
+                return;
+            }
+
+            // Show popup with loading state
+            const popupLoading = document.getElementById('popup-loading');
+            const popupContentMain = document.getElementById('popup-content-main');
+            popupLoading.style.display = 'block';
+            popupContentMain.style.display = 'none';
+            originalText.textContent = original;
+            choose90Text.textContent = '';
+            popupOverlay.classList.add('show');
+
+            // Disable indicator
+            extensionIndicator.style.opacity = '0.5';
+            extensionIndicator.style.pointerEvents = 'none';
+            extensionIndicator.innerHTML = '<span>⏳</span><span>Rewriting with AI...</span>';
+
+            try {
+                // Get selected tone
+                const tone = toneSelector.value;
+                
+                // Call AI API
+                const rewritten = await rewriteWithAI(original, tone);
+                
+                // Show results
+                choose90Text.textContent = rewritten;
+                popupLoading.style.display = 'none';
+                popupContentMain.style.display = 'block';
+            } catch (error) {
+                console.error('Rewrite error:', error);
+                popupOverlay.classList.remove('show');
+                alert('Failed to rewrite post: ' + (error.message || 'Please try again.'));
+            } finally {
+                // Restore indicator
+                extensionIndicator.style.opacity = '1';
+                extensionIndicator.style.pointerEvents = 'auto';
+                extensionIndicator.innerHTML = '<span>✨</span><span>Choose90 can help make this more positive</span>';
+            }
+        });
+
+        // Close popup
+        popupClose.addEventListener('click', function() {
+            popupOverlay.classList.remove('show');
+        });
+
+        popupOverlay.addEventListener('click', function(e) {
+            if (e.target === popupOverlay) {
+                popupOverlay.classList.remove('show');
+            }
+        });
+
+        // Keep original button
+        keepOriginalBtn.addEventListener('click', function() {
+            popupOverlay.classList.remove('show');
+            // Original text is already in the textarea, so nothing to do
+        });
+
+        // Use Choose90 version button
+        useChoose90Btn.addEventListener('click', function() {
+            const rewritten = choose90Text.textContent;
+            textarea.value = rewritten;
+            textarea.dispatchEvent(new Event('input'));
+            popupOverlay.classList.remove('show');
+            successMessage.classList.add('show');
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // ESC to close popup
+            if (e.key === 'Escape' && popupOverlay.classList.contains('show')) {
+                popupOverlay.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!-- Choose90 Email Capture Widget -->
+<!-- Mailchimp/ConvertKit integration -->
+
+<div class="choose90-email-capture">
+    <div class="email-capture-card">
+        <h3>✨ Stay Connected with Choose90</h3>
+        <p>Get weekly inspiration, tips, and updates on making your online influence 90% positive.</p>
+        
+        <form id="email-capture-form" class="email-capture-form" onsubmit="submitEmailCapture(event)">
+            <div class="form-group">
+                <input type="email" id="capture-email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="capture-name" placeholder="Your name (optional)">
+            </div>
+            <button type="submit" class="submit-btn">Subscribe</button>
+            <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+        </form>
+        
+        <div class="success-message" id="email-success" style="display: none;">
+            <strong>🎉 Thank you!</strong> Check your email to confirm your subscription.
+        </div>
+    </div>
+</div>
+
+<style>
+.choose90-email-capture {
+    margin: 40px 0;
+}
+
+.email-capture-card {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 3px solid #f59e0b;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.email-capture-card h3 {
+    font-size: 24px;
+    color: #92400e;
+    margin-bottom: 12px;
+}
+
+.email-capture-card p {
+    font-size: 16px;
+    color: #78350f;
+    margin-bottom: 24px;
+}
+
+.email-capture-form .form-group {
+    margin-bottom: 16px;
+}
+
+.email-capture-form input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #fbbf24;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.email-capture-form input:focus {
+    outline: none;
+    border-color: #f59e0b;
+}
+
+.email-capture-form .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+}
+
+.email-capture-form .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.email-capture-form .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.privacy-note {
+    font-size: 12px;
+    color: #78350f;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.success-message {
+    background: #d1fae5;
+    border: 2px solid #10b981;
+    color: #065f46;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+</style>
+
+<script>
+async function submitEmailCapture(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('capture-email').value.trim();
+    const name = document.getElementById('capture-name').value.trim();
+    const form = document.getElementById('email-capture-form');
+    const submitBtn = form.querySelector('.submit-btn');
+    const successMsg = document.getElementById('email-success');
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: name
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+</script>
+
+

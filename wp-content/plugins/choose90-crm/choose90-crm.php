@@ -77,6 +77,20 @@ class Choose90_CRM {
         require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-email-handler.php';
         require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-dashboard.php';
         require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-admin.php';
+        
+        // Load Analytics class - ensure it's loaded before Admin class uses it
+        $analytics_file = CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-analytics.php';
+        if (file_exists($analytics_file)) {
+            require_once $analytics_file;
+            // Verify class was loaded
+            if (!class_exists('Choose90_CRM_Analytics') && defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Choose90 CRM: Analytics file loaded but class not defined. Check for PHP errors.');
+            }
+        } else {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Choose90 CRM: Analytics file not found at: ' . $analytics_file);
+            }
+        }
     }
     
     /**
@@ -96,6 +110,7 @@ class Choose90_CRM {
         if (is_admin()) {
             Choose90_CRM_Dashboard::get_instance();
             Choose90_CRM_Admin::get_instance();
+            Choose90_CRM_Analytics::get_instance();
         }
     }
     
@@ -108,9 +123,11 @@ class Choose90_CRM {
             'toplevel_page_choose90-crm',
             'crm-email_page_choose90-crm-distribution-lists',
             'crm-email_page_choose90-crm-dashboard',
+            'crm_page_choose90-crm-analytics',
+            'crm_page_choose90-crm-analytics-settings',
         );
         
-        if (!in_array($hook, $crm_pages) && strpos($hook, 'crm-') === false) {
+        if (!in_array($hook, $crm_pages) && strpos($hook, 'crm-') === false && strpos($hook, 'choose90-crm') === false) {
             return;
         }
         
@@ -145,6 +162,7 @@ class Choose90_CRM {
         require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-email-handler.php';
         require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-dashboard.php';
         require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-admin.php';
+        require_once CHOOSE90_CRM_PLUGIN_DIR . 'includes/class-crm-analytics.php';
         
         // Create custom post types
         Choose90_CRM_Post_Types::get_instance();
@@ -215,10 +233,25 @@ class Choose90_CRM {
             KEY contact_id (contact_id)
         ) $charset_collate;";
         
+        // Newsletter signups table
+        $table_newsletter = $wpdb->prefix . 'choose90_newsletter_signups';
+        $sql_newsletter = "CREATE TABLE IF NOT EXISTS $table_newsletter (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            email varchar(255) NOT NULL,
+            name varchar(255) DEFAULT NULL,
+            signup_location varchar(100) DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY email (email),
+            KEY signup_location (signup_location),
+            KEY created_at (created_at)
+        ) $charset_collate;";
+        
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_distribution_lists);
         dbDelta($sql_list_members);
         dbDelta($sql_threads);
+        dbDelta($sql_newsletter);
     }
     
     /**

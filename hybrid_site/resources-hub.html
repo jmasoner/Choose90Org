@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,7 +31,7 @@
 
         .page-header {
             background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
-            padding: 100px 20px;
+            padding: 120px 20px;
             text-align: center;
             color: white;
             box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
@@ -39,12 +39,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 300px;
+            min-height: 350px;
         }
 
         .page-header h1 {
             font-size: 42px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            margin-top: 0;
             font-weight: 700;
         }
 
@@ -53,6 +54,7 @@
             opacity: 0.95;
             max-width: 800px;
             margin: 0 auto;
+            line-height: 1.5;
         }
 
         .container {
@@ -79,6 +81,56 @@
         .intro p {
             font-size: 18px;
             color: #555;
+        }
+
+        /* Resource Submenu */
+        .resource-submenu {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            flex-wrap: wrap;
+        }
+
+        .submenu-item {
+            padding: 12px 24px;
+            background: #f5f7fa;
+            color: #555;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .submenu-item:hover {
+            background: #e0f2fe;
+            color: #0066CC;
+            transform: translateY(-2px);
+        }
+
+        .submenu-item.active {
+            background: linear-gradient(135deg, #0066CC 0%, #004A99 100%);
+            color: white;
+            border-color: #0066CC;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Hide/show categories */
+        .resource-card[data-category],
+        .section-divider[data-category] {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .resource-card.hidden,
+        .section-divider.hidden {
+            display: none !important;
         }
 
         .resource-grid {
@@ -270,11 +322,26 @@
                 font-size: 28px;
             }
 
+            .resource-submenu {
+                padding: 15px;
+                gap: 8px;
+            }
+
+            .submenu-item {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
 <!-- Shared static header for Choose90 hybrid site -->
 <header class="site-header">
     <div class="container">
@@ -284,26 +351,109 @@
             <ul class="nav-links">
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="/about.html">Our Story</a></li>
-                <li><a href="/pledge/" class="btn btn-outline"
-                        style="padding: 8px 20px; border-radius: 5px;">Pledge</a></li>
-                <li><a href="/resources-hub.html">Resources</a></li>
+                
+                <!-- Pledge Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">
+                        Join <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pledge/">Join the Movement</a></li>
+                        <li><a href="/pledge-wall.html">Join Wall</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Resources Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/resources-hub.html">
+                        Resources <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/resources-hub.html">Resources Hub</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Tools</li>
+                        <li><a href="/tools/content-generator.html">Content Generator</a></li>
+                        <li><a href="/pwa.html">Browser Extension & PWA</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Challenges</li>
+                        <li><a href="/resources/30-day-choose90-challenge.html">30-Day Challenge</a></li>
+                        <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Special Events</li>
+                        <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
                 <li><a href="/chapters/">Chapters</a></li>
-                <li><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
+                <!-- Account Dropdown (hidden by default, shown when logged in) -->
+                <li class="nav-dropdown" id="nav-account-dropdown" style="display: none; list-style: none;">
+                    <a href="/wp-admin/profile.php" id="nav-account-link" style="color: #666; text-decoration: none;">
+                        My Account <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/wp-admin/profile.php">My Account</a></li>
+                        <li><a href="#" id="nav-logout-link">Log Out</a></li>
+                    </ul>
+                </li>
+                <!-- Login Link (shown by default, hidden when logged in) -->
+                <li id="nav-login-item" style="list-style: none;"><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
                 <li><a href="/donate/" class="btn btn-starfield"
                         style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
             </ul>
             <script>
-                // Update login link based on authentication status
+                // Update login/account link based on authentication status
                 (function() {
+                    const loginItem = document.getElementById('nav-login-item');
                     const loginLink = document.getElementById('nav-login-link');
-                    if (!loginLink) return;
+                    const accountDropdown = document.getElementById('nav-account-dropdown');
+                    const accountLink = document.getElementById('nav-account-link');
+                    const logoutLink = document.getElementById('nav-logout-link');
+                    
+                    if (!loginItem || !accountDropdown || !logoutLink) return;
+                    
+                    // Handle logout
+                    logoutLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            // Sign out from Firebase if available
+                            if (window.choose90Auth && typeof window.choose90Auth.signOut === 'function') {
+                                await window.choose90Auth.signOut();
+                            }
+                            
+                            // Sign out from WordPress
+                            const response = await fetch('/api/logout.php', {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                // Redirect to homepage or login page
+                                window.location.href = data.redirect_to || '/';
+                            } else {
+                                // Even if API fails, try to redirect
+                                window.location.href = '/';
+                            }
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            // Still redirect even on error
+                            window.location.href = '/';
+                        }
+                    });
                     
                     // Check if logged in
                     function checkLogin() {
                         // Check for WordPress admin bar
                         if (document.body.classList.contains('admin-bar')) {
-                            loginLink.textContent = 'My Account';
-                            loginLink.href = '/wp-admin/profile.php';
+                            if (loginItem) loginItem.style.display = 'none';
+                            if (accountDropdown) accountDropdown.style.display = 'list-item';
                             return;
                         }
                         
@@ -311,8 +461,8 @@
                         const cookies = document.cookie.split(';');
                         for (let i = 0; i < cookies.length; i++) {
                             if (cookies[i].trim().indexOf('wordpress_logged_in') !== -1) {
-                                loginLink.textContent = 'My Account';
-                                loginLink.href = '/wp-admin/profile.php';
+                                if (loginItem) loginItem.style.display = 'none';
+                                if (accountDropdown) accountDropdown.style.display = 'list-item';
                                 return;
                             }
                         }
@@ -322,11 +472,18 @@
                             .then(r => r.json())
                             .then(data => {
                                 if (data.logged_in) {
-                                    loginLink.textContent = 'My Account';
-                                    loginLink.href = '/wp-admin/profile.php';
+                                    if (loginItem) loginItem.style.display = 'none';
+                                    if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                } else {
+                                    if (loginItem) loginItem.style.display = 'list-item';
+                                    if (accountDropdown) accountDropdown.style.display = 'none';
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => {
+                                // On error, default to showing login link
+                                if (loginItem) loginItem.style.display = 'list-item';
+                                if (accountDropdown) accountDropdown.style.display = 'none';
+                            });
                     }
                     
                     // Check on page load
@@ -336,10 +493,187 @@
                         checkLogin();
                     }
                 })();
+                
+                // Mobile dropdown toggle
+                (function() {
+                    const mobileBtn = document.querySelector('.mobile-menu-btn');
+                    const navLinks = document.querySelector('.nav-links');
+                    
+                    if (mobileBtn && navLinks) {
+                        mobileBtn.addEventListener('click', () => {
+                            navLinks.classList.toggle('active');
+                        });
+                        
+                        // Toggle dropdowns on mobile
+                        document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                if (window.innerWidth <= 768) {
+                                    e.preventDefault();
+                                    link.parentElement.classList.toggle('active');
+                                }
+                            });
+                        });
+                    }
+                })();
             </script>
         </nav>
     </div>
+    
+    <!-- Top Announcement Banner (Below Menu on Desktop) -->
+    <div id="campaign-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; text-align: center; display: none; border-top: 1px solid rgba(255,255,255,0.2);">
+        <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+            <span style="font-weight: 600; font-size: 15px;">🎉 <strong>New Year's Resolution:</strong> Start 2026 with intention! <a href="/new-years-resolution.html" style="color: white; text-decoration: underline; font-weight: 700;">Join the movement →</a></span>
+            <button id="banner-close" onclick="closeCampaignBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 18px; line-height: 1; transition: background 0.2s;">×</button>
+        </div>
+    </div>
+    
+    <script>
+        function showCampaignBanner() {
+            const dismissed = localStorage.getItem('campaign-banner-dismissed');
+            const banner = document.getElementById('campaign-banner');
+            if (banner && !dismissed) {
+                banner.style.display = 'block';
+                document.body.style.paddingTop = 'calc(var(--header-height, 80px) + 45px)';
+                document.querySelector('header.site-header').classList.add('has-banner');
+            }
+        }
+        function closeCampaignBanner() {
+            const banner = document.getElementById('campaign-banner');
+            if (banner) {
+                banner.style.display = 'none';
+                localStorage.setItem('campaign-banner-dismissed', 'true');
+                document.body.style.paddingTop = '';
+                document.querySelector('header.site-header').classList.remove('has-banner');
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showCampaignBanner);
+        } else {
+            showCampaignBanner();
+        }
+        window.closeCampaignBanner = closeCampaignBanner;
+    </script>
 </header>
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
 
 
 
@@ -363,19 +697,28 @@
     </div>
 
     <div class="container">
+        <!-- Resource Category Submenu -->
+        <div class="resource-submenu">
+            <a href="#all" class="submenu-item active" data-category="all">All Resources</a>
+            <a href="#tools" class="submenu-item" data-category="tools">Tools</a>
+            <a href="#challenges" class="submenu-item" data-category="challenges">Challenges</a>
+            <a href="#guides" class="submenu-item" data-category="guides">Guides</a>
+            <a href="#quick-wins" class="submenu-item" data-category="quick-wins">Quick Wins</a>
+        </div>
+
         <div class="intro">
             <h2>Start Your Journey Today</h2>
             <p>These practical, actionable resources are designed to support you every step of the way. From daily accountability to long-term habit change, we've got you covered.</p>
         </div>
 
         <!-- TIER 1: Essential Resources -->
-        <div class="section-divider">
+        <div class="section-divider" data-category="all guides quick-wins">
             <h2>🔥 Essential Resources</h2>
             <p>Start here - these will make the biggest immediate impact</p>
         </div>
 
         <div class="resource-grid">
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides">
                 <div class="resource-icon">👥</div>
                 <h3>Family Challenge Kit</h3>
                 <div class="resource-meta">
@@ -386,7 +729,7 @@
                 <a href="/resources-backup/family-challenge-kit.html" class="download-btn">View Guide →</a>
             </div>
 
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides">
                 <div class="resource-icon">💬</div>
                 <h3>Conversation Starter Kit</h3>
                 <div class="resource-meta">
@@ -397,18 +740,7 @@
                 <a href="/resources-backup/conversation-starter-kit.html" class="download-btn">View Guide →</a>
             </div>
 
-            <div class="resource-card">
-                <div class="resource-icon">📱</div>
-                <h3>Phone Setup Optimizer</h3>
-                <div class="resource-meta">
-                    <span class="meta-badge">Quick Win</span>
-                    <span class="meta-badge">Step-by-Step</span>
-                </div>
-                <p>Transform your phone from a distraction machine to a tool. Complete guide for iPhone and Android with screenshots, app recommendations, and "copy my settings" profiles.</p>
-                <a href="/resources-backup/phone-setup-optimizer.html" class="download-btn" data-requires-signup data-feature-name="Phone Setup Optimizer">View Guide →</a>
-            </div>
-
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides">
                 <div class="resource-icon">💪</div>
                 <h3>Small Acts of Impact Toolkit</h3>
                 <div class="resource-meta">
@@ -419,26 +751,139 @@
                 <a href="/resources-backup/small-acts-toolkit.html" class="download-btn">View Toolkit →</a>
             </div>
 
-            <div class="resource-card">
+        </div>
+
+        <!-- Tools Section (only shows when Tools category selected) -->
+        <div class="section-divider tools-section-header" data-category="tools-only" style="display: none;">
+            <h2>🛠️ Tools</h2>
+            <p>AI-powered tools and browser extensions to help you create positive content</p>
+        </div>
+
+        <div class="resource-grid tools-section" data-category="tools-only" style="display: none;">
+            <div class="resource-card" data-category="all tools">
+                <div class="resource-icon">✨</div>
+                <h3>Content Generator</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">AI POWERED</span>
+                    <span class="meta-badge">Web Tool</span>
+                </div>
+                <p>Generate positive, uplifting social media posts and quotes with AI. Transform your content to be 90% positive and inspiring.</p>
+                <a href="/tools/content-generator.html" class="download-btn">Use Tool →</a>
+            </div>
+
+            <div class="resource-card" data-category="all tools">
+                <div class="resource-icon">🔌</div>
+                <h3>Browser Extension & PWA</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">INSTALL NOW</span>
+                    <span class="meta-badge">Browser Tool</span>
+                </div>
+                <p>Rewrite negative posts into positive ones before you share. Install our browser extension or use the mobile app to stay 90% positive online.</p>
+                <a href="/pwa.html" class="download-btn">Install Now →</a>
+            </div>
+        </div>
+
+        <!-- Challenges Section (only shows when Challenges category selected) -->
+        <div class="section-divider challenges-section-header" data-category="challenges-only" style="display: none;">
+            <h2>🎯 Challenges</h2>
+            <p>Join structured programs to build lasting habits and positive change</p>
+        </div>
+
+        <div class="resource-grid challenges-section" data-category="challenges-only" style="display: none;">
+            <div class="resource-card" data-category="all challenges">
                 <div class="resource-icon">📚</div>
                 <h3>Digital Detox Guide</h3>
                 <div class="resource-meta">
-                    <span class="meta-badge priority">START HERE</span>
+                    <span class="meta-badge priority">7-DAY CHALLENGE</span>
                     <span class="meta-badge">Interactive</span>
                 </div>
                 <p>7-day plan to reset your media consumption, reclaim your attention, and choose to be 90% positive. Interactive guide with progress tracking.</p>
                 <a href="/digital-detox-guide.html" class="download-btn" data-requires-signup data-feature-name="Digital Detox Guide">Start 7-Day Challenge →</a>
             </div>
+
+            <div class="resource-card" data-category="all challenges">
+                <div class="resource-icon">🗓️</div>
+                <h3>30-Day Choose90 Challenge</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">30-DAY PROGRAM</span>
+                    <span class="meta-badge">Daily Prompts</span>
+                </div>
+                <p>A month-long journey with daily prompts, activities, and reflections to help you build the habit of choosing 90% positive content and interactions.</p>
+                <a href="/resources/30-day-choose90-challenge.html" class="download-btn">Start Challenge →</a>
+            </div>
+
+            <div class="resource-card" data-category="all challenges">
+                <div class="resource-icon">🕯️</div>
+                <h3>7-Day Kwanzaa Challenge</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">SEASONAL</span>
+                    <span class="meta-badge">Cultural</span>
+                </div>
+                <p>Celebrate Kwanzaa principles while building positive habits. Seven days aligned with the Nguzo Saba principles, creating meaningful connections.</p>
+                <a href="/kwanzaa-challenge.html" class="download-btn">Start Challenge →</a>
+            </div>
+        </div>
+
+        <!-- Quick Wins Section (only shows when Quick Wins category selected) -->
+        <div class="section-divider quick-wins-section-header" data-category="quick-wins-only" style="display: none;">
+            <h2>⚡ Quick Wins</h2>
+            <p>Fast, actionable resources you can implement today for immediate impact</p>
+        </div>
+
+        <div class="resource-grid quick-wins-section" data-category="quick-wins-only" style="display: none;">
+            <div class="resource-card" data-category="all quick-wins">
+                <div class="resource-icon">📱</div>
+                <h3>Phone Setup Optimizer</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">15 MIN SETUP</span>
+                    <span class="meta-badge">Step-by-Step</span>
+                </div>
+                <p>Transform your phone from a distraction machine to a tool. Complete guide for iPhone and Android with screenshots, app recommendations, and "copy my settings" profiles.</p>
+                <a href="/resources-backup/phone-setup-optimizer.html" class="download-btn" data-requires-signup data-feature-name="Phone Setup Optimizer">View Guide →</a>
+            </div>
+
+            <div class="resource-card" data-category="all quick-wins">
+                <div class="resource-icon">💬</div>
+                <h3>Conversation Starter Kit</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">USE TODAY</span>
+                    <span class="meta-badge">Web Guide</span>
+                </div>
+                <p>50 non-divisive questions for deeper connections. Learn to listen actively, navigate difficult topics with grace, and leave every conversation feeling uplifted.</p>
+                <a href="/resources-backup/conversation-starter-kit.html" class="download-btn">View Guide →</a>
+            </div>
+
+            <div class="resource-card" data-category="all quick-wins">
+                <div class="resource-icon">🗣️</div>
+                <h3>Conflict-to-Connection Translator</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">INSTANT TOOL</span>
+                    <span class="meta-badge">Quick Reference</span>
+                </div>
+                <p>Phrases that de-escalate and connect. How to disagree without disconnecting. Transform arguments into understanding with practical language tools you can use right now.</p>
+                <a href="/resources-backup/conflict-translator.html" class="download-btn">View Translator →</a>
+            </div>
+
+            <div class="resource-card" data-category="all quick-wins">
+                <div class="resource-icon">💪</div>
+                <h3>Small Acts of Impact Toolkit</h3>
+                <div class="resource-meta">
+                    <span class="meta-badge priority">DAILY ACTION</span>
+                    <span class="meta-badge">Web Toolkit</span>
+                </div>
+                <p>Prove that tiny actions create ripple effects. The grocery store smile experiment, encouraging notes, thanking service workers, and the power of showing up - simple actions you can do today.</p>
+                <a href="/resources-backup/small-acts-toolkit.html" class="download-btn">View Toolkit →</a>
+            </div>
         </div>
 
         <!-- TIER 2: Deep Dive Resources -->
-        <div class="section-divider">
+        <div class="section-divider" data-category="all guides">
             <h2>📖 Deep Dive Resources</h2>
             <p>Ready to go deeper? These comprehensive guides support long-term transformation</p>
         </div>
 
         <div class="resource-grid">
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides challenges">
                 <div class="resource-icon">🏡</div>
                 <h3>Neighborhood Connection Challenge</h3>
                 <div class="resource-meta">
@@ -449,7 +894,7 @@
                 <a href="/resources-backup/neighborhood-challenge.html" class="download-btn">Start Challenge →</a>
             </div>
 
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides">
                 <div class="resource-icon">🧘</div>
                 <h3>Media Mindfulness Guide</h3>
                 <div class="resource-meta">
@@ -460,7 +905,7 @@
                 <a href="/resources-backup/media-mindfulness-guide.html" class="download-btn">View Guide →</a>
             </div>
 
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides">
                 <div class="resource-icon">🌟</div>
                 <h3>Intergenerational Connection Guide</h3>
                 <div class="resource-meta">
@@ -471,7 +916,7 @@
                 <a href="/resources-backup/intergenerational-guide.html" class="download-btn">View Guide →</a>
             </div>
 
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides">
                 <div class="resource-icon">🗣️</div>
                 <h3>Conflict-to-Connection Translator</h3>
                 <div class="resource-meta">
@@ -482,7 +927,7 @@
                 <a href="/resources-backup/conflict-translator.html" class="download-btn">View Translator →</a>
             </div>
 
-            <div class="resource-card">
+            <div class="resource-card" data-category="all guides tools">
                 <div class="resource-icon">📍</div>
                 <h3>Local Good Directory Template</h3>
                 <div class="resource-meta">
@@ -499,11 +944,210 @@
             <h2>Ready to Get Started?</h2>
             <p>Join thousands of people who are reclaiming their time and choosing good every day.</p>
             <div class="cta-buttons">
-                <a href="/pledge" class="btn-large">Take the Pledge</a>
+                <a href="/pledge" class="btn-large" id="resources-pledge-btn">Join the Movement</a>
                 <a href="/digital-detox-guide.html" class="btn-large" style="background: white; color: #0066CC;" data-requires-signup data-feature-name="Digital Detox Guide">Start 7-Day Challenge</a>
             </div>
         </div>
     </div>
+    
+    <!-- Newsletter Signup Section -->
+    <section class="newsletter-section" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 60px 20px; margin-top: 40px;">
+        <div class="container">
+            <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <h2 style="font-size: 32px; font-weight: 700; color: #1f2937; margin-bottom: 16px; font-family: 'Outfit', sans-serif;">Want More Resources Like This?</h2>
+                <p style="font-size: 18px; color: #6b7280; margin-bottom: 32px;">Get weekly tips, challenges, and positive content delivered to your inbox.</p>
+                
+                <div class="choose90-email-capture" style="max-width: 500px; margin: 0 auto;">
+                    <div class="email-capture-card" style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 32px;">
+                        <form id="resources-newsletter-form" class="email-capture-form" onsubmit="submitResourcesEmail(event)">
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <input type="email" id="resources-email" placeholder="Enter your email" required style="width: 100%; padding: 14px 18px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; font-family: inherit;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <input type="text" id="resources-name" placeholder="Your name (optional)" style="width: 100%; padding: 14px 18px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; font-family: inherit;">
+                            </div>
+                            <button type="submit" class="submit-btn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 12px;">Subscribe</button>
+                            <p class="privacy-note" style="font-size: 12px; color: #6b7280; opacity: 0.8; margin: 0;">We respect your privacy. Unsubscribe at any time.</p>
+                        </form>
+                        <div class="success-message" id="resources-email-success" style="display: none; background: #d1fae5; border: 2px solid #10b981; color: #065f46; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                            <strong>🎉 Thank you!</strong> Check your email to confirm your subscription.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+    async function submitResourcesEmail(event) {
+        event.preventDefault();
+        
+        const form = document.getElementById('resources-newsletter-form');
+        const emailField = document.getElementById('resources-email');
+        const nameField = document.getElementById('resources-name');
+        const submitBtn = form.querySelector('.submit-btn');
+        const successMsg = document.getElementById('resources-email-success');
+        
+        const email = emailField.value.trim();
+        const name = nameField.value.trim();
+        
+        if (!email) {
+            alert('Please enter your email!');
+            return;
+        }
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Subscribing...';
+        
+        try {
+            const response = await fetch('/api/subscribe-email.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    name: name
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to subscribe');
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+                
+                // Track newsletter signup
+                if (typeof window.trackNewsletterSignup === 'function') {
+                    window.trackNewsletterSignup('resources');
+                }
+            } else {
+                throw new Error(data.error || 'Failed to subscribe');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('There was an error. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Subscribe';
+        }
+    }
+    window.submitResourcesEmail = submitResourcesEmail;
+
+    // Resource category filtering
+    (function() {
+        const submenuItems = document.querySelectorAll('.submenu-item');
+        const resourceCards = document.querySelectorAll('.resource-card[data-category]');
+        const sectionDividers = document.querySelectorAll('.section-divider[data-category]');
+        const toolsSection = document.querySelector('.tools-section');
+        const challengesSection = document.querySelector('.challenges-section');
+
+        function filterResources(category) {
+            // Track category filter
+            if (typeof window.trackCategoryFiltered === 'function') {
+                window.trackCategoryFiltered(category);
+            }
+            
+            // Update active menu item
+            submenuItems.forEach(item => {
+                if (item.dataset.category === category) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Show/hide resource cards
+            resourceCards.forEach(card => {
+                const categories = card.dataset.category.split(' ');
+                if (category === 'all' || categories.includes(category)) {
+                    card.style.display = '';
+                    card.classList.remove('hidden');
+                } else {
+                    card.style.display = 'none';
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Show/hide section dividers (exclude Tools/Challenges dividers from "all" view)
+            const toolsHeader = document.querySelector('.tools-section-header');
+            const challengesHeader = document.querySelector('.challenges-section-header');
+            const quickWinsHeader = document.querySelector('.quick-wins-section-header');
+            const quickWinsSection = document.querySelector('.quick-wins-section');
+            
+            sectionDividers.forEach(divider => {
+                // Skip special section headers (handled separately)
+                if (divider.classList.contains('tools-section-header') || 
+                    divider.classList.contains('challenges-section-header') ||
+                    divider.classList.contains('quick-wins-section-header')) {
+                    return;
+                }
+                
+                const categories = divider.dataset.category.split(' ');
+                if (category === 'all' || categories.includes(category)) {
+                    divider.style.display = '';
+                    divider.classList.remove('hidden');
+                } else {
+                    divider.style.display = 'none';
+                    divider.classList.add('hidden');
+                }
+            });
+
+            // Handle special sections (Tools, Challenges, Quick Wins)
+            if (category === 'tools') {
+                if (toolsHeader) toolsHeader.style.display = '';
+                if (toolsSection) toolsSection.style.display = 'grid';
+                if (challengesHeader) challengesHeader.style.display = 'none';
+                if (challengesSection) challengesSection.style.display = 'none';
+                if (quickWinsHeader) quickWinsHeader.style.display = 'none';
+                if (quickWinsSection) quickWinsSection.style.display = 'none';
+            } else if (category === 'challenges') {
+                if (toolsHeader) toolsHeader.style.display = 'none';
+                if (toolsSection) toolsSection.style.display = 'none';
+                if (challengesHeader) challengesHeader.style.display = '';
+                if (challengesSection) challengesSection.style.display = 'grid';
+                if (quickWinsHeader) quickWinsHeader.style.display = 'none';
+                if (quickWinsSection) quickWinsSection.style.display = 'none';
+            } else if (category === 'quick-wins') {
+                if (toolsHeader) toolsHeader.style.display = 'none';
+                if (toolsSection) toolsSection.style.display = 'none';
+                if (challengesHeader) challengesHeader.style.display = 'none';
+                if (challengesSection) challengesSection.style.display = 'none';
+                if (quickWinsHeader) quickWinsHeader.style.display = '';
+                if (quickWinsSection) quickWinsSection.style.display = 'grid';
+            } else {
+                // "all" or other categories - hide special sections
+                if (toolsHeader) toolsHeader.style.display = 'none';
+                if (toolsSection) toolsSection.style.display = 'none';
+                if (challengesHeader) challengesHeader.style.display = 'none';
+                if (challengesSection) challengesSection.style.display = 'none';
+                if (quickWinsHeader) quickWinsHeader.style.display = 'none';
+                if (quickWinsSection) quickWinsSection.style.display = 'none';
+            }
+        }
+
+        // Add click handlers
+        submenuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.dataset.category;
+                filterResources(category);
+                
+                // Update URL hash
+                window.history.pushState(null, '', '#' + category);
+            });
+        });
+
+        // Check URL hash on load
+        const hash = window.location.hash.slice(1);
+        if (hash && ['all', 'tools', 'challenges', 'guides', 'quick-wins'].includes(hash)) {
+            filterResources(hash);
+        }
+    })();
+    </script>
 
     <!-- Footer -->
 <!-- Shared static footer for Choose90 hybrid site -->
@@ -528,17 +1172,235 @@
             <div class="footer-col">
                 <h4>Action</h4>
                 <ul>
-                    <li><a href="/pledge/">Take the Pledge</a></li>
+                    <li><a href="/pledge/">Join the Movement</a></li>
                     <li><a href="/donate/">Donate</a></li>
                     <li><a href="/support.html">Contact Support</a></li>
                 </ul>
             </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/delete-account.html">Delete Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Campaigns</h4>
+                <ul>
+                    <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                    <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                    <li><a href="/digital-detox-guide.html">Digital Detox Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-newsletter" style="margin: 40px 0; padding: 40px 0; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+            <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <h4 style="color: white; font-size: 20px; margin-bottom: 12px; font-weight: 600;">Stay Connected with Choose90</h4>
+                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Get weekly inspiration, tips, and updates on making your online influence 90% positive.</p>
+                <form id="footer-newsletter-form" onsubmit="submitFooterEmail(event)" style="display: flex; gap: 8px; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="footer-email" placeholder="Enter your email" required style="flex: 1; min-width: 200px; padding: 12px 16px; border: 2px solid #444; border-radius: 6px; font-size: 14px; background: #2a2a2a; color: white;">
+                    <button type="submit" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">Subscribe</button>
+                </form>
+                <p style="color: #666; font-size: 11px; margin-top: 12px;">We respect your privacy. Unsubscribe at any time.</p>
+                <div id="footer-email-success" style="display: none; background: #10b981; color: white; padding: 12px; border-radius: 6px; margin-top: 12px; font-size: 14px;">
+                    ✓ Thank you! Check your email to confirm.
+                </div>
+            </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Choose90.org. All rights reserved. | <a href="/privacy.html">Privacy Policy</a></p>
+            <p>&copy; 2025 Choose90.org. All rights reserved. | 
+                <a href="/privacy.html">Privacy Policy</a> | 
+                <a href="/terms-of-service.html">Terms of Service</a> | 
+                <a href="/delete-account.html">Delete Account</a>
+            </p>
         </div>
     </div>
 </footer>
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
 
 
 
@@ -556,6 +1418,7 @@
 
 
     <script src="/script.js"></script>
+    <script src="/js/hide-pledge-when-logged-in.js"></script>
 </body>
 </html>
 

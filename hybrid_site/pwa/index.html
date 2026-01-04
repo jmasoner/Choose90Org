@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Choose90 - Make your posts 90% positive, uplifting, and constructive">
+  <meta name="theme-color" content="#764ba2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Choose90">
+  <title>Choose90 - Make Your Posts Positive</title>
+  <link rel="manifest" href="/pwa/manifest.json">
+  <link rel="apple-touch-icon" href="/pwa/icon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/pwa/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="/pwa/icon-512.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #1f2937;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      color: white;
+      padding: 40px 20px;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .daily-inspiration {
+      text-align: center;
+      padding: 32px 24px;
+    }
+    
+    .daily-inspiration h2 {
+      font-size: 20px;
+      color: #667eea;
+      margin-bottom: 16px;
+    }
+    
+    .quote {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #374151;
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+    
+    .quote-author {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    
+    .composer {
+      display: none;
+    }
+    
+    .composer.active {
+      display: block;
+    }
+    
+    .composer h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: #1f2937;
+    }
+    
+    .textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: inherit;
+      resize: vertical;
+      margin-bottom: 16px;
+    }
+    
+    .textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .char-count {
+      text-align: right;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      margin-bottom: 12px;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+    
+    .comparison {
+      display: none;
+    }
+    
+    .comparison.active {
+      display: block;
+    }
+    
+    .comparison-section {
+      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    
+    .comparison-original {
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+    }
+    
+    .comparison-rewritten {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+    }
+    
+    .comparison-section h3 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    
+    .comparison-original h3 {
+      color: #991b1b;
+    }
+    
+    .comparison-rewritten h3 {
+      color: #166534;
+    }
+    
+    .comparison-text {
+      font-size: 16px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #f3f4f6;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error {
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+      color: #991b1b;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    
+    .error.active {
+      display: block;
+    }
+    
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .actions .btn {
+      width: 100%;
+    }
+    
+    .native-app-tip {
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      opacity: 0.9;
+    }
+    
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>✨ Choose90</h1>
+      <p>Make your posts 90% positive</p>
+    </div>
+    
+    <div class="card daily-inspiration" id="daily-inspiration">
+      <h2>Daily Inspiration</h2>
+      <div class="quote" id="daily-quote">
+        "Be the reason someone feels seen, heard, and valued today."
+      </div>
+      <div class="quote-author">— Choose90</div>
+    </div>
+    
+    <div class="card composer" id="composer">
+      <h2>Compose Your Post</h2>
+      <textarea 
+        class="textarea" 
+        id="post-text" 
+        placeholder="What's on your mind? Choose90 will help make it positive and uplifting..."
+        maxlength="2000"
+      ></textarea>
+      <div class="char-count">
+        <span id="char-count">0</span> / 2000 characters
+      </div>
+      <button class="btn btn-primary" id="rewrite-btn">
+        ✨ Make it Choose90
+      </button>
+      <button class="btn btn-secondary" id="clear-btn">
+        Clear
+      </button>
+    </div>
+    
+    <div class="card comparison" id="comparison">
+      <div class="comparison-section comparison-original">
+        <h3>Your Original Post</h3>
+        <div class="comparison-text" id="original-text"></div>
+      </div>
+      <div class="comparison-section comparison-rewritten">
+        <h3>Choose90 Version</h3>
+        <div class="comparison-text" id="rewritten-text"></div>
+      </div>
+      <div class="error" id="error-message"></div>
+      <div class="actions">
+        <button class="btn btn-secondary" id="back-btn">Back</button>
+        <button class="btn btn-primary" id="copy-rewritten-btn">📋 Copy to Clipboard</button>
+        <button class="btn btn-primary" id="use-rewritten-btn">Use This Version</button>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <a href="/pledge/">Learn more about Choose90 →</a>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
+

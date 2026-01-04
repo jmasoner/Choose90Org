@@ -1,0 +1,27 @@
+# BPS Custom Code: Whitelist Firebase OAuth
+# Add this to: BulletProof Security → Custom Code → Custom Code (Top)
+
+# Allow Firebase OAuth endpoints and login page
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Exclude login page from BPS checks
+RewriteCond %{REQUEST_URI} ^/login/ [NC]
+RewriteRule . - [E=NO_BPS_CHECK:1]
+
+# Exclude Firebase OAuth handler
+RewriteCond %{REQUEST_URI} ^/__/auth/ [NC]
+RewriteRule . - [E=NO_BPS_CHECK:1]
+
+# Exclude Firebase auth callback API
+RewriteCond %{REQUEST_URI} ^/api/firebase-auth-callback\.php [NC]
+RewriteRule . - [E=NO_BPS_CHECK:1]
+</IfModule>
+
+# Alternative: If the above doesn't work, try this more permissive version
+# (Only use if the first version doesn't work)
+# <IfModule mod_rewrite.c>
+# RewriteEngine On
+# RewriteCond %{REQUEST_URI} ^/(login|__/auth|api/firebase-auth-callback\.php) [NC]
+# RewriteRule . - [E=NO_BPS_CHECK:1]
+# </IfModule>

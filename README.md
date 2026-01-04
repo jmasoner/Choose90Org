@@ -73,5 +73,20 @@ We use a mapped Web Disk drive (`Z:`) to deploy files to the live server.
 
 ## 🔐 Credentials & Secrets
 
-* **Secrets**: Stored in `.env` (not committed).
-* **Web Disk**: Credentials managed via `secrets.json` (if applicable) or interactive prompt.
+* **Secrets**: Stored in `secrets.json` (not committed, see `secrets.json.example`).
+* **Web Disk**: Credentials managed via `secrets.json` or interactive prompt.
+
+## 📚 Documentation
+
+For detailed documentation, see:
+
+- **[SETUP_GUIDE.md](SETUP_GUIDE.md)** - Complete setup and installation
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Deployment processes
+- **[FEATURES_GUIDE.md](FEATURES_GUIDE.md)** - Feature setup guides
+- **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** - Firebase Authentication setup
+- **[ANALYTICS_GUIDE.md](ANALYTICS_GUIDE.md)** - Google Analytics configuration
+- **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - Complete documentation index
+
+For troubleshooting:
+- **[FIREBASE_TROUBLESHOOTING.md](FIREBASE_TROUBLESHOOTING.md)** - Firebase issues
+- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Testing procedures

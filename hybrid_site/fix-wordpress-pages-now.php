@@ -9,7 +9,32 @@
  */
 
 // Load WordPress
-require_once('../../../wp-load.php');
+// Try multiple paths
+$wp_load_paths = array(
+    __DIR__ . '/../../../wp-load.php',
+    dirname(__DIR__) . '/../../wp-load.php',
+    dirname(dirname(dirname(__DIR__))) . '/wp-load.php'
+);
+
+$wp_loaded = false;
+foreach ($wp_load_paths as $path) {
+    if (file_exists($path)) {
+        require_once($path);
+        $wp_loaded = true;
+        break;
+    }
+}
+
+if (!$wp_loaded) {
+    // Last resort: try relative to document root
+    $doc_root = $_SERVER['DOCUMENT_ROOT'] ?? dirname(dirname(dirname(__DIR__)));
+    $wp_load = $doc_root . '/wp-load.php';
+    if (file_exists($wp_load)) {
+        require_once($wp_load);
+    } else {
+        die('Error: Could not find wp-load.php');
+    }
+}
 
 if (!current_user_can('manage_options')) {
     die('You must be logged in as an administrator to run this script.');

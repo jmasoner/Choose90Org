@@ -1,0 +1,68 @@
+<!-- Top Announcement Banner for Campaigns -->
+<div id="campaign-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; text-align: center; position: relative; z-index: 1001; display: none;">
+    <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+        <span style="font-weight: 600; font-size: 15px;">🎉 <strong>New Year's Resolution:</strong> Start 2025 with intention! <a href="/new-years-resolution.html" style="color: white; text-decoration: underline; font-weight: 700;">Join the movement →</a></span>
+        <button id="banner-close" onclick="closeCampaignBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 18px; line-height: 1; transition: background 0.2s;">×</button>
+    </div>
+</div>
+
+<script>
+// Campaign banner functionality
+function showCampaignBanner() {
+    const dismissed = localStorage.getItem('campaign-banner-dismissed');
+    const banner = document.getElementById('campaign-banner');
+    if (banner && !dismissed) {
+        banner.style.display = 'block';
+        // Add padding to body if banner is visible
+        document.body.style.paddingTop = '45px';
+    }
+}
+
+function closeCampaignBanner() {
+    const banner = document.getElementById('campaign-banner');
+    if (banner) {
+        banner.style.display = 'none';
+        localStorage.setItem('campaign-banner-dismissed', 'true');
+        document.body.style.paddingTop = '0';
+    }
+}
+
+// Show banner on load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showCampaignBanner);
+} else {
+    showCampaignBanner();
+}
+
+window.closeCampaignBanner = closeCampaignBanner;
+</script>
+
+<style>
+#campaign-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+
+#campaign-banner ~ header.site-header,
+body:has(#campaign-banner[style*="display: block"]) header.site-header {
+    top: 45px;
+}
+
+#banner-close:hover {
+    background: rgba(255,255,255,0.3) !important;
+}
+
+@media (max-width: 768px) {
+    #campaign-banner {
+        padding: 10px 15px;
+    }
+    #campaign-banner span {
+        font-size: 13px !important;
+    }
+}
+</style>
+
+

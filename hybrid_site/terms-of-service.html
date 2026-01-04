@@ -1,0 +1,762 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | Choose 90</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Shared static header for Choose90 hybrid site -->
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
+<!-- Shared static header for Choose90 hybrid site -->
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
+<!-- Shared static header for Choose90 hybrid site -->
+<!-- Google Analytics 4 Snippet -->
+<!--#include virtual="/components/analytics-snippet.html" -->
+<script src="/js/analytics.js" defer></script>
+<script src="/js/analytics-events.js" defer></script>
+
+<!-- Shared static header for Choose90 hybrid site -->
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">Choose<span>90</span>.</a>
+        <div class="mobile-menu-btn">☰</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about.html">Our Story</a></li>
+                
+                <!-- Pledge Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/pledge/" class="btn btn-outline" style="padding: 8px 20px; border-radius: 5px;">
+                        Join <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pledge/">Join the Movement</a></li>
+                        <li><a href="/pledge-wall.html">Join Wall</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Resources Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="/resources-hub.html">
+                        Resources <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/resources-hub.html">Resources Hub</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Tools</li>
+                        <li><a href="/tools/content-generator.html">Content Generator</a></li>
+                        <li><a href="/pwa.html">Browser Extension & PWA</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Challenges</li>
+                        <li><a href="/resources/30-day-choose90-challenge.html">30-Day Challenge</a></li>
+                        <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Special Events</li>
+                        <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                        <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="/chapters/">Chapters</a></li>
+                <!-- Account Dropdown (hidden by default, shown when logged in) -->
+                <li class="nav-dropdown" id="nav-account-dropdown" style="display: none; list-style: none;">
+                    <a href="/wp-admin/profile.php" id="nav-account-link" style="color: #666; text-decoration: none;">
+                        My Account <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/wp-admin/profile.php">My Account</a></li>
+                        <li><a href="#" id="nav-logout-link">Log Out</a></li>
+                    </ul>
+                </li>
+                <!-- Login Link (shown by default, hidden when logged in) -->
+                <li id="nav-login-item" style="list-style: none;"><a href="/login/" id="nav-login-link" style="color: #666; text-decoration: none;">Log In</a></li>
+                <li><a href="/donate/" class="btn btn-starfield"
+                        style="padding: 8px 25px; border-radius: 50px;">Donate</a></li>
+            </ul>
+            <script>
+                // Update login/account link based on authentication status
+                (function() {
+                    const loginItem = document.getElementById('nav-login-item');
+                    const loginLink = document.getElementById('nav-login-link');
+                    const accountDropdown = document.getElementById('nav-account-dropdown');
+                    const accountLink = document.getElementById('nav-account-link');
+                    const logoutLink = document.getElementById('nav-logout-link');
+                    
+                    if (!loginItem || !accountDropdown || !logoutLink) return;
+                    
+                    // Handle logout
+                    logoutLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            // Sign out from Firebase if available
+                            if (window.choose90Auth && typeof window.choose90Auth.signOut === 'function') {
+                                await window.choose90Auth.signOut();
+                            }
+                            
+                            // Sign out from WordPress
+                            const response = await fetch('/api/logout.php', {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                // Redirect to homepage or login page
+                                window.location.href = data.redirect_to || '/';
+                            } else {
+                                // Even if API fails, try to redirect
+                                window.location.href = '/';
+                            }
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            // Still redirect even on error
+                            window.location.href = '/';
+                        }
+                    });
+                    
+                    // Check if logged in
+                    function checkLogin() {
+                        // Check for WordPress admin bar
+                        if (document.body.classList.contains('admin-bar')) {
+                            if (loginItem) loginItem.style.display = 'none';
+                            if (accountDropdown) accountDropdown.style.display = 'list-item';
+                            return;
+                        }
+                        
+                        // Check for WordPress cookies
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            if (cookies[i].trim().indexOf('wordpress_logged_in') !== -1) {
+                                if (loginItem) loginItem.style.display = 'none';
+                                if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                return;
+                            }
+                        }
+                        
+                        // Check via API
+                        fetch('/api/check-auth.php', { credentials: 'include' })
+                            .then(r => r.json())
+                            .then(data => {
+                                if (data.logged_in) {
+                                    if (loginItem) loginItem.style.display = 'none';
+                                    if (accountDropdown) accountDropdown.style.display = 'list-item';
+                                } else {
+                                    if (loginItem) loginItem.style.display = 'list-item';
+                                    if (accountDropdown) accountDropdown.style.display = 'none';
+                                }
+                            })
+                            .catch(() => {
+                                // On error, default to showing login link
+                                if (loginItem) loginItem.style.display = 'list-item';
+                                if (accountDropdown) accountDropdown.style.display = 'none';
+                            });
+                    }
+                    
+                    // Check on page load
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', checkLogin);
+                    } else {
+                        checkLogin();
+                    }
+                })();
+                
+                // Mobile dropdown toggle
+                (function() {
+                    const mobileBtn = document.querySelector('.mobile-menu-btn');
+                    const navLinks = document.querySelector('.nav-links');
+                    
+                    if (mobileBtn && navLinks) {
+                        mobileBtn.addEventListener('click', () => {
+                            navLinks.classList.toggle('active');
+                        });
+                        
+                        // Toggle dropdowns on mobile
+                        document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                if (window.innerWidth <= 768) {
+                                    e.preventDefault();
+                                    link.parentElement.classList.toggle('active');
+                                }
+                            });
+                        });
+                    }
+                })();
+            </script>
+        </nav>
+    </div>
+    
+    <!-- Top Announcement Banner (Below Menu on Desktop) -->
+    <div id="campaign-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; text-align: center; display: none; border-top: 1px solid rgba(255,255,255,0.2);">
+        <div class="container" style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+            <span style="font-weight: 600; font-size: 15px;">🎉 <strong>New Year's Resolution:</strong> Start 2026 with intention! <a href="/new-years-resolution.html" style="color: white; text-decoration: underline; font-weight: 700;">Join the movement →</a></span>
+            <button id="banner-close" onclick="closeCampaignBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 18px; line-height: 1; transition: background 0.2s;">×</button>
+        </div>
+    </div>
+    
+    <script>
+        function showCampaignBanner() {
+            const dismissed = localStorage.getItem('campaign-banner-dismissed');
+            const banner = document.getElementById('campaign-banner');
+            if (banner && !dismissed) {
+                banner.style.display = 'block';
+                document.body.style.paddingTop = 'calc(var(--header-height, 80px) + 45px)';
+                document.querySelector('header.site-header').classList.add('has-banner');
+            }
+        }
+        function closeCampaignBanner() {
+            const banner = document.getElementById('campaign-banner');
+            if (banner) {
+                banner.style.display = 'none';
+                localStorage.setItem('campaign-banner-dismissed', 'true');
+                document.body.style.paddingTop = '';
+                document.querySelector('header.site-header').classList.remove('has-banner');
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showCampaignBanner);
+        } else {
+            showCampaignBanner();
+        }
+        window.closeCampaignBanner = closeCampaignBanner;
+    </script>
+</header>
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    /* Banner styling */
+    #campaign-banner button:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Make header a flex column to stack banner below menu */
+    header.site-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: var(--header-height);
+    }
+    
+    header.site-header > .container:first-of-type {
+        flex-shrink: 0;
+        height: var(--header-height);
+    }
+    
+    #campaign-banner {
+        flex-shrink: 0;
+        width: 100%;
+    }
+    
+    /* Adjust body padding when banner is visible (handled by JS) */
+    
+    @media (max-width: 768px) {
+        #campaign-banner {
+            padding: 10px 15px;
+        }
+        #campaign-banner span {
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+
+
+
+
+
+    <div class="container" style="padding-top: 150px; padding-bottom: 80px; max-width: 800px;">
+        <h1>Terms of Service</h1>
+        <p style="margin-top: 1rem; color: #666;">Last Updated: December 28, 2025</p>
+
+        <div style="margin-top: 3rem; line-height: 1.8;">
+            <h3>1. Acceptance of Terms</h3>
+            <p>By accessing and using Choose90.org ("the Website"), you accept and agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Website.</p>
+
+            <h3 style="margin-top: 2rem;">2. Description of Service</h3>
+            <p>Choose90.org is a community platform dedicated to promoting positive online interactions and digital wellness. Our services include:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Online pledge system for committing to positive online behavior</li>
+                <li>Educational resources and tools for digital wellness</li>
+                <li>Community chapters and local meetups</li>
+                <li>Newsletter and communication services</li>
+                <li>Donation processing for supporting our mission</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">3. User Accounts</h3>
+            
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">3.1 Account Creation</h4>
+            <p>To access certain features, you may need to create an account. You can create an account by:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Signing up with your email and password</li>
+                <li>Signing in with Google or Facebook (via Firebase Authentication)</li>
+                <li>Taking Choose90</li>
+            </ul>
+
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">3.2 Account Responsibilities</h4>
+            <p>You are responsible for:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Maintaining the confidentiality of your account credentials</li>
+                <li>All activities that occur under your account</li>
+                <li>Providing accurate and current information</li>
+                <li>Notifying us immediately of any unauthorized use of your account</li>
+            </ul>
+
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">3.3 Account Termination</h4>
+            <p>We reserve the right to suspend or terminate your account at any time if you violate these Terms or engage in harmful behavior. You may also delete your account at any time by contacting us or using our <a href="/delete-account.html">account deletion process</a>.</p>
+
+            <h3 style="margin-top: 2rem;">4. User Conduct</h3>
+            <p>You agree to use our Website in a manner consistent with the Choose90 mission of promoting positivity and constructive online interactions. Specifically, you agree NOT to:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Post, share, or transmit any content that is harmful, abusive, defamatory, or violates any laws</li>
+                <li>Impersonate any person or entity</li>
+                <li>Interfere with or disrupt the Website or servers</li>
+                <li>Attempt to gain unauthorized access to any part of the Website</li>
+                <li>Use automated systems (bots, scrapers) to access the Website without permission</li>
+                <li>Violate any applicable local, state, national, or international law</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">5. Intellectual Property</h3>
+            
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">5.1 Our Content</h4>
+            <p>All content on Choose90.org, including text, graphics, logos, images, and software, is the property of Choose90.org or its content suppliers and is protected by copyright and other intellectual property laws.</p>
+
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">5.2 Your Content</h4>
+            <p>By submitting content to our Website (such as comments, posts, or profile information), you grant us a non-exclusive, royalty-free, perpetual license to use, modify, and display that content in connection with our services.</p>
+
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">5.3 Limited License</h4>
+            <p>We grant you a limited, non-exclusive, non-transferable license to access and use our Website for personal, non-commercial purposes. You may not reproduce, distribute, or create derivative works from our content without written permission.</p>
+
+            <h3 style="margin-top: 2rem;">6. Donations and Payments</h3>
+            <p>When you make a donation through our Website:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>All donations are processed securely through third-party payment processors (Stripe, PayPal, etc.)</li>
+                <li>Donations are generally non-refundable unless required by law</li>
+                <li>We are a 501(c)(3) nonprofit organization (if applicable - verify your status)</li>
+                <li>You will receive a receipt for tax purposes</li>
+                <li>We reserve the right to refuse or refund any donation at our discretion</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">7. Third-Party Services</h3>
+            <p>Our Website uses third-party services, including:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li><strong>Firebase Authentication (Google):</strong> For user authentication and account management</li>
+                <li><strong>Payment Processors:</strong> For processing donations</li>
+                <li><strong>Google Analytics:</strong> For website analytics</li>
+                <li><strong>WordPress:</strong> For content management</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">Your use of these third-party services is subject to their respective terms of service and privacy policies.</p>
+
+            <h3 style="margin-top: 2rem;">8. Disclaimers</h3>
+            
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">8.1 No Warranties</h4>
+            <p>Our Website is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not guarantee that:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>The Website will be available at all times</li>
+                <li>The Website will be error-free or secure</li>
+                <li>Any defects will be corrected</li>
+                <li>The Website is free of viruses or other harmful components</li>
+            </ul>
+
+            <h4 style="margin-top: 1rem; font-size: 1.1rem;">8.2 Content Accuracy</h4>
+            <p>While we strive to provide accurate information, we do not warrant the accuracy, completeness, or usefulness of any information on the Website. You rely on such information at your own risk.</p>
+
+            <h3 style="margin-top: 2rem;">9. Limitation of Liability</h3>
+            <p>To the fullest extent permitted by law, Choose90.org and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or use, arising out of or relating to your use of the Website.</p>
+
+            <h3 style="margin-top: 2rem;">10. Indemnification</h3>
+            <p>You agree to indemnify and hold harmless Choose90.org and its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) arising out of or relating to:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Your use of the Website</li>
+                <li>Your violation of these Terms</li>
+                <li>Your violation of any rights of another party</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">11. Privacy</h3>
+            <p>Your use of our Website is also governed by our <a href="/privacy.html">Privacy Policy</a>. Please review our Privacy Policy to understand how we collect, use, and protect your information.</p>
+
+            <h3 style="margin-top: 2rem;">12. Modifications to Terms</h3>
+            <p>We reserve the right to modify these Terms at any time. We will notify users of material changes by:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Posting the updated Terms on this page</li>
+                <li>Updating the "Last Updated" date</li>
+                <li>Sending an email notification for significant changes (if you have an account)</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">Your continued use of the Website after changes are posted constitutes acceptance of the modified Terms.</p>
+
+            <h3 style="margin-top: 2rem;">13. Governing Law</h3>
+            <p>These Terms shall be governed by and construed in accordance with the laws of [Your State/Country], without regard to its conflict of law provisions. Any disputes arising from these Terms or your use of the Website shall be resolved in the courts of [Your Jurisdiction].</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;"><em>Note: Please update this section with your actual jurisdiction and governing law.</em></p>
+
+            <h3 style="margin-top: 2rem;">14. Severability</h3>
+            <p>If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.</p>
+
+            <h3 style="margin-top: 2rem;">15. Contact Information</h3>
+            <p>If you have any questions about these Terms of Service, please contact us at:</p>
+            <p style="margin-top: 0.5rem;">
+                <strong>Email:</strong> support@choose90.org<br>
+                <strong>Website:</strong> <a href="/support.html">choose90.org/support</a>
+            </p>
+
+            <div style="margin-top: 3rem; padding: 20px; background: #f0f8ff; border-left: 4px solid #0066CC; border-radius: 5px;">
+                <p style="margin: 0; font-size: 0.9rem; color: #666;">
+                    <strong>Note:</strong> These Terms of Service are a template and should be reviewed by a legal professional to ensure compliance with applicable laws in your jurisdiction. Some sections may need to be customized based on your specific business model and legal requirements.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+<!-- Shared static footer for Choose90 hybrid site -->
+<footer>
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-col" style="flex: 2;">
+                <a href="/" class="logo"
+                    style="color: white; margin-bottom: 1rem; display: block;">Choose<span>90</span>.</a>
+                <p style="color: #888; max-width: 300px;">A movement to reclaim our joy, health, and community by
+                    focusing on the good.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about.html">Our Story</a></li>
+                    <li><a href="/chapters/">Chapters</a></li>
+                    <li><a href="/resources-hub.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Action</h4>
+                <ul>
+                    <li><a href="/pledge/">Join the Movement</a></li>
+                    <li><a href="/donate/">Donate</a></li>
+                    <li><a href="/support.html">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/delete-account.html">Delete Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Campaigns</h4>
+                <ul>
+                    <li><a href="/new-years-resolution.html">New Year's Resolution</a></li>
+                    <li><a href="/kwanzaa-choose90.html">Kwanzaa & Choose90</a></li>
+                    <li><a href="/kwanzaa-challenge.html">7-Day Kwanzaa Challenge</a></li>
+                    <li><a href="/digital-detox-guide.html">Digital Detox Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-newsletter" style="margin: 40px 0; padding: 40px 0; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+            <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <h4 style="color: white; font-size: 20px; margin-bottom: 12px; font-weight: 600;">Stay Connected with Choose90</h4>
+                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Get weekly inspiration, tips, and updates on making your online influence 90% positive.</p>
+                <form id="footer-newsletter-form" onsubmit="submitFooterEmail(event)" style="display: flex; gap: 8px; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="footer-email" placeholder="Enter your email" required style="flex: 1; min-width: 200px; padding: 12px 16px; border: 2px solid #444; border-radius: 6px; font-size: 14px; background: #2a2a2a; color: white;">
+                    <button type="submit" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">Subscribe</button>
+                </form>
+                <p style="color: #666; font-size: 11px; margin-top: 12px;">We respect your privacy. Unsubscribe at any time.</p>
+                <div id="footer-email-success" style="display: none; background: #10b981; color: white; padding: 12px; border-radius: 6px; margin-top: 12px; font-size: 14px;">
+                    ✓ Thank you! Check your email to confirm.
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Choose90.org. All rights reserved. | 
+                <a href="/privacy.html">Privacy Policy</a> | 
+                <a href="/terms-of-service.html">Terms of Service</a> | 
+                <a href="/delete-account.html">Delete Account</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+
+<script>
+async function submitFooterEmail(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('footer-newsletter-form');
+    const emailField = document.getElementById('footer-email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const successMsg = document.getElementById('footer-email-success');
+    
+    const email = emailField.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email!');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    
+    try {
+        const response = await fetch('/api/subscribe-email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                name: ''
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to subscribe');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Track newsletter signup
+            if (typeof window.trackNewsletterSignup === 'function') {
+                window.trackNewsletterSignup('footer');
+            }
+        } else {
+            throw new Error(data.error || 'Failed to subscribe');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+}
+window.submitFooterEmail = submitFooterEmail;
+</script>
+
+
+
+</body>
+
+</html>
